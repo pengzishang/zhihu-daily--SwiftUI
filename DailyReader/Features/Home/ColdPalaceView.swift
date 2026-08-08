@@ -45,5 +45,17 @@ struct ColdPalaceView: View {
         .paperListBackground()
         .navigationTitle("冷宫")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            if !viewModel.hiddenStories.isEmpty {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("恢复全部") {
+                        viewModel.restoreAllHidden()
+                    }
+                    .font(DS.songBold(15))
+                    .foregroundStyle(DS.indigo)
+                    .accessibilityLabel("恢复全部冷宫文章")
+                }
+            }
+        }
     }
 }

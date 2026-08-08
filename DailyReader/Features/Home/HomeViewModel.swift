@@ -468,6 +468,14 @@ final class HomeViewModel: ObservableObject {
         saveHiddenStories()
     }
 
+    /// 一键将冷宫中的全部文章恢复回首页 / 收藏 / 已读。
+    /// 用于此前误将大量文章标记为「不感兴趣」后批量救回。
+    func restoreAllHidden() {
+        guard !hiddenStories.isEmpty else { return }
+        hiddenStories.removeAll()
+        saveHiddenStories()
+    }
+
     func isStoryHidden(_ storyID: Int) -> Bool {
         hiddenStories.contains(where: { $0.id == storyID })
     }
