@@ -20,6 +20,7 @@ struct ArticleDetailView: View {
 
     @StateObject private var viewModel: ArticleDetailViewModel
     @State private var isShowingShareSheet = false
+    @State private var confirmHide = false
     @State private var htmlContentHeight: CGFloat = 520
     @State private var htmlReloadToken = 0
     @State private var htmlErrorMessage: String?
@@ -332,7 +333,7 @@ struct ArticleDetailView: View {
                         }
                     } else {
                         Button(action: {
-                            homeViewModel.hideStory(viewModel.story, date: date)
+                            confirmHide = true
                         }) {
                             Label("不感兴趣", systemImage: "eye.slash")
                         }
@@ -347,6 +348,14 @@ struct ArticleDetailView: View {
             if let shareURL = viewModel.shareURL {
                 ShareSheet(items: [viewModel.shareTitle, shareURL])
             }
+        }
+        .confirmationDialog("不再看这篇？", isPresented: $confirmHide, titleVisibility: .visible) {
+            Button("不感兴趣", role: .destructive) {
+                homeViewModel.hideStory(viewModel.story, date: date)
+            }
+            Button("取消", role: .cancel) { }
+        } message: {
+            Text("这篇会被移入冷宫，之后可在「设置 → 冷宫」里恢复。")
         }
         .fullScreenCover(item: $selectedImage) { item in
             FullScreenImageViewer(urlString: item.url)
