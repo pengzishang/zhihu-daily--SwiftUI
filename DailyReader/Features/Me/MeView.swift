@@ -72,12 +72,19 @@ struct MeView: View {
     var body: some View {
         ZStack {
             DS.paper.ignoresSafeArea()
-            contentList
-                .frame(maxWidth: 720)
 
-            // 设置入口：用隐藏的 NavigationLink 推入，且刻意放在 List 之外。
-            // 若把 NavigationLink 直接放进 List 首行，SwiftUI 会让整行变为导航入口，
-            // 导致点「收藏 / 已读 / 搜索」等同行元素都会误进设置；同时也会吞掉分段按钮的点击。
+            ScrollView {
+                VStack(spacing: 0) {
+                    topSection
+                        .frame(maxWidth: 720)
+                    contentList
+                        .frame(maxWidth: 720)
+                }
+            }
+
+            // 设置入口：用隐藏的 NavigationLink 推入，且刻意放在 List / ScrollView 之外。
+            // 顶部交互区块（齿轮、分段、搜索）现在已不在 List 行内，彻底杜绝
+            // 「整行变导航入口 / 吞掉按钮点击」这类问题，只有点齿轮才会进设置。
             NavigationLink(
                 destination: SettingsView(viewModel: viewModel)
                     .toolbar(.visible, for: .navigationBar),
@@ -308,31 +315,27 @@ struct MeView: View {
         )
     }
 
-    // MARK: - 顶部区块（作为列表首行，随列表一并滚动）
+    // MARK: - 顶部区块（独立于 List，置于外层 ScrollView，随整页一并滚动）
 
     private var topSection: some View {
-        Section {
-            VStack(spacing: 14) {
-                bookroomHeader
-                // 暂时隐藏知乎账号登录入口，保留登录能力以便后续恢复。
-                if Self.showsAuthenticationCard {
-                    AccountCardView(viewModel: authenticationViewModel)
-                }
-                readingArchive
-                InterestProfileCard(viewModel: interestProfileViewModel)
-                    .padding(.horizontal, 16)
-                    .padding(.bottom, 12)
-                    .frame(maxWidth: 720)
-                segmentControl
-                searchField
+        VStack(spacing: 14) {
+            bookroomHeader
+            // 暂时隐藏知乎账号登录入口，保留登录能力以便后续恢复。
+            if Self.showsAuthenticationCard {
+                AccountCardView(viewModel: authenticationViewModel)
             }
-            .padding(.horizontal, 16)
-            .padding(.bottom, 12)
-            .frame(maxWidth: 720)
+            readingArchive
+            InterestProfileCard(viewModel: interestProfileViewModel)
+                .padding(.horizontal, 16)
+                .padding(.bottom, 12)
+                .frame(maxWidth: 720)
+            segmentControl
+            searchField
         }
-        .listRowInsets(EdgeInsets())
-        .listRowSeparator(.hidden)
-        .listRowBackground(Color.clear)
+        .padding(.horizontal, 16)
+        .padding(.top, 8)
+        .padding(.bottom, 12)
+        .frame(maxWidth: 720)
     }
 
     // MARK: - 内容列表
@@ -348,8 +351,6 @@ struct MeView: View {
 
     private var favoritesList: some View {
         List {
-            topSection
-
             if viewModel.favoriteStories.isEmpty {
                 ContentUnavailableView(
                     "暂无收藏内容",
@@ -397,13 +398,12 @@ struct MeView: View {
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
+        .scrollDisabled(true)
         .accessibilityIdentifier("me.favorites.list")
     }
 
     private var readList: some View {
         List {
-            topSection
-
             if viewModel.visibleReadStories.isEmpty {
                 ContentUnavailableView(
                     "暂无已读文章",
@@ -444,6 +444,7 @@ struct MeView: View {
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
+        .scrollDisabled(true)
         .accessibilityIdentifier("me.read.list")
     }
 }
