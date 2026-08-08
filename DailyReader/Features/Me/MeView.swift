@@ -9,6 +9,7 @@ struct MeView: View {
     @StateObject private var interestProfileViewModel: InterestProfileViewModel
     @State private var selectedSubTab = 0 // 0 收藏，1 已读
     @State private var searchText = ""
+    @State private var showSettings = false
     @Namespace private var animation
 
     @MainActor
@@ -73,6 +74,19 @@ struct MeView: View {
             DS.paper.ignoresSafeArea()
             contentList
                 .frame(maxWidth: 720)
+
+            // 设置入口：用隐藏的 NavigationLink 推入，且刻意放在 List 之外。
+            // 若把 NavigationLink 直接放进 List 首行，SwiftUI 会让整行变为导航入口，
+            // 导致点「收藏 / 已读 / 搜索」等同行元素都会误进设置；同时也会吞掉分段按钮的点击。
+            NavigationLink(
+                destination: SettingsView(viewModel: viewModel)
+                    .toolbar(.visible, for: .navigationBar),
+                isActive: $showSettings
+            ) {
+                EmptyView()
+            }
+            .hidden()
+            .accessibilityHidden(true)
         }
         .toolbar(.hidden, for: .navigationBar)
         .onDisappear {
@@ -121,9 +135,8 @@ struct MeView: View {
 
                 Spacer(minLength: 12)
 
-                NavigationLink {
-                    SettingsView(viewModel: viewModel)
-                        .toolbar(.visible, for: .navigationBar)
+                Button {
+                    showSettings = true
                 } label: {
                     Image(systemName: "gearshape")
                         .font(.system(size: 17, weight: .semibold))
