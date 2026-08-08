@@ -217,6 +217,19 @@ final class HomeViewModel: ObservableObject {
                 }
             }
         }
+
+        // 校正阅读状态一致性：readStoryIDs 必须以 readStories 明细为准。
+        // 二者可能从 UserDefaults / Keychain 两条通道分别恢复而错位，
+        // 一旦出现「无明细的幽灵已读 ID」，首页会把文章全部当成已读隐藏，
+        // 而「已读」列表（依赖 readStories）却为空，表现为首页文章“全部消失”。
+        let reconciledReadIDs = Set(self.readStories.map { $0.id })
+        if reconciledReadIDs != self.readStoryIDs {
+            self.readStoryIDs = reconciledReadIDs
+            UserDefaults.standard.set(Array(reconciledReadIDs), forKey: readStoryIDsKey)
+            if let data = try? JSONEncoder().encode(Array(reconciledReadIDs)) {
+                saveBackup(data, for: readStoryIDsKey)
+            }
+        }
     }
 
     private func readBackup(for account: String) -> Data? {
