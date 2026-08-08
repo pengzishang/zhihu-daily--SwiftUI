@@ -69,29 +69,11 @@ struct MeView: View {
     }
 
     var body: some View {
-        VStack(spacing: 0) {
-            VStack(spacing: 14) {
-                bookroomHeader
-                // 暂时隐藏知乎账号登录入口，保留登录能力以便后续恢复。
-                if Self.showsAuthenticationCard {
-                    AccountCardView(viewModel: authenticationViewModel)
-                }
-                readingArchive
-                InterestProfileCard(viewModel: interestProfileViewModel)
-                    .padding(.horizontal, 16)
-                    .padding(.bottom, 12)
-                    .frame(maxWidth: 720)
-                segmentControl
-                searchField
-            }
-            .padding(.horizontal, 16)
-            .padding(.bottom, 12)
-            .frame(maxWidth: 720)
-
+        ZStack {
+            DS.paper.ignoresSafeArea()
             contentList
+                .frame(maxWidth: 720)
         }
-        .frame(maxWidth: .infinity)
-        .background(DS.paper.ignoresSafeArea())
         .toolbar(.hidden, for: .navigationBar)
         .onDisappear {
             authenticationViewModel.cancel()
@@ -313,6 +295,33 @@ struct MeView: View {
         )
     }
 
+    // MARK: - 顶部区块（作为列表首行，随列表一并滚动）
+
+    private var topSection: some View {
+        Section {
+            VStack(spacing: 14) {
+                bookroomHeader
+                // 暂时隐藏知乎账号登录入口，保留登录能力以便后续恢复。
+                if Self.showsAuthenticationCard {
+                    AccountCardView(viewModel: authenticationViewModel)
+                }
+                readingArchive
+                InterestProfileCard(viewModel: interestProfileViewModel)
+                    .padding(.horizontal, 16)
+                    .padding(.bottom, 12)
+                    .frame(maxWidth: 720)
+                segmentControl
+                searchField
+            }
+            .padding(.horizontal, 16)
+            .padding(.bottom, 12)
+            .frame(maxWidth: 720)
+        }
+        .listRowInsets(EdgeInsets())
+        .listRowSeparator(.hidden)
+        .listRowBackground(Color.clear)
+    }
+
     // MARK: - 内容列表
 
     @ViewBuilder
@@ -326,6 +335,8 @@ struct MeView: View {
 
     private var favoritesList: some View {
         List {
+            topSection
+
             if viewModel.favoriteStories.isEmpty {
                 ContentUnavailableView(
                     "暂无收藏内容",
@@ -372,12 +383,14 @@ struct MeView: View {
             }
         }
         .listStyle(.plain)
-        .paperListBackground()
+        .scrollContentBackground(.hidden)
         .accessibilityIdentifier("me.favorites.list")
     }
 
     private var readList: some View {
         List {
+            topSection
+
             if viewModel.visibleReadStories.isEmpty {
                 ContentUnavailableView(
                     "暂无已读文章",
@@ -417,7 +430,7 @@ struct MeView: View {
             }
         }
         .listStyle(.plain)
-        .paperListBackground()
+        .scrollContentBackground(.hidden)
         .accessibilityIdentifier("me.read.list")
     }
 }
