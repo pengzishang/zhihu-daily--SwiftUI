@@ -8,13 +8,15 @@ final class InterestIndexEngineTests: XCTestCase {
         maxScrollPercent: Double = 0,
         readCount: Int = 0,
         isFavorited: Bool = false,
-        isHidden: Bool = false
+        isHidden: Bool = false,
+        lastReadAt: Date = Date()
     ) -> ReadingInterestRecord {
         ReadingInterestRecord(
             articleID: articleID,
             dwellSeconds: dwellSeconds,
             maxScrollPercent: maxScrollPercent,
             readCount: readCount,
+            lastReadAt: lastReadAt,
             isFavorited: isFavorited,
             isHidden: isHidden
         )
@@ -90,9 +92,10 @@ final class InterestIndexEngineTests: XCTestCase {
 
         XCTAssertEqual(result.count, 3)
         XCTAssertTrue(result.last?.category.isOther == true)
-        XCTAssertEqual(result.first?.category.id, "tech")
-        XCTAssertEqual(result.first?.score, 1.0, accuracy: 0.0001)
-        XCTAssertEqual(result.first?.isLowSample, false)
+        let firstEntry = try! XCTUnwrap(result.first)
+        XCTAssertEqual(firstEntry.category.id, "tech")
+        XCTAssertEqual(firstEntry.score, 1.0, accuracy: 0.0001)
+        XCTAssertFalse(firstEntry.isLowSample)
     }
 
     func testCategoryIndexFlagsLowSample() {
@@ -203,8 +206,9 @@ final class InterestIndexEngineTests: XCTestCase {
             records: records,
             taxonomy: tax
         )
-        XCTAssertTrue(result.last?.category.isOther == true)
-        XCTAssertEqual(result.last?.score, 1.0, accuracy: 0.0001)
+        let lastEntry = try! XCTUnwrap(result.last)
+        XCTAssertTrue(lastEntry.category.isOther)
+        XCTAssertEqual(lastEntry.score, 1.0, accuracy: 0.0001)
         let firstScore = result.first?.score ?? 0
         let lastScore = result.last?.score ?? 0
         XCTAssertLessThan(firstScore, lastScore)
