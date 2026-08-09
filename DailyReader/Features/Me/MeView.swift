@@ -79,19 +79,10 @@ struct MeView: View {
             contentList
                 .frame(maxWidth: 720)
 
-            // 设置入口：用隐藏的 NavigationLink 推入，刻意放在 List 之外。
-            // 顶部交互区块现在作为 List 首个 Section，齿轮是普通 Button
-            // （设置 showSettings），彻底杜绝「整行变导航入口 / 吞掉按钮点击」，
-            // 只有点齿轮才会进设置。
-            NavigationLink(
-                destination: SettingsView(viewModel: viewModel)
-                    .toolbar(.visible, for: .navigationBar),
-                isActive: $showSettings
-            ) {
-                EmptyView()
-            }
-            .hidden()
-            .accessibilityHidden(true)
+        }
+        .navigationDestination(isPresented: $showSettings) {
+            SettingsView(viewModel: viewModel)
+                .toolbar(.visible, for: .navigationBar)
         }
         .toolbar(.hidden, for: .navigationBar)
         .onDisappear {

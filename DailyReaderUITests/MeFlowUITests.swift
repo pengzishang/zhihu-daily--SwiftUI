@@ -93,15 +93,22 @@ final class MeFlowUITests: XCTestCase {
         let archive = app.otherElements["me.readingArchive"]
         XCTAssertTrue(archive.waitForExistence(timeout: 5))
         XCTAssertTrue(archive.label.contains("收藏 1 篇"))
+        XCTAssertFalse(app.navigationBars["设置"].exists)
 
         // Tap "已读" switcher
         let readSegmentButton = app.buttons["me.segment.read"]
         XCTAssertTrue(readSegmentButton.exists)
         readSegmentButton.tap()
         
+        XCTAssertFalse(app.navigationBars["设置"].exists)
+
         // Read list should exist
         XCTAssertTrue(app.collectionViews["me.read.list"].waitForExistence(timeout: 5))
         attachScreenshot(named: "me-read-list-selected", app: app)
+
+        app.buttons["me.segment.favorites"].tap()
+        XCTAssertFalse(app.navigationBars["设置"].exists)
+        XCTAssertTrue(app.collectionViews["me.favorites.list"].waitForExistence(timeout: 5))
     }
     
     func testT1_ME_03_FavoritesListSearch() {
