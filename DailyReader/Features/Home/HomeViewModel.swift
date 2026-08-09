@@ -36,6 +36,7 @@ final class HomeViewModel: ObservableObject {
 
     private static let maximumAutomaticHistoryBatchCount = 12
     private static let historyPrefetchRemainingStoryCount = 8
+    private static let backupSchemaVersion = 1
 
     private let repository: HomeRepositoryProtocol
     private let articleRepository: ArticleRepositoryProtocol?
@@ -430,20 +431,12 @@ final class HomeViewModel: ObservableObject {
     // MARK: - Status updates & Persistence
     func markStoryRead(_ storyID: Int) {
         guard readStoryIDs.insert(storyID).inserted else { return }
-        let array = Array(readStoryIDs)
-        UserDefaults.standard.set(array, forKey: readStoryIDsKey)
-        if let data = try? JSONEncoder().encode(array) {
-            saveBackup(data, for: readStoryIDsKey)
-        }
+        saveReadStoryIDs()
     }
 
     func markStoryRead(_ story: StorySummary, date: String) {
         readStoryIDs.insert(story.id)
-        let array = Array(readStoryIDs)
-        UserDefaults.standard.set(array, forKey: readStoryIDsKey)
-        if let data = try? JSONEncoder().encode(array) {
-            saveBackup(data, for: readStoryIDsKey)
-        }
+        saveReadStoryIDs()
         if let index = readStories.firstIndex(where: { $0.id == story.id }) {
             let old = readStories.remove(at: index)
             readStories.append(ReadStory(date: old.date, story: old.story, readAt: Date()))
@@ -503,11 +496,7 @@ final class HomeViewModel: ObservableObject {
             readStories.removeAll(where: { $0.id == story.id })
             readStories.append(ReadStory(date: date, story: story, readAt: Date()))
         }
-        let array = Array(readStoryIDs)
-        UserDefaults.standard.set(array, forKey: readStoryIDsKey)
-        if let data = try? JSONEncoder().encode(array) {
-            saveBackup(data, for: readStoryIDsKey)
-        }
+        saveReadStoryIDs()
         saveReadStories()
     }
 
@@ -530,6 +519,80 @@ final class HomeViewModel: ObservableObject {
             UserDefaults.standard.set(data, forKey: readStoriesKey)
             saveBackup(data, for: readStoriesKey)
         }
+    }
+
+    /// 持久化已读 ID 集合：同步写入 UserDefaults 与 Keychain 冗余备份。
+    /// 供 markStoryRead / toggleRead / importState 复用，集中维护 Double Write 逻辑。
+    private func saveReadStoryIDs() {
+        let array = Array(readStoryIDs)
+        UserDefaults.standard.set(array, forKey: readStoryIDsKey)
+        if let data = try? JSONEncoder().encode(array) {
+            saveBackup(data, for: readStoryIDsKey)
+        }
+    }
+
+    // MARK: - 阅读状态备份 / 恢复
+
+    /// 导出当前阅读状态为 JSON 数据。
+    /// - Returns: 编码后的备份 JSON（pretty printed + 键排序）。
+    /// - Throws: 编码失败（理论上不应发生，因所有字段均 Codable）。
+    func exportState() throws -> Data {
+        let backup = ReadingStateBackup(
+            schemaVersion: Self.backupSchemaVersion,
+            appVersion: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0",
+            exportDate: Date(),
+            readStoryIDs: Array(readStoryIDs),
+            hiddenStories: hiddenStories,
+            favoriteStories: favoriteStories,
+            readStories: readStories
+        )
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+        return try encoder.encode(backup)
+    }
+
+    /// 从备份 JSON 数据恢复阅读状态。
+    /// 采用「并集」语义合并：已读 ID 取并集，冷宫 / 收藏 / 已读明细按各自 id 去重合并（现有优先，幂等）。
+    /// 重装后导入（现有状态为空）等同于整体恢复；已有部分状态再导入也能安全合并。
+    /// - Parameter data: 备份文件数据。
+    /// - Throws: 解码失败或 schema 版本不支持时抛出清晰错误。
+    func importState(_ data: Data) throws {
+        let decoder = JSONDecoder()
+        let backup: ReadingStateBackup
+        do {
+            backup = try decoder.decode(ReadingStateBackup.self, from: data)
+        } catch {
+            throw ReadingStateImportError.invalidFile(underlying: error)
+        }
+
+        guard backup.schemaVersion <= Self.backupSchemaVersion else {
+            throw ReadingStateImportError.unsupportedSchema(version: backup.schemaVersion)
+        }
+
+        // 已读 ID 取并集
+        readStoryIDs.formUnion(backup.readStoryIDs)
+        // 冷宫 / 收藏 / 已读明细按 id 去重合并（现有优先）
+        mergeStories(into: &hiddenStories, with: backup.hiddenStories)
+        mergeStories(into: &favoriteStories, with: backup.favoriteStories)
+        mergeStories(into: &readStories, with: backup.readStories)
+
+        // 统一持久化（UserDefaults + Keychain 一并更新）
+        saveReadStoryIDs()
+        saveHiddenStories()
+        saveFavoriteStories()
+        saveReadStories()
+    }
+
+    /// 按 id 去重合并故事数组：现有项优先，导入项仅补充缺失 id，保证幂等。
+    private func mergeStories<T>(into current: inout [T], with incoming: [T]) where T: Identifiable & Equatable, T.ID == Int {
+        var seen = Set<Int>()
+        var merged: [T] = []
+        for item in current + incoming {
+            guard !seen.contains(item.id) else { continue }
+            seen.insert(item.id)
+            merged.append(item)
+        }
+        current = merged
     }
 
     var thresholdStoryID: Int? {
@@ -578,5 +641,43 @@ final class HomeViewModel: ObservableObject {
         loadedStoryIDs = Set(sections.flatMap(\.stories).map(\.id))
         phase = sections.isEmpty && topStories.isEmpty ? .empty : .loaded(value.source)
         historyLoadState = .idle
+    }
+}
+
+// MARK: - 阅读状态备份结构
+
+/// 阅读状态备份：将「已读 / 收藏 / 冷宫」三类状态打包成可导出 JSON。
+/// 所有字段均为 Codable，与 HomeViewModel 中既有的四个持久化状态一一对应。
+struct ReadingStateBackup: Codable {
+    /// 备份结构版本号，便于后续兼容升级（当前为 1）。
+    let schemaVersion: Int
+    /// 导出时的 App 版本（取自 CFBundleShortVersionString）。
+    let appVersion: String
+    /// 导出时间。
+    let exportDate: Date
+    /// 已读故事 ID 列表（与 readStoryIDs 对应）。
+    let readStoryIDs: [Int]
+    /// 冷宫（不感兴趣）列表。
+    let hiddenStories: [HiddenStory]
+    /// 收藏列表。
+    let favoriteStories: [FavoriteStory]
+    /// 已读明细列表。
+    let readStories: [ReadStory]
+}
+
+/// 导入备份时的错误类型，提供可读的中文错误信息供上层 alert 展示。
+enum ReadingStateImportError: LocalizedError {
+    /// 文件无法解析（损坏 / 格式不符 / schema 不匹配）。
+    case invalidFile(underlying: Error)
+    /// 备份 schema 版本高于当前 App 可识别范围。
+    case unsupportedSchema(version: Int)
+
+    var errorDescription: String? {
+        switch self {
+        case .invalidFile(let underlying):
+            return "备份文件无法解析（可能已损坏或格式不符）：\(underlying.localizedDescription)"
+        case .unsupportedSchema(let version):
+            return "不支持的备份版本（schemaVersion=\(version)），请升级 App 后重试。"
+        }
     }
 }
