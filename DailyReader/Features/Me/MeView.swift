@@ -73,18 +73,16 @@ struct MeView: View {
         ZStack {
             DS.paper.ignoresSafeArea()
 
-            ScrollView {
-                VStack(spacing: 0) {
-                    topSection
-                        .frame(maxWidth: 720)
-                    contentList
-                        .frame(maxWidth: 720)
-                }
-            }
+            // 单个 List 承载顶部区块 + 收藏/已读内容，自身可滚动；
+            // 不再把 List 套进 ScrollView——那样 SwiftUI 算不出 List 高度，
+            // 会导致收藏/已读列表行无法渲染（本次修复的核心问题）。
+            contentList
+                .frame(maxWidth: 720)
 
-            // 设置入口：用隐藏的 NavigationLink 推入，且刻意放在 List / ScrollView 之外。
-            // 顶部交互区块（齿轮、分段、搜索）现在已不在 List 行内，彻底杜绝
-            // 「整行变导航入口 / 吞掉按钮点击」这类问题，只有点齿轮才会进设置。
+            // 设置入口：用隐藏的 NavigationLink 推入，刻意放在 List 之外。
+            // 顶部交互区块现在作为 List 首个 Section，齿轮是普通 Button
+            // （设置 showSettings），彻底杜绝「整行变导航入口 / 吞掉按钮点击」，
+            // 只有点齿轮才会进设置。
             NavigationLink(
                 destination: SettingsView(viewModel: viewModel)
                     .toolbar(.visible, for: .navigationBar),
@@ -338,6 +336,15 @@ struct MeView: View {
         .frame(maxWidth: 720)
     }
 
+    // 顶部区块作为 List 的首个 Section：透明背景、无分隔线、无额外 inset，
+    // 让「我的」页用单个 List 同时承载头部与收藏/已读内容，规避 List 套 ScrollView 的高度坑。
+    private var topSectionSection: some View {
+        topSection
+            .listRowInsets(EdgeInsets())
+            .listRowSeparator(.hidden)
+            .listRowBackground(Color.clear)
+    }
+
     // MARK: - 内容列表
 
     @ViewBuilder
@@ -351,6 +358,8 @@ struct MeView: View {
 
     private var favoritesList: some View {
         List {
+            topSectionSection
+
             if viewModel.favoriteStories.isEmpty {
                 ContentUnavailableView(
                     "暂无收藏内容",
@@ -398,12 +407,13 @@ struct MeView: View {
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
-        .scrollDisabled(true)
         .accessibilityIdentifier("me.favorites.list")
     }
 
     private var readList: some View {
         List {
+            topSectionSection
+
             if viewModel.visibleReadStories.isEmpty {
                 ContentUnavailableView(
                     "暂无已读文章",
@@ -444,7 +454,6 @@ struct MeView: View {
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
-        .scrollDisabled(true)
         .accessibilityIdentifier("me.read.list")
     }
 }
