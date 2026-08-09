@@ -115,6 +115,14 @@ final class NativeBodyParserTests: XCTestCase {
         XCTAssertEqual(inlinePlainText(nodes), "后续段落")
     }
 
+    func testHiddenOriginLinkRemainsHiddenInNativeBody() {
+        let html = "<div class='meta'><span class='author'>张三</span></div><a class='originUrl' href='https://www.zhihu.com/question/1' hidden>查看原回答</a><p>后续段落</p>"
+
+        let blocks = try! XCTUnwrap(NativeBodyRenderer.parsedBlocks(html: html))
+        guard case .authorMeta(_, let metadata) = blocks[0] else { return XCTFail() }
+        XCTAssertNil(metadata.originURL)
+    }
+
     func testExcessivelyNestedHTMLFallsBackToWebView() {
         let html = String(repeating: "<span>", count: 65) + "正文" + String(repeating: "</span>", count: 65)
 
@@ -128,6 +136,18 @@ final class NativeBodyParserTests: XCTestCase {
 
         guard case .paragraph(_, let nodes, _) = blocks[0] else { return XCTFail("应解析为段落") }
         XCTAssertEqual(nodes, [.text("不安全链接")])
+    }
+
+    func testUnsupportedListFallsBackToWebView() {
+        let html = "<p>正文</p><ul><li>列表项</li></ul>"
+
+        XCTAssertNil(NativeBodyRenderer.parsedBlocks(html: html))
+    }
+
+    func testUnsupportedTableFallsBackToWebView() {
+        let html = "<p>正文</p><table><tr><td>单元格</td></tr></table>"
+
+        XCTAssertNil(NativeBodyRenderer.parsedBlocks(html: html))
     }
 
     func testPlainTextFlattensBlocks() {

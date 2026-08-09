@@ -150,6 +150,9 @@ struct ArticleDetailView: View {
                                 onLinkTap: { url in
                                     UIApplication.shared.open(url)
                                 },
+                                onAISearch: { selection in
+                                    openAIChat(selectedText: selection)
+                                },
                                 onPreparedText: { text in
                                     if preparedArticleText != text {
                                         preparedArticleText = text

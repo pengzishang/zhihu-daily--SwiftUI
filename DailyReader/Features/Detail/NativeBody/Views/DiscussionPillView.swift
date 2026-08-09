@@ -10,16 +10,14 @@ struct DiscussionPillView: View {
         Button {
             if let u = URL(string: url) { onLinkTap(u) }
         } label: {
-            HStack(spacing: 6) {
-                Image(systemName: "bubble.right")
-                Text(label)
-            }
+            Text(label)
             .font(.system(size: 15, weight: .semibold))
             .foregroundStyle(DS.indigo)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 12)
             .background(DS.indigo.opacity(0.13))
             .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+            .padding(.horizontal, 8)
         }
         .buttonStyle(.plain)
     }

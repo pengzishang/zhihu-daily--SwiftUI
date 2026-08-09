@@ -26,6 +26,7 @@ enum NativeBodyRenderer {
         fontSize: Double = 16,
         onImageTap: @escaping (String) -> Void,
         onLinkTap: @escaping (URL) -> Void,
+        onAISearch: @escaping (String) -> Void = { _ in },
         onPreparedText: @escaping (String) -> Void = { _ in },
         fallback: @escaping () -> AnyView
     ) -> AnyView {
@@ -38,6 +39,7 @@ enum NativeBodyRenderer {
                 fontSize: fontSize,
                 onImageTap: onImageTap,
                 onLinkTap: onLinkTap,
+                onAISearch: onAISearch,
                 onPreparedText: onPreparedText,
                 fallback: fallback
             )
@@ -90,6 +92,7 @@ private struct DeferredNativeBodyView: View {
     let fontSize: Double
     let onImageTap: (String) -> Void
     let onLinkTap: (URL) -> Void
+    let onAISearch: (String) -> Void
     let onPreparedText: (String) -> Void
     let fallback: () -> AnyView
 
@@ -108,7 +111,8 @@ private struct DeferredNativeBodyView: View {
                     blocks: blocks,
                     fontSize: fontSize,
                     onImageTap: onImageTap,
-                    onLinkTap: onLinkTap
+                    onLinkTap: onLinkTap,
+                    onAISearch: onAISearch
                 )
                 .onAppear {
                     onPreparedText(NativeBodyRenderer.plainText(from: blocks))

@@ -4,6 +4,9 @@ import SwiftSoup
 struct SwiftSoupHTMLToBlocksParser {
     private static let maximumDepth = 64
     private static let maximumVisitedNodes = 10_000
+    private static let unsupportedTagNames: Set<String> = [
+        "audio", "canvas", "embed", "form", "iframe", "math", "object", "ol", "svg", "table", "ul", "video"
+    ]
 
     private let html: String
     private var counter = 0
@@ -40,6 +43,10 @@ struct SwiftSoupHTMLToBlocksParser {
 
             guard let element = node as? Element else { continue }
             let tag = element.tagNameNormal()
+            guard !Self.unsupportedTagNames.contains(tag) else {
+                hasExceededLimit = true
+                return []
+            }
 
             switch tag {
             case "p":
@@ -112,6 +119,10 @@ struct SwiftSoupHTMLToBlocksParser {
             }
 
             guard let element = node as? Element else { continue }
+            guard !Self.unsupportedTagNames.contains(element.tagNameNormal()) else {
+                hasExceededLimit = true
+                return []
+            }
             let children = inlineNodes(from: element.getChildNodes(), depth: depth + 1)
             switch element.tagNameNormal() {
             case "strong", "b":
@@ -252,6 +263,7 @@ struct SwiftSoupHTMLToBlocksParser {
             guard let element = node as? Element,
                   element.tagNameNormal() == "a",
                   Self.classesContain("originUrl", in: element),
+                  !element.hasAttr("hidden"),
                   let url = Self.nonEmptyAttribute("href", of: element),
                   Self.isWebURL(url) else {
                 return nil

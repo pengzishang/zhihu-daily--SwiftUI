@@ -6,36 +6,37 @@ struct ParagraphView: View {
     let isFirst: Bool
     let fontSize: Double
     var onLinkTap: (URL) -> Void = { _ in }
+    var onAISearch: (String) -> Void = { _ in }
 
     var body: some View {
-        Text(makeAttributed())
-            .font(.system(size: fontSize))
-            .foregroundStyle(DS.ink)
-            .lineSpacing(fontSize * 0.55)
-            .textSelection(.enabled)
-            .environment(\.openURL, OpenURLAction { url in
-                onLinkTap(url)
-                return .handled
-            })
+        NativeSelectableAttributedText(
+            text: makeAttributed(),
+            baseFont: .systemFont(ofSize: fontSize),
+            textColor: DS.inkUI,
+            lineSpacing: fontSize * 0.65,
+            emphasis: dropCap,
+            onLinkTap: onLinkTap,
+            onAISearch: onAISearch
+        )
             .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     private func makeAttributed() -> AttributedString {
-        var attr = InlineContentView.build(nodes, baseSize: fontSize)
-        guard isFirst else { return attr }
+        InlineContentView.build(nodes, baseSize: fontSize)
+    }
 
+    private var dropCap: NativeTextEmphasis? {
+        guard isFirst else { return nil }
         let plain = inlinePlainText(nodes).trimmingCharacters(in: .whitespacesAndNewlines)
-        guard let first = plain.first else { return attr }
+        guard let first = plain.first else { return nil }
         let firstChar = String(first)
         let isQuestion = firstChar == "Q" || firstChar == "问" || plain.hasPrefix("Q:") || plain.hasPrefix("Q：")
-        guard !isQuestion else { return attr }
+        guard !isQuestion else { return nil }
 
-        // 首字朱砂放大（近似 drop-cap，不在流内浮动）
-        let charStart = attr.characters.startIndex
-        let charEnd = attr.characters.index(after: charStart)
-        let range = charStart..<charEnd
-        attr[range].font = DS.songBlack(fontSize * 2.6)
-        attr[range].foregroundColor = DS.cinnabar
-        return attr
+        return NativeTextEmphasis(
+            range: NSRange(location: 0, length: firstChar.utf16.count),
+            font: DS.uiSongBlack(fontSize * 3.35),
+            color: DS.cinnabarUI
+        )
     }
 }

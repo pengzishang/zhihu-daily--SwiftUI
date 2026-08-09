@@ -6,6 +6,7 @@ struct BlockquoteView: View {
     let fontSize: Double
     var onImageTap: (String) -> Void = { _ in }
     var onLinkTap: (URL) -> Void = { _ in }
+    var onAISearch: (String) -> Void = { _ in }
 
     var body: some View {
         HStack(alignment: .top, spacing: 10) {
@@ -19,7 +20,8 @@ struct BlockquoteView: View {
                         block: block,
                         fontSize: fontSize * 0.95,
                         onImageTap: onImageTap,
-                        onLinkTap: onLinkTap
+                        onLinkTap: onLinkTap,
+                        onAISearch: onAISearch
                     )
                     .foregroundStyle(DS.inkSecondary)
                 }
