@@ -19,6 +19,7 @@ targets:
     dependencies:
       - package: Alamofire
       - package: Kingfisher
+      - package: LookinServer
     configFiles:
       Debug: Config/AIProviders.xcconfig
       Release: Config/AIProviders.xcconfig
@@ -82,4 +83,7 @@ packages:
   Kingfisher:
     url: https://github.com/onevcat/Kingfisher.git
     from: 8.0.0
+  LookinServer:
+    url: https://github.com/prnd-ios/LookinServer-XCFramework.git
+    from: 1.2.8
 
