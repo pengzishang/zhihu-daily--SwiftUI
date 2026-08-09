@@ -103,6 +103,33 @@ final class NativeBodyParserTests: XCTestCase {
         XCTAssertEqual(image.alt, "截图 > 原图")
     }
 
+    func testAuthorMetaAbsorbsAdjacentOriginLink() {
+        let html = "<div class='meta'><span class='author'>张三</span></div><a class='originUrl' href='https://www.zhihu.com/question/1'>查看原回答</a><p>后续段落</p>"
+
+        let blocks = try! XCTUnwrap(NativeBodyRenderer.parsedBlocks(html: html))
+
+        XCTAssertEqual(blocks.count, 2)
+        guard case .authorMeta(_, let metadata) = blocks[0] else { return XCTFail("第一个应是作者信息") }
+        XCTAssertEqual(metadata.originURL, "https://www.zhihu.com/question/1")
+        guard case .paragraph(_, let nodes, _) = blocks[1] else { return XCTFail("原文链接不应单独渲染") }
+        XCTAssertEqual(inlinePlainText(nodes), "后续段落")
+    }
+
+    func testExcessivelyNestedHTMLFallsBackToWebView() {
+        let html = String(repeating: "<span>", count: 65) + "正文" + String(repeating: "</span>", count: 65)
+
+        XCTAssertNil(NativeBodyRenderer.parsedBlocks(html: html))
+    }
+
+    func testNonWebLinkIsRenderedAsPlainText() {
+        let html = "<p><a href='javascript:alert(1)'>不安全链接</a></p>"
+
+        let blocks = try! XCTUnwrap(NativeBodyRenderer.parsedBlocks(html: html))
+
+        guard case .paragraph(_, let nodes, _) = blocks[0] else { return XCTFail("应解析为段落") }
+        XCTAssertEqual(nodes, [.text("不安全链接")])
+    }
+
     func testPlainTextFlattensBlocks() {
         let html = "<p>你好</p><h2>标题</h2>"
         let blocks = try! XCTUnwrap(NativeBodyRenderer.parsedBlocks(html: html))
@@ -120,7 +147,8 @@ final class NativeBodyParserTests: XCTestCase {
             .map { "<p>第 \($0) 段正文，必须在后台完成解析。</p>" }
             .joined()
 
-        let blocks = try await XCTUnwrap(NativeBodyRenderer.backgroundBlocks(html: html))
+        let parsed = await NativeBodyRenderer.backgroundBlocks(html: html)
+        let blocks = try XCTUnwrap(parsed)
 
         XCTAssertEqual(blocks.count, 400)
     }

@@ -2,9 +2,14 @@ import Foundation
 import SwiftSoup
 
 struct SwiftSoupHTMLToBlocksParser {
+    private static let maximumDepth = 64
+    private static let maximumVisitedNodes = 10_000
+
     private let html: String
     private var counter = 0
     private var firstContentParagraphAssigned = false
+    private var visitedNodes = 0
+    private var hasExceededLimit = false
 
     init(html: String) {
         self.html = html
@@ -15,13 +20,16 @@ struct SwiftSoupHTMLToBlocksParser {
               let body = document.body() else {
             return nil
         }
-        return parseBlocks(body.getChildNodes())
+        let blocks = parseBlocks(body.getChildNodes())
+        return hasExceededLimit ? nil : blocks
     }
 
-    private mutating func parseBlocks(_ nodes: [Node]) -> [ArticleBlock] {
+    private mutating func parseBlocks(_ nodes: [Node], depth: Int = 0) -> [ArticleBlock] {
+        guard allowsDepth(depth) else { return [] }
         var blocks: [ArticleBlock] = []
 
         for (index, node) in nodes.enumerated() {
+            guard registerVisit() else { return [] }
             if let textNode = node as? TextNode {
                 let text = textNode.getWholeText()
                 if !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
@@ -35,10 +43,10 @@ struct SwiftSoupHTMLToBlocksParser {
 
             switch tag {
             case "p":
-                blocks.append(makeParagraph(nodes: inlineNodes(from: element.getChildNodes())))
+                blocks.append(makeParagraph(nodes: inlineNodes(from: element.getChildNodes(), depth: depth + 1)))
             case "h1", "h2", "h3", "h4":
                 let level = tag == "h2" ? 2 : (tag == "h3" ? 3 : (tag == "h4" ? 4 : 1))
-                blocks.append(.heading(id: nextID(), text: text(of: element), level: level))
+                blocks.append(.heading(id: nextID(), text: Self.text(of: element), level: level))
             case "img":
                 if let image = makeImage(from: element) {
                     blocks.append(.image(id: nextID(), image))
@@ -46,31 +54,30 @@ struct SwiftSoupHTMLToBlocksParser {
             case "figure":
                 blocks.append(makeFigure(from: element))
             case "blockquote":
-                blocks.append(.blockquote(id: nextID(), blocks: parseBlocks(element.getChildNodes())))
+                blocks.append(.blockquote(id: nextID(), blocks: parseBlocks(element.getChildNodes(), depth: depth + 1)))
             case "hr":
                 blocks.append(.divider(id: nextID()))
             case "pre":
                 blocks.append(.code(
                     id: nextID(),
-                    CodeBlock(language: nil, code: text(of: element, preservingWhitespace: true))
+                    CodeBlock(language: nil, code: Self.text(of: element, preservingWhitespace: true))
                 ))
             case "script", "style":
                 continue
             case "div":
-                let classes = attribute("class", of: element)
+                let classes = Self.attribute("class", of: element)
                 if classes.contains("meta") {
-                    let originURL = nodes.dropFirst(index + 1)
-                        .compactMap { $0 as? Element }
-                        .first(where: { attribute("class", of: $0).contains("originUrl") })
-                        .flatMap { nonEmptyAttribute("href", of: $0) }
+                    let originURL = originURL(after: index, in: nodes)
                     blocks.append(makeAuthorMeta(from: element, originURL: originURL))
                 } else if classes.lowercased().contains("linkcard") {
                     blocks.append(makeLinkCard(from: element))
                 } else {
-                    blocks.append(contentsOf: parseBlocks(element.getChildNodes()))
+                    blocks.append(contentsOf: parseBlocks(element.getChildNodes(), depth: depth + 1))
                 }
+            case "a" where Self.classesContain("originUrl", in: element):
+                continue
             default:
-                blocks.append(contentsOf: parseBlocks(element.getChildNodes()))
+                blocks.append(contentsOf: parseBlocks(element.getChildNodes(), depth: depth + 1))
             }
         }
 
@@ -92,40 +99,51 @@ struct SwiftSoupHTMLToBlocksParser {
         return .paragraph(id: nextID(), nodes: nodes, isFirst: isFirst)
     }
 
-    private func inlineNodes(from nodes: [Node]) -> [InlineNode] {
-        nodes.flatMap { node -> [InlineNode] in
+    private mutating func inlineNodes(from nodes: [Node], depth: Int) -> [InlineNode] {
+        guard allowsDepth(depth) else { return [] }
+        var result: [InlineNode] = []
+
+        for node in nodes {
+            guard registerVisit() else { return [] }
             if let textNode = node as? TextNode {
                 let text = textNode.getWholeText()
-                return text.isEmpty ? [] : [.text(text)]
+                if !text.isEmpty { result.append(.text(text)) }
+                continue
             }
 
-            guard let element = node as? Element else { return [] }
-            let children = inlineNodes(from: element.getChildNodes())
+            guard let element = node as? Element else { continue }
+            let children = inlineNodes(from: element.getChildNodes(), depth: depth + 1)
             switch element.tagNameNormal() {
             case "strong", "b":
-                return [.strong(children)]
+                result.append(.strong(children))
             case "em", "i":
-                return [.em(children)]
+                result.append(.em(children))
             case "sup":
-                return [.sup(children)]
+                result.append(.sup(children))
             case "a":
-                let url = attribute("href", of: element)
-                let classes = attribute("class", of: element).lowercased()
-                return [.link(LinkInline(
-                    url: url,
-                    label: children,
-                    isExternal: classes.contains("external") || isExternalHost(url)
-                ))]
+                let url = Self.attribute("href", of: element)
+                let classes = Self.attribute("class", of: element).lowercased()
+                if Self.isWebURL(url) {
+                    result.append(.link(LinkInline(
+                        url: url,
+                        label: children,
+                        isExternal: classes.contains("external") || Self.isExternalHost(url)
+                    )))
+                } else {
+                    result.append(contentsOf: children)
+                }
             case "br":
-                return [.br]
+                result.append(.br)
             case "span":
-                return [.span(className: nonEmptyAttribute("class", of: element), children)]
+                result.append(.span(className: Self.nonEmptyAttribute("class", of: element), children))
             case "img":
-                return []
+                continue
             default:
-                return children
+                result.append(contentsOf: children)
             }
         }
+
+        return result
     }
 
     private mutating func makeFigure(from element: Element) -> ArticleBlock {
@@ -134,15 +152,15 @@ struct SwiftSoupHTMLToBlocksParser {
             return .divider(id: nextID())
         }
         let caption = firstDescendant(in: element, where: { $0.tagNameNormal() == "figcaption" })
-            .map { text(of: $0) }
+            .map { Self.text(of: $0) }
         return .figure(id: nextID(), FigureBlock(image: image, caption: caption?.isEmpty == false ? caption : nil))
     }
 
     private func makeImage(from element: Element) -> ImageBlock? {
-        guard let url = nonEmptyAttribute("data-original", of: element) ?? nonEmptyAttribute("src", of: element) else {
+        guard let url = Self.nonEmptyAttribute("data-original", of: element) ?? Self.nonEmptyAttribute("src", of: element) else {
             return nil
         }
-        let classes = attribute("class", of: element)
+        let classes = Self.attribute("class", of: element)
         let kind: ImageKind
         if classes.contains("content-image") {
             kind = .content
@@ -153,16 +171,16 @@ struct SwiftSoupHTMLToBlocksParser {
         } else {
             kind = .content
         }
-        return ImageBlock(url: url, alt: nonEmptyAttribute("alt", of: element), kind: kind)
+        return ImageBlock(url: url, alt: Self.nonEmptyAttribute("alt", of: element), kind: kind)
     }
 
     private mutating func makeAuthorMeta(from element: Element, originURL: String?) -> ArticleBlock {
-        let avatarURL = firstDescendant(in: element) { attribute("class", of: $0).contains("avatar") }
-            .flatMap { nonEmptyAttribute("data-original", of: $0) ?? nonEmptyAttribute("src", of: $0) }
-        let author = firstDescendant(in: element) { attribute("class", of: $0).contains("author") }
-            .map { text(of: $0) }
-        let bio = firstDescendant(in: element) { attribute("class", of: $0).contains("bio") }
-            .map { text(of: $0) }
+        let avatarURL = firstDescendant(in: element) { Self.classesContain("avatar", in: $0) }
+            .flatMap { Self.nonEmptyAttribute("data-original", of: $0) ?? Self.nonEmptyAttribute("src", of: $0) }
+        let author = firstDescendant(in: element) { Self.classesContain("author", in: $0) }
+            .map { Self.text(of: $0) }
+        let bio = firstDescendant(in: element) { Self.classesContain("bio", in: $0) }
+            .map { Self.text(of: $0) }
 
         return .authorMeta(
             id: nextID(),
@@ -177,13 +195,14 @@ struct SwiftSoupHTMLToBlocksParser {
 
     private mutating func makeLinkCard(from element: Element) -> ArticleBlock {
         let link = firstDescendant(in: element, where: { $0.tagNameNormal() == "a" })
-        let url = nonEmptyAttribute("data-url", of: element) ?? link.flatMap { nonEmptyAttribute("href", of: $0) } ?? ""
-        let title = firstDescendant(in: element) { attribute("class", of: $0).contains("LinkCard-title") }
-            .map { text(of: $0) }
-        let description = firstDescendant(in: element) { attribute("class", of: $0).contains("LinkCard-desc") }
-            .map { text(of: $0) }
+        let candidateURL = Self.nonEmptyAttribute("data-url", of: element) ?? link.flatMap { Self.nonEmptyAttribute("href", of: $0) } ?? ""
+        let url = Self.isWebURL(candidateURL) ? candidateURL : ""
+        let title = firstDescendant(in: element) { Self.classesContain("LinkCard-title", in: $0) }
+            .map { Self.text(of: $0) }
+        let description = firstDescendant(in: element) { Self.classesContain("LinkCard-desc", in: $0) }
+            .map { Self.text(of: $0) }
         let imageURL = firstDescendant(in: element, where: { $0.tagNameNormal() == "img" })
-            .flatMap { nonEmptyAttribute("data-original", of: $0) ?? nonEmptyAttribute("src", of: $0) }
+            .flatMap { Self.nonEmptyAttribute("data-original", of: $0) ?? Self.nonEmptyAttribute("src", of: $0) }
         let fallbackTitle = URL(string: url)?.host ?? "链接"
 
         return .linkCard(
@@ -197,12 +216,13 @@ struct SwiftSoupHTMLToBlocksParser {
         )
     }
 
-    private func firstDescendant(
+    private mutating func firstDescendant(
         in element: Element,
         where predicate: (Element) -> Bool
     ) -> Element? {
         var stack = Array(element.getChildNodes().reversed())
         while let node = stack.popLast() {
+            guard registerVisit() else { return nil }
             guard let candidate = node as? Element else { continue }
             if predicate(candidate) { return candidate }
             stack.append(contentsOf: candidate.getChildNodes().reversed())
@@ -210,22 +230,68 @@ struct SwiftSoupHTMLToBlocksParser {
         return nil
     }
 
-    private func attribute(_ name: String, of element: Element) -> String {
+    private static func attribute(_ name: String, of element: Element) -> String {
         (try? element.attr(name)) ?? ""
     }
 
-    private func nonEmptyAttribute(_ name: String, of element: Element) -> String? {
+    private static func nonEmptyAttribute(_ name: String, of element: Element) -> String? {
         let value = attribute(name, of: element)
         return value.isEmpty ? nil : value
     }
 
-    private func text(of element: Element, preservingWhitespace: Bool = false) -> String {
+    private static func text(of element: Element, preservingWhitespace: Bool = false) -> String {
         (try? element.text(trimAndNormaliseWhitespace: !preservingWhitespace)) ?? ""
     }
 
-    private func isExternalHost(_ url: String) -> Bool {
+    private func originURL(after index: Int, in nodes: [Node]) -> String? {
+        for node in nodes.dropFirst(index + 1) {
+            if let textNode = node as? TextNode,
+               textNode.getWholeText().trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                continue
+            }
+            guard let element = node as? Element,
+                  element.tagNameNormal() == "a",
+                  Self.classesContain("originUrl", in: element),
+                  let url = Self.nonEmptyAttribute("href", of: element),
+                  Self.isWebURL(url) else {
+                return nil
+            }
+            return url
+        }
+        return nil
+    }
+
+    private static func classesContain(_ value: String, in element: Element) -> Bool {
+        attribute("class", of: element).contains(value)
+    }
+
+    private static func isWebURL(_ value: String) -> Bool {
+        guard let url = URL(string: value), let scheme = url.scheme?.lowercased(), url.host != nil else {
+            return false
+        }
+        return scheme == "http" || scheme == "https"
+    }
+
+    private static func isExternalHost(_ url: String) -> Bool {
         guard let url = URL(string: url), let host = url.host?.lowercased() else { return false }
         return !host.contains("zhihu.com")
+    }
+
+    private mutating func allowsDepth(_ depth: Int) -> Bool {
+        guard depth <= Self.maximumDepth else {
+            hasExceededLimit = true
+            return false
+        }
+        return true
+    }
+
+    private mutating func registerVisit() -> Bool {
+        visitedNodes += 1
+        guard visitedNodes <= Self.maximumVisitedNodes else {
+            hasExceededLimit = true
+            return false
+        }
+        return true
     }
 
     private mutating func nextID() -> BlockID {
