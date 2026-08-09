@@ -43,6 +43,7 @@
 		3D1D5358C3FCF85A2AC07377 /* AIStores.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0233E5BB3EC64B092E8C623 /* AIStores.swift */; };
 		3DA79F00E99AD8FA70CA2231 /* OAuthConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E10C1C2655E965B58B3085E /* OAuthConfiguration.swift */; };
 		4115B5EBC3DC142148C48402 /* TopStory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197F1FC5E583AE386A8E2AD8 /* TopStory.swift */; };
+		42734249F24805BEE04C1DC7 /* ReadingStateBackupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6C79BF6710FF2914D52A2B /* ReadingStateBackupTests.swift */; };
 		42F16EAA080A0AFBF538A76F /* AIConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65317BE4E3282F378F95156 /* AIConfigurationView.swift */; };
 		42FB9E8103BD44A6D0835FE6 /* StoryCategoryTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB06500E59B8FD1FCAEA77B /* StoryCategoryTag.swift */; };
 		43F830C58F613EE0CBD5C9F8 /* ContentSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75DE93D24F9D021CF8751E8 /* ContentSource.swift */; };
@@ -64,7 +65,6 @@
 		5BD275536EDEEB968A3FD5B4 /* AuthenticationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75EEBECBEC88E9DA8948F62 /* AuthenticationServiceTests.swift */; };
 		5D18255F1B7A637552A512F0 /* DailyResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F1331C82786EF3BF467029C /* DailyResponse.swift */; };
 		6082B4DD3E0C5528A5739246 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 0C42426F0196933CC4B224CA /* Alamofire */; };
-		6558345DD6EDA4E6C87E7AE4 /* AppIntents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C14333906C5506A9FA55840 /* AppIntents.framework */; };
 		60D879E7D5ABA7C4CF985619 /* AnswersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B005E06667CFE9D76DD6165 /* AnswersViewModel.swift */; };
 		60E3AC5BE86B06BB4A717732 /* DailyRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BA2DBC3F43B69DFBF9559E /* DailyRepository.swift */; };
 		68273CCF89851F655BB056D6 /* EndpointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAAF0160CD4A95503EF8655 /* EndpointTests.swift */; };
@@ -144,6 +144,7 @@
 		DE27713BCEFB254327F260A4 /* KeychainFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78AAC6BA3A22EE663173BC48 /* KeychainFlowUITests.swift */; };
 		DE7A68333D32947604805F1F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0608E686DB3D314734545A /* SettingsView.swift */; };
 		DF2FCC2AE90B96B469BBA7C5 /* HomeFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A8584CBC4C9813C49E6F12 /* HomeFeed.swift */; };
+		DF646490E0298BD3234F652F /* LookinServer in Frameworks */ = {isa = PBXBuildFile; productRef = 0661F8D653CD3FD7DAE608BC /* LookinServer */; };
 		E0D63C87F66DFB2A2A1BCAC8 /* HotListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2243B541BF526DDBD055C9 /* HotListView.swift */; };
 		E427488784261D43D33892DB /* OAuthCallbackValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD0331EF1062A9045431363 /* OAuthCallbackValidatorTests.swift */; };
 		E67FB6769C5C9F127D4F0CAB /* AIChatServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DBABB79F5B0BEF8E1A0BEF /* AIChatServiceTests.swift */; };
@@ -338,6 +339,7 @@
 		EB271422FDDAE6B95C7295ED /* RepositoryValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryValue.swift; sourceTree = "<group>"; };
 		EB5068279F8BC6D5181374FE /* CacheStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheStore.swift; sourceTree = "<group>"; };
 		EBD162F1B8DCB6C9BAB25451 /* RemoteImageSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImageSourceTests.swift; sourceTree = "<group>"; };
+		ED6C79BF6710FF2914D52A2B /* ReadingStateBackupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingStateBackupTests.swift; sourceTree = "<group>"; };
 		EF0371737AC3293FFD8CEC34 /* InlineContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InlineContentView.swift; sourceTree = "<group>"; };
 		EFED41B9821F81A83A02D981 /* ErrorStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorStateView.swift; sourceTree = "<group>"; };
 		EFF6F33C10FE08B90DFC8F3F /* AuthenticationTestSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationTestSupport.swift; sourceTree = "<group>"; };
@@ -349,7 +351,6 @@
 		F75EEBECBEC88E9DA8948F62 /* AuthenticationServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationServiceTests.swift; sourceTree = "<group>"; };
 		FA2243B541BF526DDBD055C9 /* HotListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotListView.swift; sourceTree = "<group>"; };
 		FCB912BAE2456A72522FCC6B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		6C14333906C5506A9FA55840 /* AppIntents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppIntents.framework; path = System/Library/Frameworks/AppIntents.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -359,7 +360,7 @@
 			files = (
 				6082B4DD3E0C5528A5739246 /* Alamofire in Frameworks */,
 				EA1CBED290992888147F0D4B /* Kingfisher in Frameworks */,
-				6558345DD6EDA4E6C87E7AE4 /* AppIntents.framework in Frameworks */,
+				DF646490E0298BD3234F652F /* LookinServer in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -554,6 +555,7 @@
 				E36ABC803667C652A353BE79 /* OAuthHTTPClientTests.swift */,
 				5C6905DC6D787FB4CED9E9F3 /* OAuthSessionStoreTests.swift */,
 				E6E2E8FEF5219732F0752173 /* PKCEGeneratorTests.swift */,
+				ED6C79BF6710FF2914D52A2B /* ReadingStateBackupTests.swift */,
 				EBD162F1B8DCB6C9BAB25451 /* RemoteImageSourceTests.swift */,
 				17E91A17DD23D97AB6DB73BB /* RepositoryTestSupport.swift */,
 				6D7FBD69C7FA65459B907E95 /* SettingsTests.swift */,
@@ -822,6 +824,7 @@
 			packageProductDependencies = (
 				0C42426F0196933CC4B224CA /* Alamofire */,
 				58A2F2DE641C49086AEF33A6 /* Kingfisher */,
+				0661F8D653CD3FD7DAE608BC /* LookinServer */,
 			);
 			productName = DailyReader;
 			productReference = 8CE6C7ACB7A81A9C255BF3CF /* DailyReader.app */;
@@ -860,6 +863,7 @@
 			packageReferences = (
 				ECBB1C68BD1EBEB4675E78F0 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				EF30C8BB4C0A7EDFD6F19A62 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				3B7789A489C28711536A175D /* XCRemoteSwiftPackageReference "LookinServer" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 2C98FC38FAF8E13C7C2DBDFE /* Products */;
@@ -1060,6 +1064,7 @@
 				884E0106DFD181C02CA51642 /* OAuthHTTPClientTests.swift in Sources */,
 				CAC22D863418486B7E05B723 /* OAuthSessionStoreTests.swift in Sources */,
 				3CBE8486F9C052886C1C8385 /* PKCEGeneratorTests.swift in Sources */,
+				42734249F24805BEE04C1DC7 /* ReadingStateBackupTests.swift in Sources */,
 				6EE37B3591D86F35D7B265FB /* RemoteImageSourceTests.swift in Sources */,
 				A1307C6C3773346ABBC0EDAE /* RepositoryTestSupport.swift in Sources */,
 				8899418B089D925831A87E04 /* SettingsTests.swift in Sources */,
@@ -1350,6 +1355,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		3B7789A489C28711536A175D /* XCRemoteSwiftPackageReference "LookinServer" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/QMUI/LookinServer.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.8;
+			};
+		};
 		ECBB1C68BD1EBEB4675E78F0 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
@@ -1369,6 +1382,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		0661F8D653CD3FD7DAE608BC /* LookinServer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3B7789A489C28711536A175D /* XCRemoteSwiftPackageReference "LookinServer" */;
+			productName = LookinServer;
+		};
 		0C42426F0196933CC4B224CA /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = ECBB1C68BD1EBEB4675E78F0 /* XCRemoteSwiftPackageReference "Alamofire" */;
