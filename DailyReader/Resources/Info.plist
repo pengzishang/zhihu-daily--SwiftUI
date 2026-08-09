@@ -42,5 +42,11 @@
 	<true/>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_Lookin._tcp</string>
+	</array>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>需要本地网络权限以使用 Lookin 连接真机调试界面层级</string>
 </dict>
 </plist>
