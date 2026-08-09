@@ -131,7 +131,7 @@ struct ArticleDetailView: View {
                         }
                         .frame(maxWidth: .infinity, minHeight: 240)
                     case .loaded(let detail, _):
-                        if let body = detail.body, !body.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                        if let body = detail.body, !body.isEmpty {
                             if let htmlErrorMessage {
                                 ErrorStateView(message: htmlErrorMessage) {
                                     self.htmlErrorMessage = nil
@@ -149,6 +149,11 @@ struct ArticleDetailView: View {
                                 },
                                 onLinkTap: { url in
                                     UIApplication.shared.open(url)
+                                },
+                                onPreparedText: { text in
+                                    if preparedArticleText != text {
+                                        preparedArticleText = text
+                                    }
                                 },
                                 fallback: {
                                     AnyView(
@@ -180,12 +185,6 @@ struct ArticleDetailView: View {
                                     )
                                 }
                             )
-                            .onAppear {
-                                if preparedArticleText.isEmpty {
-                                    preparedArticleText = NativeBodyRenderer.parsedBlocks(html: body)
-                                        .map { NativeBodyRenderer.plainText(from: $0) } ?? ""
-                                }
-                            }
                         } else {
                             ZStack {
                                 HTMLWebView(
@@ -262,7 +261,7 @@ struct ArticleDetailView: View {
                     }
                 }
                 .overlay(alignment: .bottomTrailing) {
-                    if makeArticleAIContext() != nil {
+                    if hasLoadedArticleBody {
                         VStack(spacing: 10) {
                             ArticleAIButton {
                                 openAIChat(selectedText: nil)
@@ -416,7 +415,7 @@ struct ArticleDetailView: View {
     private func makeArticleAIContext(focusedSelection: String? = nil) -> AIArticleContext? {
         guard case .loaded(let detail, _) = viewModel.phase,
               let html = detail.body,
-              !html.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return nil }
+              !html.isEmpty else { return nil }
         if preparedArticleText.isEmpty {
             return AIArticleContextBuilder.make(
                 id: detail.id,
@@ -449,11 +448,12 @@ struct ArticleDetailView: View {
     }
 
     private var shouldShowReadingControl: Bool {
-        guard case .loaded(let detail, _) = viewModel.phase,
-              detail.body?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false else {
-            return false
-        }
-        return Self.shouldShowReadingControl(offset: scrollOffset)
+        hasLoadedArticleBody && Self.shouldShowReadingControl(offset: scrollOffset)
+    }
+
+    private var hasLoadedArticleBody: Bool {
+        guard case .loaded(let detail, _) = viewModel.phase else { return false }
+        return detail.body?.isEmpty == false
     }
 
     static func shouldShowReadingControl(offset: CGFloat) -> Bool {

@@ -3,6 +3,16 @@ import XCTest
 
 @MainActor
 final class ArticleDetailViewModelTests: XCTestCase {
+    func testClassificationTextLimitsLongArticleInput() {
+        let html = (1...2_000)
+            .map { "<p>第 \($0) 段用于分类的正文内容。</p>" }
+            .joined()
+
+        let text = ArticleDetailViewModel.classificationText(from: html)
+
+        XCTAssertLessThanOrEqual(text.count, 6_000)
+    }
+
     func testLoadDetailUsesDetailShareURLFirst() async {
         let viewModel = ArticleDetailViewModel(
             story: StorySummary(id: 1, title: "列表标题", url: "https://example.com/list"),

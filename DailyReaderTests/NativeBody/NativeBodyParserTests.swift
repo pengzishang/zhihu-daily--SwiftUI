@@ -103,6 +103,26 @@ final class NativeBodyParserTests: XCTestCase {
         XCTAssertNil(NativeBodyRenderer.parsedBlocks(html: "   \n  "))
     }
 
+    func testBackgroundParserReturnsBlocksForLongArticle() async throws {
+        let html = (1...400)
+            .map { "<p>第 \($0) 段正文，必须在后台完成解析。</p>" }
+            .joined()
+
+        let blocks = try await XCTUnwrap(NativeBodyRenderer.backgroundBlocks(html: html))
+
+        XCTAssertEqual(blocks.count, 400)
+    }
+
+    func testBackgroundParserFallsBackForExcessiveBlockCount() async {
+        let html = (1...801)
+            .map { "<p>第 \($0) 段正文。</p>" }
+            .joined()
+
+        let blocks = await NativeBodyRenderer.backgroundBlocks(html: html)
+
+        XCTAssertNil(blocks)
+    }
+
     /// 双重开关默认关闭，保证零回归（走 WebView）。
     func testFeatureFlagDefaultsToOff() {
         // 重置，避免其他用例污染

@@ -142,7 +142,9 @@ final class ArticleDetailViewModel: ObservableObject {
         }
 
         guard let taxonomy = await taxonomyStore.load(), taxonomy.isFrozen else { return }
-        let plainText = AIArticleContextBuilder.extractText(from: body)
+        let plainText = await Task.detached(priority: .utility) {
+            Self.classificationText(from: body)
+        }.value
         let result = await service.classify(articleID: story.id, title: detail.title, text: plainText, taxonomy: taxonomy)
         await classificationStore.save(result)
         categoryName = taxonomy.category(byID: result.categoryID)?.name
@@ -172,6 +174,10 @@ final class ArticleDetailViewModel: ObservableObject {
     private var loadedDetail: ArticleDetail? {
         if case .loaded(let detail, _) = phase { return detail }
         return nil
+    }
+
+    nonisolated static func classificationText(from body: String) -> String {
+        String(AIArticleContextBuilder.extractText(from: body).prefix(6_000))
     }
 
     private func resolveName(for categoryID: String) async -> String? {
