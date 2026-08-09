@@ -10,8 +10,8 @@ enum NativeBodyRenderer {
     fileprivate static let maximumNativeHTMLLength = 120_000
 
     static func parsedBlocks(html: String) -> [ArticleBlock]? {
-        var parser = HTMLToBlocksParser(html: html)
-        guard case .success(let blocks) = parser.parse(), !blocks.isEmpty else { return nil }
+        var parser = SwiftSoupHTMLToBlocksParser(html: html)
+        guard let blocks = parser.parse(), !blocks.isEmpty else { return nil }
         return blocks
     }
 

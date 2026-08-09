@@ -20,6 +20,7 @@ targets:
       - package: Alamofire
       - package: Kingfisher
       - package: LookinServer
+      - package: SwiftSoup
     configFiles:
       Debug: Config/AIProviders.xcconfig
       Release: Config/AIProviders.xcconfig
@@ -86,4 +87,6 @@ packages:
   LookinServer:
     url: https://github.com/QMUI/LookinServer.git
     from: 1.2.8
-
+  SwiftSoup:
+    url: https://github.com/scinfu/SwiftSoup.git
+    from: 2.13.4

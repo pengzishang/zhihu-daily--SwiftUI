@@ -91,6 +91,18 @@ final class NativeBodyParserTests: XCTestCase {
         XCTAssertNotNil(blocks)
     }
 
+    func testImageAttributeContainingGreaterThanSignStillParsesImage() {
+        let html = "<p>前言</p><img alt='截图 > 原图' src='https://img.example.com/article.jpg'><p>结尾</p>"
+
+        let blocks = try! XCTUnwrap(NativeBodyRenderer.parsedBlocks(html: html))
+
+        guard case .image(_, let image) = blocks[1] else {
+            return XCTFail("带有 > 的引号属性不应截断图片标签")
+        }
+        XCTAssertEqual(image.url, "https://img.example.com/article.jpg")
+        XCTAssertEqual(image.alt, "截图 > 原图")
+    }
+
     func testPlainTextFlattensBlocks() {
         let html = "<p>你好</p><h2>标题</h2>"
         let blocks = try! XCTUnwrap(NativeBodyRenderer.parsedBlocks(html: html))
