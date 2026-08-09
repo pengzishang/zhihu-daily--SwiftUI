@@ -49,7 +49,7 @@ struct NativeBodyView: View {
     var onLinkTap: (URL) -> Void = { _ in }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        LazyVStack(alignment: .leading, spacing: 14) {
             ForEach(blocks) { block in
                 BlockRenderer(
                     block: block,

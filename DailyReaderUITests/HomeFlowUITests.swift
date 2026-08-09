@@ -243,7 +243,7 @@ final class HomeFlowUITests: XCTestCase {
     }
 
     func testLongBodyCanScrollToTail() {
-        let app = launchApp(scenario: "detail_long_body", resetCache: true)
+        let app = launchApp(scenario: "detail_long_body", resetCache: true, nativeBody: true)
 
         openFirstStory(in: app)
 
@@ -298,12 +298,16 @@ final class HomeFlowUITests: XCTestCase {
     private func launchApp(
         scenario: String,
         resetCache: Bool = false,
+        nativeBody: Bool = false,
         additionalEnvironment: [String: String] = [:]
     ) -> XCUIApplication {
         let app = XCUIApplication()
         app.launchArguments = ["-UITestMode"]
         if resetCache {
             app.launchArguments.append("-ResetCache")
+        }
+        if nativeBody {
+            app.launchArguments.append(contentsOf: ["-DailyReader.useNativeBody", "YES"])
         }
         var environment = ["MOCK_SCENARIO": scenario]
         environment.merge(additionalEnvironment) { _, newValue in newValue }
