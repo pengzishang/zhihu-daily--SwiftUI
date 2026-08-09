@@ -35,8 +35,12 @@
 		<string>LaunchBackground</string>
 		<key>UIImageName</key>
 		<string>LaunchBrandMark</string>
-		<key>UIImageRespectsSafeAreaInsets</key>
-		<true/>
+	<key>UIImageRespectsSafeAreaInsets</key>
+	<true/>
 	</dict>
+	<key>UIFileSharingEnabled</key>
+	<true/>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
 </dict>
 </plist>
