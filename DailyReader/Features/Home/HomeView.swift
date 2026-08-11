@@ -323,5 +323,10 @@ private struct HistoryPaginationFooter: View {
         }
         .padding(.vertical, 12)
         .accessibilityIdentifier("historyPaginationFooter")
+        .onAppear {
+            if case .idle = state {
+                loadMore()
+            }
+        }
     }
 }
