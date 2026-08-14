@@ -42,7 +42,6 @@ final class HomeViewModel: ObservableObject {
     private let articleRepository: ArticleRepositoryProtocol?
     private let readingStateBackup: any ReadingStateBackingUp
     private let keychainErrorHandler: @Sendable (Error) -> Void
-    private var loadedStoryIDs = Set<Int>()
     private var immersiveImageRequestIDs = Set<Int>()
     private var resolvedImmersiveImageIDs = Set<Int>()
     private var hasAttemptedInitialLoad = false
@@ -638,7 +637,6 @@ final class HomeViewModel: ObservableObject {
         topStories = value.value.topStories
         sections = value.value.sections
         historyCursor = value.value.historyCursor
-        loadedStoryIDs = Set(sections.flatMap(\.stories).map(\.id))
         phase = sections.isEmpty && topStories.isEmpty ? .empty : .loaded(value.source)
         historyLoadState = .idle
     }
