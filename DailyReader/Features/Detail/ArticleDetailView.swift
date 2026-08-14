@@ -57,196 +57,196 @@ struct ArticleDetailView: View {
                             .frame(height: 1)
                             .id(Self.topAnchorID)
 
-                if let bannerMessage = viewModel.bannerMessage {
-                    OfflineBanner(message: bannerMessage)
-                }
-
-                // 1. 封面图（先用列表摘要图即时显示，详情加载后换高清图）
-                if let imageURL = detailImageURL {
-                    PlaceholderImageView(
-                        urlString: imageURL,
-                        thumbnailURLString: viewModel.story.images.first,
-                        targetSize: CGSize(width: 430, height: 220)
-                    )
-                    .frame(height: 220)
-                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .strokeBorder(DS.hairline, lineWidth: 0.7)
-                    )
-                }
-
-                VStack(alignment: .leading, spacing: 10) {
-                    // 2. 标题（宋体特粗，像文章的「题花」）
-                    Text(detailTitle)
-                        .font(DS.songBlack(26))
-                        .foregroundStyle(DS.ink)
-                        .lineSpacing(5)
-                        .lineLimit(nil)
-
-                    // 2.5 题下信息行 + 文武线，正文自此展开
-                    if metaLine != nil || ChineseDate.formatted(date) != nil {
-                        HStack(spacing: 8) {
-                            if let metaLine {
-                                Text(metaLine)
-                            }
-                            if metaLine != nil, ChineseDate.formatted(date) != nil {
-                                Text("·")
-                            }
-                            if let formattedDate = ChineseDate.formatted(date) {
-                                Text(formattedDate)
-                            }
+                        if let bannerMessage = viewModel.bannerMessage {
+                            OfflineBanner(message: bannerMessage)
                         }
-                        .font(.system(size: 13))
-                        .foregroundStyle(DS.inkSecondary)
-                    }
 
-                    ArticleMetricByline(
-                        daily: viewModel.storyMetrics,
-                        originalAnswer: viewModel.originalAnswerMetrics
-                    )
-                    .transition(.opacity)
+                        // 1. 封面图（先用列表摘要图即时显示，详情加载后换高清图）
+                        if let imageURL = detailImageURL {
+                            PlaceholderImageView(
+                                urlString: imageURL,
+                                thumbnailURLString: viewModel.story.images.first,
+                                targetSize: CGSize(width: 430, height: 220)
+                            )
+                            .frame(height: 220)
+                            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                    .strokeBorder(DS.hairline, lineWidth: 0.7)
+                            )
+                        }
 
-                    RuleLine()
-                        .padding(.bottom, 2)
+                        VStack(alignment: .leading, spacing: 10) {
+                            // 2. 标题（宋体特粗，像文章的「题花」）
+                            Text(detailTitle)
+                                .font(DS.songBlack(26))
+                                .foregroundStyle(DS.ink)
+                                .lineSpacing(5)
+                                .lineLimit(nil)
 
-                    // 3. Body loading/loaded/failed phases
-                    switch viewModel.phase {
-                    case .idle, .loading:
-                        HStack {
-                            Spacer()
-                            VStack(spacing: 12) {
-                                ProgressView()
-                                    .tint(DS.inkSecondary)
-                                Text("正在加载内容...")
-                                    .font(.footnote)
-                                    .foregroundStyle(DS.inkSecondary)
+                            // 2.5 题下信息行 + 文武线，正文自此展开
+                            if metaLine != nil || ChineseDate.formatted(date) != nil {
+                                HStack(spacing: 8) {
+                                    if let metaLine {
+                                        Text(metaLine)
+                                    }
+                                    if metaLine != nil, ChineseDate.formatted(date) != nil {
+                                        Text("·")
+                                    }
+                                    if let formattedDate = ChineseDate.formatted(date) {
+                                        Text(formattedDate)
+                                    }
+                                }
+                                .font(.system(size: 13))
+                                .foregroundStyle(DS.inkSecondary)
                             }
-                            .padding(.vertical, 40)
-                            Spacer()
-                        }
-                    case .failed(let message):
-                        ErrorStateView(message: message) {
-                            Task { await viewModel.reload() }
-                        }
-                        .frame(maxWidth: .infinity, minHeight: 240)
-                    case .loaded(let detail, _):
-                        if let body = detail.body, !body.isEmpty {
-                            if let htmlErrorMessage {
-                                ErrorStateView(message: htmlErrorMessage) {
-                                    self.htmlErrorMessage = nil
-                                    htmlReloadToken += 1
-                                    isWebViewLoading = true
+
+                            ArticleMetricByline(
+                                daily: viewModel.storyMetrics,
+                                originalAnswer: viewModel.originalAnswerMetrics
+                            )
+                            .transition(.opacity)
+
+                            RuleLine()
+                                .padding(.bottom, 2)
+
+                            // 3. Body loading/loaded/failed phases
+                            switch viewModel.phase {
+                            case .idle, .loading:
+                                HStack {
+                                    Spacer()
+                                    VStack(spacing: 12) {
+                                        ProgressView()
+                                            .tint(DS.inkSecondary)
+                                        Text("正在加载内容...")
+                                            .font(.footnote)
+                                            .foregroundStyle(DS.inkSecondary)
+                                    }
+                                    .padding(.vertical, 40)
+                                    Spacer()
+                                }
+                            case .failed(let message):
+                                ErrorStateView(message: message) {
+                                    Task { await viewModel.reload() }
                                 }
                                 .frame(maxWidth: .infinity, minHeight: 240)
-                        } else if FeatureFlag.useNativeBody {
-                            NativeBodyRenderer.bodyView(
-                                html: body,
-                                cssLinks: detail.css,
-                                fontSize: fontSize,
-                                onImageTap: { url in
-                                    selectedImage = IdentifiableImageURL(url: url)
-                                },
-                                onLinkTap: { url in
-                                    UIApplication.shared.open(url)
-                                },
-                                onPreparedText: { text in
-                                    if preparedArticleText != text {
-                                        preparedArticleText = text
-                                    }
-                                },
-                                fallback: {
-                                    AnyView(
-                                        HTMLWebView(
-                                            htmlBody: body,
-                                            cssLinks: detail.css,
-                                            reloadToken: htmlReloadToken,
-                                            fontSize: fontSize,
-                                            contentHeight: $htmlContentHeight,
-                                            isLoading: $isWebViewLoading,
-                                            onImageTap: { url in
-                                                selectedImage = IdentifiableImageURL(url: url)
-                                            },
-                                            enablesAISearch: true,
-                                            onAISelection: { selection in
-                                                openAIChat(selectedText: selection)
-                                            },
-                                            onArticleTextPrepared: { text in
-                                                preparedArticleText = text
-                                            },
-                                            onError: { message in
-                                                htmlErrorMessage = message
-                                                isWebViewLoading = false
-                                            }
-                                        )
-                                        .frame(minHeight: htmlContentHeight)
-                                        .accessibilityIdentifier("articleHTMLContent")
-                                        .opacity(isWebViewLoading ? 0 : 1)
-                                    )
-                                }
-                            )
-                        } else {
-                            ZStack {
-                                HTMLWebView(
-                                        htmlBody: body,
+                            case .loaded(let detail, _):
+                                if let body = detail.body, !body.isEmpty {
+                                    if let htmlErrorMessage {
+                                        ErrorStateView(message: htmlErrorMessage) {
+                                            self.htmlErrorMessage = nil
+                                            htmlReloadToken += 1
+                                            isWebViewLoading = true
+                                        }
+                                        .frame(maxWidth: .infinity, minHeight: 240)
+                                } else if FeatureFlag.useNativeBody {
+                                    NativeBodyRenderer.bodyView(
+                                        html: body,
                                         cssLinks: detail.css,
-                                        reloadToken: htmlReloadToken,
                                         fontSize: fontSize,
-                                        contentHeight: $htmlContentHeight,
-                                        isLoading: $isWebViewLoading,
                                         onImageTap: { url in
                                             selectedImage = IdentifiableImageURL(url: url)
                                         },
-                                        enablesAISearch: true,
-                                        onAISelection: { selection in
-                                            openAIChat(selectedText: selection)
+                                        onLinkTap: { url in
+                                            UIApplication.shared.open(url)
                                         },
-                                        onArticleTextPrepared: { text in
-                                            preparedArticleText = text
+                                        onPreparedText: { text in
+                                            if preparedArticleText != text {
+                                                preparedArticleText = text
+                                            }
                                         },
-                                        onError: { message in
-                                            htmlErrorMessage = message
-                                            isWebViewLoading = false
+                                        fallback: {
+                                            AnyView(
+                                                HTMLWebView(
+                                                    htmlBody: body,
+                                                    cssLinks: detail.css,
+                                                    reloadToken: htmlReloadToken,
+                                                    fontSize: fontSize,
+                                                    contentHeight: $htmlContentHeight,
+                                                    isLoading: $isWebViewLoading,
+                                                    onImageTap: { url in
+                                                        selectedImage = IdentifiableImageURL(url: url)
+                                                    },
+                                                    enablesAISearch: true,
+                                                    onAISelection: { selection in
+                                                        openAIChat(selectedText: selection)
+                                                    },
+                                                    onArticleTextPrepared: { text in
+                                                        preparedArticleText = text
+                                                    },
+                                                    onError: { message in
+                                                        htmlErrorMessage = message
+                                                        isWebViewLoading = false
+                                                    }
+                                                )
+                                                .frame(minHeight: htmlContentHeight)
+                                                .accessibilityIdentifier("articleHTMLContent")
+                                                .opacity(isWebViewLoading ? 0 : 1)
+                                            )
                                         }
                                     )
-                                    .frame(minHeight: htmlContentHeight)
-                                    .accessibilityIdentifier("articleHTMLContent")
-                                    .opacity(isWebViewLoading ? 0 : 1)
+                                } else {
+                                    ZStack {
+                                        HTMLWebView(
+                                                htmlBody: body,
+                                                cssLinks: detail.css,
+                                                reloadToken: htmlReloadToken,
+                                                fontSize: fontSize,
+                                                contentHeight: $htmlContentHeight,
+                                                isLoading: $isWebViewLoading,
+                                                onImageTap: { url in
+                                                    selectedImage = IdentifiableImageURL(url: url)
+                                                },
+                                                enablesAISearch: true,
+                                                onAISelection: { selection in
+                                                    openAIChat(selectedText: selection)
+                                                },
+                                                onArticleTextPrepared: { text in
+                                                    preparedArticleText = text
+                                                },
+                                                onError: { message in
+                                                    htmlErrorMessage = message
+                                                    isWebViewLoading = false
+                                                }
+                                            )
+                                            .frame(minHeight: htmlContentHeight)
+                                            .accessibilityIdentifier("articleHTMLContent")
+                                            .opacity(isWebViewLoading ? 0 : 1)
 
-                                    if isImagePreviewUITestScenario {
-                                        Button {
-                                            selectedImage = IdentifiableImageURL(url: imagePreviewFixtureURL)
-                                        } label: {
-                                            Color.clear
-                                                .frame(width: 56, height: 56)
-                                                .contentShape(Rectangle())
-                                        }
-                                        .buttonStyle(.plain)
-                                        .accessibilityIdentifier("articleImagePreviewTestTrigger")
-                                    }
-
-                                    if isWebViewLoading {
-                                        HStack {
-                                            Spacer()
-                                            VStack(spacing: 12) {
-                                                ProgressView()
-                                                    .tint(DS.inkSecondary)
-                                                Text("正在加载正文...")
-                                                    .font(.footnote)
-                                                    .foregroundStyle(DS.inkSecondary)
+                                            if isImagePreviewUITestScenario {
+                                                Button {
+                                                    selectedImage = IdentifiableImageURL(url: imagePreviewFixtureURL)
+                                                } label: {
+                                                    Color.clear
+                                                        .frame(width: 56, height: 56)
+                                                        .contentShape(Rectangle())
+                                                }
+                                                .buttonStyle(.plain)
+                                                .accessibilityIdentifier("articleImagePreviewTestTrigger")
                                             }
-                                            .padding(.vertical, 40)
-                                            Spacer()
+
+                                            if isWebViewLoading {
+                                                HStack {
+                                                    Spacer()
+                                                    VStack(spacing: 12) {
+                                                        ProgressView()
+                                                            .tint(DS.inkSecondary)
+                                                        Text("正在加载正文...")
+                                                            .font(.footnote)
+                                                            .foregroundStyle(DS.inkSecondary)
+                                                    }
+                                                    .padding(.vertical, 40)
+                                                    Spacer()
+                                                }
+                                            }
                                         }
                                     }
+                                } else {
+                                    ContentUnavailableView("文章内容暂不可用", systemImage: "doc.text.magnifyingglass")
+                                        .frame(maxWidth: .infinity, minHeight: 240)
                                 }
                             }
-                        } else {
-                            ContentUnavailableView("文章内容暂不可用", systemImage: "doc.text.magnifyingglass")
-                                .frame(maxWidth: .infinity, minHeight: 240)
                         }
-                    }
-                }
                     }
                     .padding()
                     .background {

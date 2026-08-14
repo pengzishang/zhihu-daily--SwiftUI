@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		03B613E124872C2B798BBFDE /* ReadingStateLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BEFEB4D14AF5E0E164A6DF /* ReadingStateLoader.swift */; };
 		03EF50E0592257E9C901FE0A /* CachePolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7923D8746EDB99D00ED72A /* CachePolicy.swift */; };
 		05274D09FE18FCCD925CB402 /* NativeBodyRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52FEAD444C4D558039C47A4B /* NativeBodyRenderer.swift */; };
 		07B385B9A00BC61889E24B7A /* InterestIndexEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A4CE3E18D052E544A648631 /* InterestIndexEngineTests.swift */; };
@@ -98,6 +99,7 @@
 		92CBF1B2AD2EE05FCAC21452 /* ArticleClassificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4A8D7BD70D4E5A535BD8C64 /* ArticleClassificationService.swift */; };
 		9C9C54362F84A32C81C1C431 /* AIBuiltInProviderLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B20404EE030DD7E3941FE57 /* AIBuiltInProviderLoaderTests.swift */; };
 		9CDD0662DC067F1871813CE2 /* malformed.json in Resources */ = {isa = PBXBuildFile; fileRef = 1642DC550939B8CC16F94AAB /* malformed.json */; };
+		9DC697CBC8EBDB81FC86E617 /* ReadingStateKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E178A0145A69601827FB46 /* ReadingStateKeys.swift */; };
 		A1307C6C3773346ABBC0EDAE /* RepositoryTestSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E91A17DD23D97AB6DB73BB /* RepositoryTestSupport.swift */; };
 		A28509C39544418422D9ADCA /* HomeFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B5D6A375F7A118BBDFF7610 /* HomeFlowUITests.swift */; };
 		A60DB3EE55B63157752F5AE2 /* DecodingHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83C74D25B792FB3B3FE9B25 /* DecodingHelpers.swift */; };
@@ -205,6 +207,8 @@
 		1A697D6838CDCB0C07E88506 /* ImageCacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheService.swift; sourceTree = "<group>"; };
 		1D4DFB8DA1D39F5F8FE53CC4 /* OAuthCallbackValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthCallbackValidator.swift; sourceTree = "<group>"; };
 		212CBDCEBD256BDAB8246440 /* HTTPClientProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClientProtocol.swift; sourceTree = "<group>"; };
+		21BEFEB4D14AF5E0E164A6DF /* ReadingStateLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingStateLoader.swift; sourceTree = "<group>"; };
+		22E178A0145A69601827FB46 /* ReadingStateKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingStateKeys.swift; sourceTree = "<group>"; };
 		23B1F2C2DCD10A546F1794A6 /* ReadingInterestRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingInterestRecord.swift; sourceTree = "<group>"; };
 		249A7391F914A5BF18AD4755 /* AIProviderStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIProviderStoreTests.swift; sourceTree = "<group>"; };
 		283A03F341151960A501A680 /* MockURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLProtocol.swift; sourceTree = "<group>"; };
@@ -506,6 +510,8 @@
 				AD37CD00403F865F6DD522D3 /* HotListModels.swift */,
 				EA0BAAB62D87988D9C44F620 /* PersistentStories.swift */,
 				23B1F2C2DCD10A546F1794A6 /* ReadingInterestRecord.swift */,
+				22E178A0145A69601827FB46 /* ReadingStateKeys.swift */,
+				21BEFEB4D14AF5E0E164A6DF /* ReadingStateLoader.swift */,
 				0F600A8288749211086F479D /* StorySummary.swift */,
 				197F1FC5E583AE386A8E2AD8 /* TopStory.swift */,
 			);
@@ -1006,6 +1012,8 @@
 				79CB044B8C5396FDF487085B /* ReadingInterestStore.swift in Sources */,
 				6A82D55E2D8AF712529D0939 /* ReadingSessionRecorder.swift in Sources */,
 				226A2109750CC5930EDDCF71 /* ReadingStateBackup.swift in Sources */,
+				9DC697CBC8EBDB81FC86E617 /* ReadingStateKeys.swift in Sources */,
+				03B613E124872C2B798BBFDE /* ReadingStateLoader.swift in Sources */,
 				1FC7FC41F4EA330C01FBB10B /* RemoteImageView.swift in Sources */,
 				5069B56E0D49C2B70247ADD0 /* RepositoryValue.swift in Sources */,
 				DE7A68333D32947604805F1F /* SettingsView.swift in Sources */,
