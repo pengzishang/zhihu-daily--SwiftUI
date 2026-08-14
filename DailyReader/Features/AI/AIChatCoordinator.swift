@@ -206,7 +206,7 @@ final class AIChatViewModel: ObservableObject {
     @Published private(set) var errorMessage: String?
 
     private let sessionID: UUID
-    private unowned let coordinator: AIChatCoordinator
+    private weak var coordinator: AIChatCoordinator?
     private let configurationStore: AIConfigurationStore
     private let chatService: AIChatServicing
     private let racingChatService: AIRacingChatServicing
@@ -245,7 +245,7 @@ final class AIChatViewModel: ObservableObject {
     }
 
     func refreshFromCoordinator() {
-        guard let latest = coordinator.session(id: sessionID) else { return }
+        guard let latest = coordinator?.session(id: sessionID) else { return }
         session = latest
         draft = latest.draft
     }
@@ -253,7 +253,7 @@ final class AIChatViewModel: ObservableObject {
     func updateDraft(_ value: String) {
         draft = value
         session.draft = value
-        coordinator.update(session)
+        coordinator?.update(session)
     }
 
     func send(prompt: String) {
@@ -277,7 +277,7 @@ final class AIChatViewModel: ObservableObject {
             session.title = Self.generatedTitle(from: content)
         }
         draft = ""
-        coordinator.update(session)
+        coordinator?.update(session)
         startGeneration()
     }
 
@@ -295,14 +295,14 @@ final class AIChatViewModel: ObservableObject {
         session.draft = ""
         session.updatedAt = Date()
         draft = ""
-        coordinator.update(session)
+        coordinator?.update(session)
         startGeneration()
     }
 
     func replaceArticleContext(_ context: AIArticleContext) {
         session.articleContext = context
         session.updatedAt = Date()
-        coordinator.update(session)
+        coordinator?.update(session)
     }
 
     private func startGeneration() {
@@ -314,7 +314,7 @@ final class AIChatViewModel: ObservableObject {
             AIChatMessage(id: assistantID, role: .assistant, content: "", state: .streaming)
         )
         session.updatedAt = Date()
-        coordinator.update(session)
+        coordinator?.update(session)
         isGenerating = true
 
         generationTask = Task { [weak self] in
@@ -362,14 +362,14 @@ final class AIChatViewModel: ObservableObject {
             break
         }
         session.updatedAt = Date()
-        coordinator.update(session)
+        coordinator?.update(session)
     }
 
     private func finishMessage(id: UUID, state: AIMessageState) {
         guard let index = session.messages.firstIndex(where: { $0.id == id }) else { return }
         session.messages[index].state = state
         session.updatedAt = Date()
-        coordinator.update(session)
+        coordinator?.update(session)
     }
 
     private static func generatedTitle(from content: String) -> String {

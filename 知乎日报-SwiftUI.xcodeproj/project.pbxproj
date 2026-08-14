@@ -108,7 +108,6 @@
 		AAED840CBAF46B162265A75E /* ArticleDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79707C307289A8C9771F10F0 /* ArticleDetailViewModel.swift */; };
 		AAF2B31B5C0491EA0836E6A4 /* DailyServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767BC6C127BCACF9D238B911 /* DailyServiceProtocol.swift */; };
 		AC581976600D56C9B476633A /* AIModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52F85EA4DBCD8A4907CBC09 /* AIModels.swift */; };
-		AFB8E9E04A4FEBD12E4AFDC6 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 1537919CA6221B37FEFFEF09 /* SwiftSoup */; };
 		B3C8E124A9A0B1A922CFE157 /* StoryMetricsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8AC2D3DFC16A3A662FAB2E /* StoryMetricsViewModel.swift */; };
 		B45F746063A984D2FE1B79E2 /* AuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF8A715464FC86CF345A3E /* AuthenticationService.swift */; };
 		B497BD331B58BAB9049DC1FA /* detail_success.json in Resources */ = {isa = PBXBuildFile; fileRef = 5B41CD581F4376F62AF24214 /* detail_success.json */; };
@@ -145,7 +144,7 @@
 		DE27713BCEFB254327F260A4 /* KeychainFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78AAC6BA3A22EE663173BC48 /* KeychainFlowUITests.swift */; };
 		DE7A68333D32947604805F1F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0608E686DB3D314734545A /* SettingsView.swift */; };
 		DF2FCC2AE90B96B469BBA7C5 /* HomeFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A8584CBC4C9813C49E6F12 /* HomeFeed.swift */; };
-		DF646490E0298BD3234F652F /* LookinServer in Frameworks */ = {isa = PBXBuildFile; productRef = 0661F8D653CD3FD7DAE608BC /* LookinServer */; };
+		DF646490E0298BD3234F652F /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 1537919CA6221B37FEFFEF09 /* SwiftSoup */; };
 		E0D63C87F66DFB2A2A1BCAC8 /* HotListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2243B541BF526DDBD055C9 /* HotListView.swift */; };
 		E427488784261D43D33892DB /* OAuthCallbackValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD0331EF1062A9045431363 /* OAuthCallbackValidatorTests.swift */; };
 		E67FB6769C5C9F127D4F0CAB /* AIChatServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DBABB79F5B0BEF8E1A0BEF /* AIChatServiceTests.swift */; };
@@ -361,8 +360,7 @@
 			files = (
 				6082B4DD3E0C5528A5739246 /* Alamofire in Frameworks */,
 				EA1CBED290992888147F0D4B /* Kingfisher in Frameworks */,
-				DF646490E0298BD3234F652F /* LookinServer in Frameworks */,
-				AFB8E9E04A4FEBD12E4AFDC6 /* SwiftSoup in Frameworks */,
+				DF646490E0298BD3234F652F /* SwiftSoup in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -826,7 +824,6 @@
 			packageProductDependencies = (
 				0C42426F0196933CC4B224CA /* Alamofire */,
 				58A2F2DE641C49086AEF33A6 /* Kingfisher */,
-				0661F8D653CD3FD7DAE608BC /* LookinServer */,
 				1537919CA6221B37FEFFEF09 /* SwiftSoup */,
 			);
 			productName = DailyReader;
@@ -866,7 +863,6 @@
 			packageReferences = (
 				ECBB1C68BD1EBEB4675E78F0 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				EF30C8BB4C0A7EDFD6F19A62 /* XCRemoteSwiftPackageReference "Kingfisher" */,
-				3B7789A489C28711536A175D /* XCRemoteSwiftPackageReference "LookinServer" */,
 				7D83FBDE931BD5B20AC3E5D2 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 			);
 			preferredProjectObjectVersion = 77;
@@ -1359,14 +1355,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		3B7789A489C28711536A175D /* XCRemoteSwiftPackageReference "LookinServer" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/QMUI/LookinServer.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.2.8;
-			};
-		};
 		7D83FBDE931BD5B20AC3E5D2 /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/scinfu/SwiftSoup.git";
@@ -1394,11 +1382,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		0661F8D653CD3FD7DAE608BC /* LookinServer */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 3B7789A489C28711536A175D /* XCRemoteSwiftPackageReference "LookinServer" */;
-			productName = LookinServer;
-		};
 		0C42426F0196933CC4B224CA /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = ECBB1C68BD1EBEB4675E78F0 /* XCRemoteSwiftPackageReference "Alamofire" */;
