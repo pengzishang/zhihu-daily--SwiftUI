@@ -105,7 +105,7 @@ struct ArticleDetailLoadingView: View {
                     Circle()
                         .fill(DS.cinnabar)
                         .frame(width: 13, height: 13)
-                        .offset(x: dotTravel ? geo.size.width - 6.5 : -6.5)
+                        .offset(x: dotTravel ? geo.size.width - CGFloat(6.5) : -CGFloat(6.5))
                         .opacity(dotTravel ? 1 : 0)
                         .animation(
                             reduceMotion
