@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="DailyReader 日报首页三套信息架构设计稿">
+  <title>DailyReader · 首页三套设计稿</title>
+  <link rel="stylesheet" href="首页三套方案-tokens.css">
+  <style>
+    * { box-sizing: border-box; }
+
+    html, body { min-height: 100%; overflow-x: clip; }
+
+    body {
+      margin: 0;
+      color: var(--color-ink);
+      background: var(--color-paper-muted);
+      font-family: var(--font-body);
+      line-height: 1.5;
+    }
+
+    button { font: inherit; }
+
+    button:focus-visible {
+      outline: 0.1875rem solid var(--color-focus);
+      outline-offset: 0.1875rem;
+    }
+
+    .page-header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: var(--space-4);
+      max-width: 75rem;
+      margin: 0 auto;
+      padding: var(--space-8) var(--space-5) var(--space-6);
+    }
+
+    .eyebrow, .small-copy {
+      margin: 0;
+      color: var(--color-ink-secondary);
+      font-size: var(--text-caption);
+      letter-spacing: 0.08em;
+    }
+
+    h1, h2, h3, p { overflow-wrap: anywhere; text-wrap: balance; }
+
+    h1 {
+      max-width: 20ch;
+      margin: var(--space-2) 0 0;
+      font-family: var(--font-display);
+      font-size: var(--text-display);
+      font-style: normal;
+      font-weight: 900;
+      letter-spacing: 0;
+      line-height: 1.08;
+    }
+
+    .page-intro {
+      max-width: 38rem;
+      margin: var(--space-4) 0 0;
+      color: var(--color-ink-secondary);
+      font-size: var(--text-body);
+    }
+
+    .theme-button,
+    .view-button {
+      min-height: 2.75rem;
+      border: var(--rule-hairline) solid var(--color-hairline);
+      border-radius: var(--radius-md);
+      color: var(--color-ink);
+      background: var(--color-paper-elevated);
+      cursor: pointer;
+      transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+      white-space: nowrap;
+    }
+
+    .theme-button { align-self: start; padding: 0 var(--space-4); }
+    .theme-button:hover, .view-button:hover { border-color: var(--color-indigo); }
+    .theme-button:active, .view-button:active { transform: translateY(0.0625rem); }
+    .theme-button:disabled, .view-button:disabled { cursor: not-allowed; opacity: 0.55; }
+
+    .control-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      max-width: 75rem;
+      margin: 0 auto;
+      padding: 0 var(--space-5) var(--space-8);
+    }
+
+    .view-button {
+      padding: 0 var(--space-4);
+      font-size: var(--text-caption);
+      font-weight: 700;
+    }
+
+    .view-button[aria-pressed="true"] {
+      border-color: var(--color-indigo);
+      color: var(--color-paper-elevated);
+      background: var(--color-indigo);
+    }
+
+    .prototype-wrap {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(18rem, 24rem);
+      align-items: start;
+      gap: var(--space-8);
+      max-width: 75rem;
+      margin: 0 auto;
+      padding: 0 var(--space-5) var(--space-10);
+    }
+
+    .reader-surface {
+      min-width: 0;
+      overflow: clip;
+      border: var(--rule-hairline) solid var(--color-hairline);
+      border-radius: var(--radius-lg);
+      background: var(--color-paper);
+    }
+
+    .reader-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      min-height: 3.5rem;
+      padding: 0 var(--space-4);
+      border-bottom: var(--rule-hairline) solid var(--color-hairline);
+      background: var(--color-paper);
+    }
+
+    .reader-nav strong {
+      font-family: var(--font-heading);
+      font-size: var(--text-title);
+      font-weight: 700;
+    }
+
+    .reader-action { padding: 0; border: 0; color: var(--color-indigo); background: transparent; font-family: var(--font-display); }
+    .reader-body { padding: 0 var(--space-4) var(--space-6); }
+
+    .dateline { padding: var(--space-4) 0 var(--space-3); }
+    .dateline-top { display: flex; align-items: baseline; gap: var(--space-2); }
+
+    .seal {
+      display: inline-flex;
+      align-items: center;
+      min-height: 1.5rem;
+      padding: 0 var(--space-2);
+      border-radius: var(--radius-sm);
+      color: var(--color-paper-elevated);
+      background: var(--color-cinnabar);
+      font-family: var(--font-heading);
+      font-size: var(--text-caption);
+      font-weight: 700;
+    }
+
+    .dateline h2 {
+      margin: 0;
+      font-family: var(--font-heading);
+      font-size: var(--text-section);
+      font-style: normal;
+      line-height: 1.2;
+    }
+
+    .dateline-meta { margin-left: auto; color: var(--color-ink-secondary); font-size: var(--text-caption); }
+    .double-rule { display: grid; gap: var(--space-1); margin-top: var(--space-2); }
+    .double-rule::before, .double-rule::after { content: ""; display: block; }
+    .double-rule::before { height: var(--rule-ink); background: var(--color-ink); }
+    .double-rule::after { height: var(--rule-hairline); background: var(--color-hairline); }
+
+    .layout { display: none; animation: enter var(--dur-mid) var(--ease-out); }
+    .layout.is-active { display: block; }
+    @keyframes enter { from { opacity: 0; transform: translateY(0.5rem); } to { opacity: 1; transform: translateY(0); } }
+
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--space-3);
+      margin: var(--space-5) 0 var(--space-2);
+    }
+
+    .section-head h3 { margin: 0; font-family: var(--font-heading); font-size: var(--text-title); font-style: normal; }
+    .section-head p { margin: 0; color: var(--color-ink-secondary); font-size: var(--text-caption); }
+
+    .lead-list, .index-list, .topic-list { margin: 0; padding: 0; list-style: none; }
+    .lead-list { border-top: var(--rule-hairline) solid var(--color-hairline); }
+
+    .lead-list li, .index-list li {
+      display: grid;
+      grid-template-columns: 1.8rem minmax(0, 1fr) auto;
+      align-items: baseline;
+      gap: var(--space-2);
+      padding: var(--space-3) 0;
+      border-bottom: var(--rule-hairline) solid var(--color-hairline);
+    }
+
+    .lead-list li { font-family: var(--font-heading); font-size: var(--text-title); line-height: 1.38; }
+    .index-list li { font-family: var(--font-heading); font-size: var(--text-body); line-height: 1.4; }
+    .index-list li.is-read { color: var(--color-ink-secondary); }
+    .list-number { color: var(--color-ink-secondary); font-family: var(--font-body); font-size: var(--text-caption); font-variant-numeric: tabular-nums; }
+    .category-tag { color: var(--color-ink-secondary); font-family: var(--font-body); font-size: var(--text-caption); white-space: nowrap; }
+    .read-mark { width: 0.45rem; height: 0.45rem; border: var(--rule-hairline) solid var(--color-ink-secondary); border-radius: 50%; }
+    .is-read .read-mark { background: var(--color-ink-secondary); }
+
+    .edition-hero {
+      position: relative;
+      display: grid;
+      align-content: end;
+      min-height: 10.5rem;
+      overflow: clip;
+      margin-top: var(--space-4);
+      padding: var(--space-4);
+      border: var(--rule-hairline) solid var(--color-hairline);
+      border-radius: var(--radius-md);
+      background: var(--surface-hero);
+    }
+
+    .edition-hero::before, .edition-hero::after { content: ""; position: absolute; pointer-events: none; }
+    .edition-hero::before { inset: 15% -12% auto 42%; height: 78%; border: var(--rule-ink) solid var(--decoration-hero-ring); border-radius: 50%; transform: rotate(-18deg); }
+    .edition-hero::after { inset: auto 0 0; height: 62%; background: var(--decoration-hero-overlay); }
+    .edition-hero > * { position: relative; z-index: 1; }
+    .edition-hero .eyebrow { color: var(--color-hero-copy-muted); }
+    .edition-hero h3 { max-width: none; margin: var(--space-2) 0 0; color: var(--color-hero-copy); font-family: var(--font-display); font-size: var(--text-hero); font-style: normal; line-height: 1.13; }
+    .edition-hero p { margin: var(--space-2) 0 0; color: var(--color-hero-copy-muted); font-size: var(--text-caption); }
+
+    .topic-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-2); }
+    .topic-panel { min-width: 0; padding: var(--space-3); border: var(--rule-hairline) solid var(--color-hairline); border-radius: var(--radius-md); background: var(--color-paper-elevated); }
+    .topic-panel h3 { margin: 0; color: var(--color-indigo); font-family: var(--font-heading); font-size: var(--text-body); font-style: normal; }
+    .topic-count { margin: var(--space-2) 0 0; padding-top: var(--space-2); border-top: var(--rule-hairline) solid var(--color-hairline); color: var(--color-ink-secondary); font-size: var(--text-caption); }
+
+    .side-notes { display: grid; gap: var(--space-4); }
+    .note-card { padding: var(--space-5); border: var(--rule-hairline) solid var(--color-hairline); border-radius: var(--radius-lg); background: var(--color-paper-elevated); }
+    .note-card h2 { margin: 0; font-family: var(--font-heading); font-size: var(--text-section); font-style: normal; }
+    .note-card p { margin: var(--space-2) 0 0; color: var(--color-ink-secondary); font-size: var(--text-body); }
+    .note-card ul { display: grid; gap: var(--space-2); margin: var(--space-4) 0 0; padding-left: var(--space-5); color: var(--color-ink-secondary); font-size: var(--text-caption); }
+    .note-card strong { color: var(--color-ink); }
+
+    @media (max-width: 58rem) {
+      .prototype-wrap { grid-template-columns: minmax(0, 1fr); }
+      .side-notes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 30rem) {
+      .page-header { grid-template-columns: minmax(0, 1fr); }
+      .theme-button { justify-self: start; }
+      .topic-grid { grid-template-columns: minmax(0, 1fr); }
+      .side-notes { grid-template-columns: minmax(0, 1fr); }
+    }
+  </style>
+</head>
+<body data-theme="day">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">DailyReader · 首页信息结构探索</p>
+      <h1>同一份日报，三种扫读节奏</h1>
+      <p class="page-intro">面向碎片时间读者：不改变内容排序，只比较“先看什么、如何扫完今天”。所有标题均为版式示例，不代表真实热度或推荐结论。</p>
+    </div>
+    <button class="theme-button" id="theme-toggle" type="button" aria-pressed="false">切换夜间墨纸</button>
+  </header>
+
+  <nav class="control-strip" aria-label="选择首页方案">
+    <button class="view-button" type="button" data-view="directory" aria-pressed="true" aria-controls="layout-directory note-directory">A · 今日目录</button>
+    <button class="view-button" type="button" data-view="frontpage" aria-pressed="false" aria-controls="layout-frontpage note-frontpage">B · 头版 + 全览</button>
+    <button class="view-button" type="button" data-view="sections" aria-pressed="false" aria-controls="layout-sections note-sections">C · 主题分版</button>
+  </nav>
+
+  <main class="prototype-wrap">
+    <section class="reader-surface" aria-label="首页方案预览">
+      <header class="reader-nav"><strong>日报</strong><button class="reader-action" type="button" aria-label="AI 搜索" disabled>知</button></header>
+      <div class="reader-body">
+        <section class="dateline" aria-labelledby="date-title">
+          <div class="dateline-top"><span class="seal">今日</span><h2 id="date-title">八月二十日</h2><span class="dateline-meta">周四 · 8 篇</span></div>
+          <div class="double-rule" aria-hidden="true"></div>
+        </section>
+
+        <section class="layout is-active" id="layout-directory" data-layout="directory" aria-labelledby="directory-title">
+          <div class="section-head"><h3 id="directory-title">先看</h3><p>三个值得打开的方向</p></div>
+          <ol class="lead-list">
+            <li><span class="list-number">01</span><span>示例标题：用两行以内说明今天最值得进入的内容</span><span class="read-mark" aria-label="未读"></span></li>
+            <li><span class="list-number">02</span><span>示例标题：在有限时间内掌握一件正在发生的事</span><span class="read-mark" aria-label="未读"></span></li>
+            <li><span class="list-number">03</span><span>示例标题：留给想继续深读的第二个入口</span><span class="read-mark" aria-label="未读"></span></li>
+          </ol>
+          <div class="section-head"><h3>今日目录</h3><p>标题优先</p></div>
+          <ol class="index-list">
+            <li><span class="list-number">04</span><span>示例标题：把信息密度留给真正需要被扫描的文字</span><span class="category-tag">科技</span></li>
+            <li class="is-read"><span class="list-number">05</span><span>示例标题：已读状态不改变条目位置与节奏</span><span class="category-tag">社会</span></li>
+            <li><span class="list-number">06</span><span>示例标题：不展示摘要与图片，也能明确区分层级</span><span class="category-tag">文化</span></li>
+            <li><span class="list-number">07</span><span>示例标题：标题允许两行，避免不必要的语义截断</span><span class="category-tag">观点</span></li>
+            <li><span class="list-number">08</span><span>示例标题：整页不依赖热度数字或虚构的阅读数据</span><span class="category-tag">生活</span></li>
+          </ol>
+        </section>
+
+        <section class="layout" id="layout-frontpage" data-layout="frontpage" aria-labelledby="frontpage-title">
+          <div class="edition-hero">
+            <p class="eyebrow">今日头版 · 版式示例</p>
+            <h3 id="frontpage-title">把一个编辑判断放在最先看到的位置</h3>
+            <p>低高度头版，不用虚构照片或热度数据。</p>
+          </div>
+          <div class="section-head"><h3>今日目录</h3><p>立刻进入全览</p></div>
+          <ol class="index-list">
+            <li><span class="list-number">01</span><span>示例标题：用两行以内说明今天最值得进入的内容</span><span class="category-tag">科技</span></li>
+            <li><span class="list-number">02</span><span>示例标题：在有限时间内掌握一件正在发生的事</span><span class="category-tag">社会</span></li>
+            <li><span class="list-number">03</span><span>示例标题：留给想继续深读的第二个入口</span><span class="category-tag">文化</span></li>
+            <li><span class="list-number">04</span><span>示例标题：把信息密度留给真正需要被扫描的文字</span><span class="category-tag">科技</span></li>
+            <li class="is-read"><span class="list-number">05</span><span>示例标题：已读状态不改变条目位置与节奏</span><span class="category-tag">社会</span></li>
+            <li><span class="list-number">06</span><span>示例标题：不展示摘要与图片，也能明确区分层级</span><span class="category-tag">文化</span></li>
+            <li><span class="list-number">07</span><span>示例标题：标题允许两行，避免不必要的语义截断</span><span class="category-tag">观点</span></li>
+            <li><span class="list-number">08</span><span>示例标题：整页不依赖热度数字或虚构的阅读数据</span><span class="category-tag">生活</span></li>
+          </ol>
+        </section>
+
+        <section class="layout" id="layout-sections" data-layout="sections" aria-labelledby="sections-title">
+          <div class="section-head"><h3 id="sections-title">今日版面</h3><p>按主题先扫</p></div>
+          <div class="topic-grid">
+            <section class="topic-panel"><h3>科技</h3><p class="topic-count">2 篇 · 先扫科技</p></section>
+            <section class="topic-panel"><h3>社会</h3><p class="topic-count">2 篇 · 先扫社会</p></section>
+            <section class="topic-panel"><h3>文化</h3><p class="topic-count">2 篇 · 先扫文化</p></section>
+          </div>
+          <div class="section-head"><h3>完整目录</h3><p>分类只是辅助</p></div>
+          <ol class="index-list">
+            <li><span class="list-number">01</span><span>示例标题：用两行以内说明今天最值得进入的内容</span><span class="category-tag">科技</span></li>
+            <li><span class="list-number">02</span><span>示例标题：在有限时间内掌握一件正在发生的事</span><span class="category-tag">社会</span></li>
+            <li><span class="list-number">03</span><span>示例标题：留给想继续深读的第二个入口</span><span class="category-tag">文化</span></li>
+            <li><span class="list-number">04</span><span>示例标题：把信息密度留给真正需要被扫描的文字</span><span class="category-tag">科技</span></li>
+            <li><span class="list-number">05</span><span>示例标题：已读状态不改变条目位置与节奏</span><span class="category-tag">社会</span></li>
+            <li><span class="list-number">06</span><span>示例标题：不展示摘要与图片，也能明确区分层级</span><span class="category-tag">文化</span></li>
+            <li><span class="list-number">07</span><span>示例标题：标题允许两行，避免不必要的语义截断</span><span class="category-tag">观点</span></li>
+            <li><span class="list-number">08</span><span>示例标题：整页不依赖热度数字或虚构的阅读数据</span><span class="category-tag">生活</span></li>
+          </ol>
+        </section>
+      </div>
+    </section>
+
+    <aside class="side-notes" aria-label="方案说明">
+      <section class="note-card" id="note-directory" data-note="directory"><h2>A · 今日目录</h2><p><strong>推荐。</strong>把信息空间几乎全部给标题和顺序，最接近“十秒内知道今天有什么”。</p><ul><li>首屏的编辑判断受限于三条“先看”</li><li>目录自身完成主要浏览任务</li><li>最适合保留为默认首页方向</li></ul></section>
+      <section class="note-card" id="note-frontpage" data-note="frontpage" hidden><h2>B · 头版 + 全览</h2><p>为当天留一个克制的头版锚点，再迅速让位给目录。</p><ul><li>编辑感最完整</li><li>一篇内容优先级更高</li><li>比 A 多一点情绪与停留</li></ul></section>
+      <section class="note-card" id="note-sections" data-note="sections" hidden><h2>C · 主题分版</h2><p>先让读者按主题扫读，再回到完整目录避免遗漏。</p><ul><li>发现路径更强</li><li>依赖稳定的分类质量</li><li>适合作为兴趣功能成熟后的方向</li></ul></section>
+    </aside>
+  </main>
+
+  <script>
+    const body = document.body;
+    const themeButton = document.querySelector('#theme-toggle');
+    const viewButtons = [...document.querySelectorAll('[data-view]')];
+    const layouts = [...document.querySelectorAll('[data-layout]')];
+    const notes = [...document.querySelectorAll('[data-note]')];
+
+    function setTheme(theme) {
+      const isNight = theme === 'night';
+      body.dataset.theme = isNight ? 'night' : 'day';
+      themeButton.setAttribute('aria-pressed', String(isNight));
+      themeButton.textContent = isNight ? '切换暖纸日间' : '切换夜间墨纸';
+      localStorage.setItem('dailyreader-prototype-theme', body.dataset.theme);
+    }
+
+    function setLayout(layout) {
+      const selectedLayout = viewButtons.some((button) => button.dataset.view === layout) ? layout : 'directory';
+      viewButtons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.view === selectedLayout)));
+      layouts.forEach((section) => section.classList.toggle('is-active', section.dataset.layout === selectedLayout));
+      notes.forEach((note) => { note.hidden = note.dataset.note !== selectedLayout; });
+      localStorage.setItem('dailyreader-prototype-layout', selectedLayout);
+    }
+
+    themeButton.addEventListener('click', () => setTheme(body.dataset.theme === 'night' ? 'day' : 'night'));
+    viewButtons.forEach((button) => button.addEventListener('click', () => setLayout(button.dataset.view)));
+
+    setTheme(localStorage.getItem('dailyreader-prototype-theme') || 'day');
+    setLayout(localStorage.getItem('dailyreader-prototype-layout') || 'directory');
+  </script>
+</body>
+</html>
