@@ -6,6 +6,7 @@ struct SettingsView: View {
     @AppStorage("DailyReader.fontSize") private var fontSize: Double = 16.0
     @AppStorage("DailyReader.listFontSize") private var listFontSize: Double = 16.0
     @AppStorage(HomeInformationDensity.storageKey) private var storedHomeDensity = HomeInformationDensity.medium.rawValue
+    @AppStorage("DailyReader.useNativeBody") private var useNativeBody: Bool = false
 
     var body: some View {
         List {
@@ -69,6 +70,11 @@ struct SettingsView: View {
                 }
                 .listRowBackground(DS.paperElevated)
                 .accessibilityIdentifier("settings.homeDensity")
+
+                Toggle("原生正文渲染（实验）", isOn: $useNativeBody)
+                    .foregroundStyle(DS.ink)
+                    .listRowBackground(DS.paperElevated)
+                    .accessibilityIdentifier("settings.useNativeBody")
             }
             .listRowSeparatorTint(DS.hairline)
 

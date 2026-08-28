@@ -48,6 +48,7 @@ final class KeychainDataStoreTests: XCTestCase {
 
     func testMultipleLegacyCandidatesAreRejectedWithoutDeletion() {
         let client = KeychainClientDouble()
+        client.legacyData = Data("legacy".utf8)
         client.legacyCandidateCount = 2
         let store = KeychainDataStore(service: "test.service", client: client)
 

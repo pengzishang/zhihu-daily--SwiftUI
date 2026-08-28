@@ -5,7 +5,9 @@ struct AppRootView: View {
     @StateObject private var homeViewModel = AppEnvironment.makeHomeViewModel()
     @StateObject private var aiCoordinator = AppEnvironment.makeAIChatCoordinator()
     @StateObject private var authenticationViewModel = AppEnvironment.makeAuthenticationViewModel()
+    @StateObject private var interestProfileViewModel = AppEnvironment.makeInterestProfileViewModel()
     @State private var selectedTab = 0
+    @State private var onboardingPresentation: OnboardingPresentation?
 
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -37,7 +39,8 @@ struct AppRootView: View {
             NavigationStack {
                 MeView(
                     viewModel: homeViewModel,
-                    authenticationViewModel: authenticationViewModel
+                    authenticationViewModel: authenticationViewModel,
+                    interestProfileViewModel: interestProfileViewModel
                 )
                     .enablesInteractiveSwipeBack()
             }
@@ -54,12 +57,45 @@ struct AppRootView: View {
                 .id(presentation.sessionID)
                 .environmentObject(aiCoordinator)
         }
+        .fullScreenCover(item: $onboardingPresentation) { presentation in
+            CategoryOnboardingView(
+                initialCategories: presentation.categories,
+                taxonomyStore: AppEnvironment.taxonomyStore,
+                classificationStore: AppEnvironment.classificationStore,
+                onComplete: { onboardingPresentation = nil }
+            )
+        }
         .task {
             ArticleWebViewPrewarmer.shared.warmUpIfNeeded()
             await aiCoordinator.loadIfNeeded()
             authenticationViewModel.restoreIfNeeded()
+            await prepareCategoryOnboardingIfNeeded()
         }
     }
+
+    /// 首次启动（类目体系未冻结）时，用样本标题归纳候选类目，或退化为内置默认类目，弹出归纳页。
+    @MainActor
+    private func prepareCategoryOnboardingIfNeeded() async {
+        guard !(await AppEnvironment.taxonomyStore.isFrozen) else { return }
+        let titles = homeViewModel.inductionSampleTitles()
+        let categories: [ArticleCategory]
+        if titles.count >= 30,
+           let names = await AppEnvironment.makeCategoryInductionService().induce(titles: titles),
+           !names.isEmpty {
+            categories = names.enumerated().map { index, name in
+                ArticleCategory(id: "cat-\(index)", name: name, order: index)
+            }
+        } else {
+            categories = BuiltInCategoryDefaults.categories
+        }
+        onboardingPresentation = OnboardingPresentation(categories: categories)
+    }
+}
+
+/// 首次类目归纳页的展示载体（无需网络，纯本地候选类目）。
+private struct OnboardingPresentation: Identifiable {
+    let id = UUID()
+    let categories: [ArticleCategory]
 }
 
 private struct EmptyAICredentialStore: AICredentialStoring {
@@ -72,6 +108,13 @@ enum AppEnvironment {
     private static let cache = DiskCacheStore()
     private static let service = makeService()
     private static let repository = DailyRepository(service: service, cacheStore: cache)
+
+    /// 共享的分类 / 兴趣 / 类目体系存储（actor，落 Application Support/DailyReader/...）。
+    static let classificationStore = ArticleClassificationStore()
+    static let interestStore = ReadingInterestStore()
+    static let taxonomyStore = CategoryTaxonomyStore()
+
+    private static var _aiConfigurationStore: AIConfigurationStore?
 
     @MainActor
     static func makeHomeViewModel() -> HomeViewModel {
@@ -86,7 +129,29 @@ enum AppEnvironment {
         ArticleDetailViewModel(
             story: story,
             repository: repository,
-            metricsRepository: repository
+            metricsRepository: repository,
+            classificationService: makeArticleClassificationService(),
+            classificationStore: classificationStore,
+            interestStore: interestStore,
+            taxonomyStore: taxonomyStore
+        )
+    }
+
+    @MainActor
+    static func makeStoryCategoryViewModel(storyID: Int) -> StoryCategoryViewModel {
+        StoryCategoryViewModel(
+            storyID: storyID,
+            classificationStore: classificationStore,
+            taxonomyStore: taxonomyStore
+        )
+    }
+
+    @MainActor
+    static func makeInterestProfileViewModel() -> InterestProfileViewModel {
+        InterestProfileViewModel(
+            classificationStore: classificationStore,
+            interestStore: interestStore,
+            taxonomyStore: taxonomyStore
         )
     }
 
@@ -122,6 +187,29 @@ enum AppEnvironment {
 
     @MainActor
     static func makeAIChatCoordinator() -> AIChatCoordinator {
+        AIChatCoordinator(configurationStore: aiConfigurationStore())
+    }
+
+    @MainActor
+    static func makeArticleClassificationService() -> ArticleClassificationService {
+        ArticleClassificationService(configurationStore: aiConfigurationStore())
+    }
+
+    @MainActor
+    static func makeCategoryInductionService() -> CategoryInductionService {
+        CategoryInductionService(configurationStore: aiConfigurationStore())
+    }
+
+    @MainActor
+    private static func aiConfigurationStore() -> AIConfigurationStore {
+        if let existing = _aiConfigurationStore { return existing }
+        let store = buildAIConfigurationStore()
+        _aiConfigurationStore = store
+        return store
+    }
+
+    @MainActor
+    private static func buildAIConfigurationStore() -> AIConfigurationStore {
         let processInfo = ProcessInfo.processInfo
         if processInfo.arguments.contains("-UITestMode") {
             let suiteName = "DailyReader.UITests.AI"
@@ -152,12 +240,11 @@ enum AppEnvironment {
             } else {
                 builtIns = []
             }
-            let store = AIConfigurationStore(
+            return AIConfigurationStore(
                 defaults: defaults,
                 credentialStore: EmptyAICredentialStore(),
                 builtInProviders: builtIns.map(\.profile)
             )
-            return AIChatCoordinator(configurationStore: store)
         }
 
         let builtIns = AIBuiltInProviderLoader().load()
@@ -168,7 +255,7 @@ enum AppEnvironment {
                 result.merge(loaded.apiKeys) { current, _ in current }
             }
         )
-        return AIChatCoordinator(configurationStore: store)
+        return store
     }
 
     static func makeService() -> DailyServiceProtocol {

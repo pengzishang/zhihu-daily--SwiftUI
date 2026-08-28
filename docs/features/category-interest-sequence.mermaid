@@ -1,0 +1,114 @@
+%% (a) 首次类目归纳与冻结流程
+sequenceDiagram
+    autonumber
+    participant Root as AppRootView
+    participant Tax as CategoryTaxonomyStore
+    participant VM as HomeViewModel
+    participant Ind as CategoryInductionService
+    participant AI as OpenAICompatibleChatService
+    participant UI as CategoryOnboardingView
+
+    Root.task → Root: 启动
+    Root → Tax: load()
+    Tax -->> Root: taxonomy? (nil/未冻结)
+    alt 未冻结
+        Root → VM: 取 readStories+favoriteStories 标题
+        VM -->> Root: sampleTitles (≤500)
+        Root → Ind: induce(titles)
+        alt 有 Key 且样本≥下限
+            Ind → AI: streamReply(归纳 prompt)
+            AI -->> Ind: 类目名数组
+            Ind -->> Root: candidateNames?
+        else 无 Key/样本不足/失败
+            Ind -->> Root: nil
+            Root → Root: 采用 BuiltInCategoryDefaults.categories
+        end
+        Root → UI: present(fullScreenCover, 候选类目)
+        UI → UI: 用户删/并/改名
+        UI → Tax: save(CategoryTaxonomy(categories, isFrozen:true, frozenAt:now))
+        Tax -->> UI: 已冻结
+        UI → Root: dismiss
+    end
+
+%% (b) 进文章触发后台分类 + 缓存流程
+sequenceDiagram
+    autonumber
+    participant V as ArticleDetailView
+    participant VM as ArticleDetailViewModel
+    participant CS as ArticleClassificationStore
+    participant Svc as ArticleClassificationService
+    participant AI as OpenAICompatibleChatService
+    participant Tax as CategoryTaxonomyStore
+
+    V.onAppear/.task → VM: load()
+    VM → VM: repository.fetchDetail(id)
+    VM -->> V: phase=.loaded(detail)
+    V → VM: classifyCurrentArticle(service)
+    VM → CS: classification(articleID)
+    CS -->> VM: cached?
+    alt 缓存命中（去重）
+        VM -->> V: 跳过 AI（已有 categoryName）
+    else 未命中
+        VM → Tax: load()（取冻结体系）
+        Tax -->> VM: taxonomy
+        VM → Svc: classify(articleID,title,body, taxonomy)
+        alt 有 Key & 命中集合 & 置信度≥阈值
+            Svc → AI: streamReply(分类 prompt)
+            AI -->> Svc: {category,confidence}
+            Svc -->> VM: ArticleClassification(source:.remote)
+        else 离线/无Key/越界/低置信度
+            Svc → Svc: 本地关键词兜底 / 归 other
+            Svc -->> VM: ArticleClassification(source:.local/other)
+        end
+        VM → CS: save(classification)
+        CS -->> VM: 落盘完成
+    end
+
+%% (c) 阅读信号采集 → 落盘流程
+sequenceDiagram
+    autonumber
+    participant V as ArticleDetailView
+    participant Timer as ReadQualificationTimer
+    participant VM as ArticleDetailViewModel
+    participant IS as ReadingInterestStore
+    participant HM as HomeViewModel
+
+    Note over V,Timer: 阅读中
+    V → Timer: resume()（scenePhase=.active 时）
+    V → V: updateScrollMetrics → readingProgress 实时更新
+    V → Timer: (scenePhase 变 inactive) pause() 累计停留
+    V → Timer: (回到 active) resume()
+    Note over V: 退出详情 / scenePhase 变化
+    V → Timer: elapsedActiveTime → dwellSeconds
+    V → HM: isStoryFavorited(id) / isStoryHidden(id)
+    HM -->> V: Bool, Bool
+    V → VM: recordReadingSession(maxScrollPercent:readingProgress, dwellSeconds:timer.elapsed, isFavorited:, isHidden:)
+    VM → IS: record(ReadingSessionSignal(...))
+    IS → IS: 合并/累加 ReadingInterestRecord
+    IS -->> IS: persist(JSON, Application Support)
+
+%% (d) 我的页兴趣画像计算与展示流程
+sequenceDiagram
+    autonumber
+    participant Me as MeView
+    participant PVM as InterestProfileViewModel
+    participant CS as ArticleClassificationStore
+    participant Tax as CategoryTaxonomyStore
+    participant IS as ReadingInterestStore
+    participant Eng as InterestIndexEngine
+    participant Card as InterestProfileCard
+
+    Me.onAppear → PVM: load()
+    PVM → Tax: load()
+    Tax -->> PVM: taxonomy(已冻结?)
+    alt 未冻结或无数据
+        PVM -->> Me: isReady=false（不显示卡片/空态）
+    else 已冻结
+        PVM → CS: all() → classifications
+        PVM → IS: all() → records
+        PVM → Eng: categoryIndex(classifications, records, taxonomy, now)
+        Eng -->> PVM: [CategoryInterestIndex]（降序, 其他置底）
+        PVM -->> Me: entries / isReady=true
+        Me → Card: 渲染横向条形榜
+        Card → Card: 每条画 progress=score，<3 标「样本不足」，其他弱化置底
+    end

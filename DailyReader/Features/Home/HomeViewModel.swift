@@ -521,6 +521,15 @@ final class HomeViewModel: ObservableObject {
         return stories[thresholdIndex].id
     }
 
+    /// 用于类目归纳的样本标题：已读 + 收藏，去重后截取上限。
+    /// 样本不足（<30 篇）时调用方退化为内置默认类目。
+    func inductionSampleTitles(max: Int = 500) -> [String] {
+        let titles = (readStories.map(\.story.title) + favoriteStories.map(\.story.title))
+            .filter { !$0.isEmpty }
+        let unique = Array(Set(titles))
+        return Array(unique.prefix(max))
+    }
+
     private func visibleStoryIDs(in snapshot: HomeFeedSnapshot) -> Set<Int> {
         Set(snapshot.sections.flatMap(\.stories).compactMap { story in
             guard !isStoryHidden(story.id),

@@ -8,6 +8,7 @@ struct StoryRowView: View {
     let immersiveImageURL: String?
 
     @StateObject private var metricsViewModel: StoryMetricsViewModel
+    @StateObject private var categoryViewModel: StoryCategoryViewModel
     @AppStorage("DailyReader.listFontSize") private var listFontSize: Double = 16.0
 
     @MainActor
@@ -25,6 +26,9 @@ struct StoryRowView: View {
         self.immersiveImageURL = immersiveImageURL
         _metricsViewModel = StateObject(
             wrappedValue: AppEnvironment.makeStoryMetricsViewModel(storyID: story.id)
+        )
+        _categoryViewModel = StateObject(
+            wrappedValue: AppEnvironment.makeStoryCategoryViewModel(storyID: story.id)
         )
     }
 
@@ -48,6 +52,9 @@ struct StoryRowView: View {
             guard metricsTaskID != nil else { return }
             await metricsViewModel.load()
         }
+        .task {
+            await categoryViewModel.load()
+        }
     }
 
     private var immersiveLayout: some View {
@@ -57,6 +64,11 @@ struct StoryRowView: View {
 
             title(lineLimit: 3, size: listFontSize + 4, lineSpacing: 4)
                 .padding(.top, 14)
+
+            if let categoryName = categoryViewModel.categoryName {
+                StoryCategoryTag(categoryName: categoryName, isOther: categoryViewModel.isOtherCategory)
+                    .padding(.top, 6)
+            }
 
             hint(lineLimit: 2, size: max(12, listFontSize - 3), lineSpacing: 3)
                 .padding(.top, hasHint ? 8 : 0)
@@ -72,6 +84,11 @@ struct StoryRowView: View {
     private var standardLayout: some View {
         HStack(alignment: .top, spacing: 14) {
             VStack(alignment: .leading, spacing: 0) {
+                if let categoryName = categoryViewModel.categoryName {
+                    StoryCategoryTag(categoryName: categoryName, isOther: categoryViewModel.isOtherCategory)
+                        .padding(.bottom, 6)
+                }
+
                 title(lineLimit: 3, size: listFontSize + 1, lineSpacing: 3)
 
                 hint(lineLimit: 1, size: max(11, listFontSize - 4), lineSpacing: 0)

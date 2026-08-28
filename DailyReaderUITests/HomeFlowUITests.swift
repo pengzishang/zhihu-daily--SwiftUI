@@ -12,6 +12,27 @@ final class HomeFlowUITests: XCTestCase {
         attachScreenshot(named: "home-latest-success", app: app)
     }
 
+    func testTodayStoryOpeningAppearsAndOpensExistingArticleDetail() {
+        let app = launchApp(scenario: "latest_success")
+
+        let opening = app.descendants(matching: .any)["home.todayStoryOpening"]
+        XCTAssertTrue(opening.waitForExistence(timeout: 5))
+        XCTAssertEqual(opening.label, "今日故事：今天，先读一篇长一点的故事")
+
+        opening.tap()
+
+        XCTAssertTrue(app.webViews.firstMatch.waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["枫问"].waitForExistence(timeout: 5))
+    }
+
+    func testTodayStoryOpeningIsHiddenWhenTopStoriesAreEmpty() {
+        let app = launchApp(scenario: "latest_without_top_stories", resetCache: true)
+
+        XCTAssertTrue(app.navigationBars["日报阅读器"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["今天，先读一篇长一点的故事"].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.descendants(matching: .any)["home.todayStoryOpening"].waitForExistence(timeout: 2))
+    }
+
     func testHomeDensityCanSwitchBetweenThreeLayouts() {
         let app = launchApp(scenario: "latest_success")
 

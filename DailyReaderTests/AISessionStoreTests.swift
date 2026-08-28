@@ -53,7 +53,8 @@ final class AISessionStoreTests: XCTestCase {
         try await store.save([], revision: 9)
         try await store.save([deleted], revision: 8)
 
-        XCTAssertEqual(try await store.load(), [])
+        let loaded = try await store.load()
+        XCTAssertEqual(loaded, [])
     }
 
     private func temporaryRoot() -> URL {

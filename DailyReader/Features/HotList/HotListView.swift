@@ -397,6 +397,34 @@ struct AnswerDetailView: View {
                         isWebViewLoading = true
                     }
                     .frame(maxWidth: .infinity, minHeight: 240)
+                } else if FeatureFlag.useNativeBody {
+                    NativeBodyRenderer.bodyView(
+                        html: answer.content,
+                        cssLinks: [],
+                        fontSize: fontSize,
+                        onImageTap: { _ in },
+                        onLinkTap: { url in UIApplication.shared.open(url) },
+                        fallback: {
+                            AnyView(
+                                HTMLWebView(
+                                    htmlBody: answer.content,
+                                    cssLinks: [],
+                                    reloadToken: htmlReloadToken,
+                                    fontSize: fontSize,
+                                    contentHeight: $htmlContentHeight,
+                                    isLoading: $isWebViewLoading,
+                                    onImageTap: { _ in },
+                                    enablesAISearch: false,
+                                    onAISelection: { _ in },
+                                    onArticleTextPrepared: { _ in },
+                                    onError: { message in
+                                        htmlErrorMessage = message
+                                        isWebViewLoading = false
+                                    }
+                                )
+                            )
+                        }
+                    )
                 } else {
                     ZStack {
                         HTMLWebView(

@@ -43,6 +43,37 @@ enum HomeInformationDensity: String, CaseIterable, Identifiable {
 
     var displaysMetrics: Bool { self != .high }
 
+    var openingHeight: CGFloat {
+        switch self {
+        case .low: 320
+        case .medium: 270
+        case .high: 196
+        }
+    }
+
+    var openingCornerRadius: CGFloat {
+        switch self {
+        case .low: 14
+        case .medium: 12
+        case .high: 10
+        }
+    }
+
+    var openingTitleLineLimit: Int {
+        switch self {
+        case .low, .medium: 3
+        case .high: 2
+        }
+    }
+
+    var openingContentPadding: CGFloat {
+        switch self {
+        case .low: 22
+        case .medium: 20
+        case .high: 16
+        }
+    }
+
     var systemImage: String {
         switch self {
         case .low: "rectangle.grid.1x2"

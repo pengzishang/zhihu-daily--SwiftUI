@@ -78,9 +78,12 @@ final class DailyRepositoryTests: XCTestCase {
             await Task.yield()
         }
 
+        let latestCache = await cache.loadLatest()
+        let homeFeedCache = await cache.loadHomeFeed()
+
         XCTAssertEqual(service.latestCancellationCount, 1)
-        XCTAssertNil(await cache.loadLatest())
-        XCTAssertEqual((await cache.loadHomeFeed())?.value, cachedHome.value)
+        XCTAssertNil(latestCache)
+        XCTAssertEqual(homeFeedCache?.value, cachedHome.value)
     }
 
     func testDetailUsesCacheBeforeService() async throws {

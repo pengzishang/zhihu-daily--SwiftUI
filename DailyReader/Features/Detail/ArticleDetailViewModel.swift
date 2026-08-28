@@ -18,14 +18,33 @@ final class ArticleDetailViewModel: ObservableObject {
     private let repository: ArticleRepositoryProtocol
     private let metricsRepository: ArticleMetricsRepositoryProtocol?
 
+    /// 后台 AI 分类服务（可选，便于测试 / 无 AI 配置时留空）。
+    private let classificationService: ArticleClassificationService?
+    /// 分类结果缓存（articleID → 类目）。
+    private let classificationStore: ArticleClassificationStore
+    /// 阅读兴趣汇总落盘。
+    private let interestStore: ReadingInterestStore
+    /// 类目体系（冻结后才参与分类与画像）。
+    private let taxonomyStore: CategoryTaxonomyStore
+
+    @Published private(set) var categoryName: String?
+
     init(
         story: StorySummary,
         repository: ArticleRepositoryProtocol,
-        metricsRepository: ArticleMetricsRepositoryProtocol? = nil
+        metricsRepository: ArticleMetricsRepositoryProtocol? = nil,
+        classificationService: ArticleClassificationService? = nil,
+        classificationStore: ArticleClassificationStore = ArticleClassificationStore(),
+        interestStore: ReadingInterestStore = ReadingInterestStore(),
+        taxonomyStore: CategoryTaxonomyStore = CategoryTaxonomyStore()
     ) {
         self.story = story
         self.repository = repository
         self.metricsRepository = metricsRepository
+        self.classificationService = classificationService
+        self.classificationStore = classificationStore
+        self.interestStore = interestStore
+        self.taxonomyStore = taxonomyStore
     }
 
     var shareURL: URL? {
@@ -108,5 +127,55 @@ final class ArticleDetailViewModel: ObservableObject {
         } catch {
             originalAnswerMetrics = nil
         }
+    }
+
+    // MARK: - 文章分类（后台，fire-and-forget）
+
+    /// 详情加载完成后触发：先查缓存命中（去重），未命中且体系已冻结再走 AI。
+    func classifyCurrentArticle() async {
+        guard let service = classificationService else { return }
+        guard let detail = loadedDetail, let body = detail.body, !body.isEmpty else { return }
+
+        if let existing = await classificationStore.classification(for: story.id) {
+            categoryName = await resolveName(for: existing.categoryID)
+            return
+        }
+
+        guard let taxonomy = await taxonomyStore.load(), taxonomy.isFrozen else { return }
+        let plainText = AIArticleContextBuilder.extractText(from: body)
+        let result = await service.classify(articleID: story.id, title: detail.title, text: plainText, taxonomy: taxonomy)
+        await classificationStore.save(result)
+        categoryName = taxonomy.category(byID: result.categoryID)?.name
+    }
+
+    // MARK: - 阅读信号采集（落盘）
+
+    /// 一次阅读会话结束（退出详情 / 进入后台前）提交信号。
+    func recordReadingSession(
+        maxScrollPercent: Double,
+        dwellSeconds: Double,
+        isFavorited: Bool,
+        isHidden: Bool
+    ) {
+        let signal = ReadingSessionSignal(
+            articleID: story.id,
+            maxScrollPercent: maxScrollPercent,
+            dwellSeconds: dwellSeconds,
+            isFavorited: isFavorited,
+            isHidden: isHidden
+        )
+        Task {
+            await interestStore.record(signal)
+        }
+    }
+
+    private var loadedDetail: ArticleDetail? {
+        if case .loaded(let detail, _) = phase { return detail }
+        return nil
+    }
+
+    private func resolveName(for categoryID: String) async -> String? {
+        guard let taxonomy = await taxonomyStore.load() else { return nil }
+        return taxonomy.category(byID: categoryID)?.name
     }
 }

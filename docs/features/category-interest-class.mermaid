@@ -1,0 +1,108 @@
+classDiagram
+    class ArticleCategory {
+        +String id
+        +String name
+        +Bool isLocked
+        +Int order
+        +static ArticleCategory other
+        +isOther() Bool
+    }
+    class CategoryTaxonomy {
+        +[ArticleCategory] categories
+        +Bool isFrozen
+        +Date frozenAt
+        +Int schemaVersion
+        +category(byID) ArticleCategory
+    }
+    class ArticleClassification {
+        +Int articleID
+        +String categoryID
+        +Double confidence
+        +CategorySource source
+        +Date classifiedAt
+    }
+    class ReadingInterestRecord {
+        +Int articleID
+        +Double dwellSeconds
+        +Double maxScrollPercent
+        +Int readCount
+        +Date lastReadAt
+        +Bool isFavorited
+        +Bool isHidden
+        +merge(ReadingSessionSignal)
+    }
+    class ReadingSessionSignal {
+        +Int articleID
+        +Double maxScrollPercent
+        +Double dwellSeconds
+        +Bool isFavorited
+        +Bool isHidden
+    }
+    class InterestIndexEngine {
+        +rawScore(ReadingInterestRecord) Double
+        +decayFactor(ReadingInterestRecord, Date) Double
+        +decayedScore(ReadingInterestRecord, Date) Double
+        +categoryIndex([Int:ArticleClassification],[Int:ReadingInterestRecord],CategoryTaxonomy,Date) [CategoryInterestIndex]
+    }
+    class CategoryInterestIndex {
+        +ArticleCategory category
+        +Double score
+        +Int memberCount
+        +Bool isLowSample
+    }
+    class ArticleClassificationService {
+        +classify(Int,String,String,CategoryTaxonomy) ArticleClassification
+    }
+    class CategoryInductionService {
+        +induce([String],ClosedRange) [String]?
+    }
+    class ArticleClassificationStore {
+        +classification(Int) ArticleClassification?
+        +save(ArticleClassification)
+        +all() [Int:ArticleClassification]
+    }
+    class ReadingInterestStore {
+        +record(ReadingSessionSignal)
+        +record(Int) ReadingInterestRecord?
+        +all() [Int:ReadingInterestRecord]
+    }
+    class CategoryTaxonomyStore {
+        +isFrozen Bool
+        +load() CategoryTaxonomy?
+        +save(CategoryTaxonomy)
+    }
+    class ArticleDetailViewModel {
+        +classifyCurrentArticle(ArticleClassificationService)
+        +recordReadingSession(Double,Double,Bool,Bool)
+        +categoryName String?
+    }
+    class StoryCategoryViewModel {
+        +categoryName String?
+        +load()
+    }
+    class InterestProfileViewModel {
+        +entries [CategoryInterestIndex]
+        +load()
+    }
+
+    ArticleClassification --> ArticleCategory : categoryID 引用
+    CategoryTaxonomy "1" *-- "0..*" ArticleCategory : 包含
+    ReadingInterestRecord ..> ReadingSessionSignal : merge
+    InterestIndexEngine ..> ReadingInterestRecord : 计算输入
+    InterestIndexEngine ..> ArticleClassification : 计算输入
+    InterestIndexEngine ..> CategoryTaxonomy : 计算输入
+    InterestIndexEngine ..> CategoryInterestIndex : 产出
+    ArticleClassificationService ..> ArticleClassification : 产出
+    ArticleClassificationService ..> CategoryTaxonomy : 校验集合
+    ArticleClassificationStore ..> ArticleClassification : 持久化
+    ReadingInterestStore ..> ReadingInterestRecord : 持久化
+    CategoryTaxonomyStore ..> CategoryTaxonomy : 持久化
+    ArticleDetailViewModel ..> ArticleClassificationService : 触发分类
+    ArticleDetailViewModel ..> ArticleClassificationStore : 缓存
+    ArticleDetailViewModel ..> ReadingInterestStore : 落盘信号
+    StoryCategoryViewModel ..> ArticleClassificationStore : 读
+    StoryCategoryViewModel ..> CategoryTaxonomyStore : 解析名
+    InterestProfileViewModel ..> ArticleClassificationStore : 读
+    InterestProfileViewModel ..> ReadingInterestStore : 读
+    InterestProfileViewModel ..> CategoryTaxonomyStore : 读
+    InterestProfileViewModel ..> InterestIndexEngine : 计算

@@ -14,6 +14,21 @@ final class LocalFixtureDailyService: DailyServiceProtocol {
         if scenario == "latest_empty" {
             return DailyResponse(date: "20260621", stories: [], topStories: [])
         }
+        if scenario == "latest_without_top_stories" {
+            return DailyResponse(
+                date: "20260621",
+                stories: [
+                    StorySummary(
+                        id: 1001,
+                        title: "今天，先读一篇长一点的故事",
+                        images: [],
+                        hint: "日报阅读器",
+                        url: "https://example.com/story/1001"
+                    )
+                ],
+                topStories: []
+            )
+        }
         return DailyResponse(
             date: "20260621",
             stories: [

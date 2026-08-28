@@ -21,9 +21,10 @@ final class HomeViewModelTests: XCTestCase {
     }
 
     private func resetPersistedStoryState() {
+        let readingStateBackup = KeychainReadingStateBackup()
         for key in persistedStoryStateKeys {
             UserDefaults.standard.removeObject(forKey: key)
-            KeychainHelper.shared.delete(forKey: key)
+            try? readingStateBackup.delete(account: key)
         }
     }
 
