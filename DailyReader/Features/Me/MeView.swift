@@ -9,6 +9,7 @@ struct MeView: View {
     @StateObject private var interestProfileViewModel: InterestProfileViewModel
     @State private var selectedSubTab = 0 // 0 收藏，1 已读
     @State private var searchText = ""
+    @State private var showSettings = false
     @Namespace private var animation
 
     @MainActor
@@ -69,29 +70,20 @@ struct MeView: View {
     }
 
     var body: some View {
-        VStack(spacing: 0) {
-            VStack(spacing: 14) {
-                bookroomHeader
-                // 暂时隐藏知乎账号登录入口，保留登录能力以便后续恢复。
-                if Self.showsAuthenticationCard {
-                    AccountCardView(viewModel: authenticationViewModel)
-                }
-                readingArchive
-                InterestProfileCard(viewModel: interestProfileViewModel)
-                    .padding(.horizontal, 16)
-                    .padding(.bottom, 12)
-                    .frame(maxWidth: 720)
-                segmentControl
-                searchField
-            }
-            .padding(.horizontal, 16)
-            .padding(.bottom, 12)
-            .frame(maxWidth: 720)
+        ZStack {
+            DS.paper.ignoresSafeArea()
 
+            // 单个 List 承载顶部区块 + 收藏/已读内容，自身可滚动；
+            // 不再把 List 套进 ScrollView——那样 SwiftUI 算不出 List 高度，
+            // 会导致收藏/已读列表行无法渲染（本次修复的核心问题）。
             contentList
+                .frame(maxWidth: 720)
+
         }
-        .frame(maxWidth: .infinity)
-        .background(DS.paper.ignoresSafeArea())
+        .navigationDestination(isPresented: $showSettings) {
+            SettingsView(viewModel: viewModel)
+                .toolbar(.visible, for: .navigationBar)
+        }
         .toolbar(.hidden, for: .navigationBar)
         .onDisappear {
             authenticationViewModel.cancel()
@@ -139,9 +131,8 @@ struct MeView: View {
 
                 Spacer(minLength: 12)
 
-                NavigationLink {
-                    SettingsView(viewModel: viewModel)
-                        .toolbar(.visible, for: .navigationBar)
+                Button {
+                    showSettings = true
                 } label: {
                     Image(systemName: "gearshape")
                         .font(.system(size: 17, weight: .semibold))
@@ -156,6 +147,10 @@ struct MeView: View {
                                 .strokeBorder(DS.hairline, lineWidth: 0.7)
                         )
                 }
+                // 必须显式 borderless：该 Button 位于 List 首行（topSectionSection）内，
+                // 默认 buttonStyle 会让整行成为齿轮点击区——点「兴趣画像」等同行元素
+                // 都会误触发 showSettings 进设置。borderless 把点击区收回到齿轮自身。
+                .buttonStyle(.borderless)
                 .accessibilityLabel("设置")
                 .accessibilityHint("打开阅读设置")
                 .accessibilityIdentifier("me.settingsButton")
@@ -313,6 +308,38 @@ struct MeView: View {
         )
     }
 
+    // MARK: - 顶部区块（独立于 List，置于外层 ScrollView，随整页一并滚动）
+
+    private var topSection: some View {
+        VStack(spacing: 14) {
+            bookroomHeader
+            // 暂时隐藏知乎账号登录入口，保留登录能力以便后续恢复。
+            if Self.showsAuthenticationCard {
+                AccountCardView(viewModel: authenticationViewModel)
+            }
+            readingArchive
+            InterestProfileCard(viewModel: interestProfileViewModel)
+                .padding(.horizontal, 16)
+                .padding(.bottom, 12)
+                .frame(maxWidth: 720)
+            segmentControl
+            searchField
+        }
+        .padding(.horizontal, 16)
+        .padding(.top, 8)
+        .padding(.bottom, 12)
+        .frame(maxWidth: 720)
+    }
+
+    // 顶部区块作为 List 的首个 Section：透明背景、无分隔线、无额外 inset，
+    // 让「我的」页用单个 List 同时承载头部与收藏/已读内容，规避 List 套 ScrollView 的高度坑。
+    private var topSectionSection: some View {
+        topSection
+            .listRowInsets(EdgeInsets())
+            .listRowSeparator(.hidden)
+            .listRowBackground(Color.clear)
+    }
+
     // MARK: - 内容列表
 
     @ViewBuilder
@@ -326,6 +353,8 @@ struct MeView: View {
 
     private var favoritesList: some View {
         List {
+            topSectionSection
+
             if viewModel.favoriteStories.isEmpty {
                 ContentUnavailableView(
                     "暂无收藏内容",
@@ -372,12 +401,14 @@ struct MeView: View {
             }
         }
         .listStyle(.plain)
-        .paperListBackground()
+        .scrollContentBackground(.hidden)
         .accessibilityIdentifier("me.favorites.list")
     }
 
     private var readList: some View {
         List {
+            topSectionSection
+
             if viewModel.visibleReadStories.isEmpty {
                 ContentUnavailableView(
                     "暂无已读文章",
@@ -417,7 +448,7 @@ struct MeView: View {
             }
         }
         .listStyle(.plain)
-        .paperListBackground()
+        .scrollContentBackground(.hidden)
         .accessibilityIdentifier("me.read.list")
     }
 }

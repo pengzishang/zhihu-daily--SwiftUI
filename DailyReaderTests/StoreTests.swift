@@ -15,8 +15,9 @@ final class StoreTests: XCTestCase {
 
         let store2 = ArticleClassificationStore(rootURL: root)
         let loaded = await store2.classification(for: 5)
-        XCTAssertEqual(loaded?.categoryID, "tech")
-        XCTAssertEqual(loaded?.confidence, 0.9, accuracy: 0.0001)
+        let classification = try! XCTUnwrap(loaded)
+        XCTAssertEqual(classification.categoryID, "tech")
+        XCTAssertEqual(classification.confidence, 0.9, accuracy: 0.0001)
     }
 
     func testInterestStoreMergesSessions() async {
@@ -30,11 +31,12 @@ final class StoreTests: XCTestCase {
         )
 
         let store2 = ReadingInterestStore(rootURL: root)
-        let record = await store2.record(for: 1)
-        XCTAssertEqual(record?.dwellSeconds, 50, accuracy: 0.0001)
-        XCTAssertEqual(record?.maxScrollPercent, 0.8, accuracy: 0.0001)
-        XCTAssertEqual(record?.readCount, 2)
-        XCTAssertTrue(record?.isFavorited == true)
+        let loadedRecord = await store2.record(for: 1)
+        let record = try! XCTUnwrap(loadedRecord)
+        XCTAssertEqual(record.dwellSeconds, 50, accuracy: 0.0001)
+        XCTAssertEqual(record.maxScrollPercent, 0.8, accuracy: 0.0001)
+        XCTAssertEqual(record.readCount, 2)
+        XCTAssertTrue(record.isFavorited)
     }
 
     func testInterestStoreKeepsMaxScrollAndResetsHidden() async {
@@ -46,10 +48,11 @@ final class StoreTests: XCTestCase {
         await store.record(
             ReadingSessionSignal(articleID: 2, maxScrollPercent: 0.4, dwellSeconds: 5, isFavorited: false, isHidden: true)
         )
-        let record = await store.record(for: 2)
-        XCTAssertEqual(record?.maxScrollPercent, 0.9, accuracy: 0.0001)
-        XCTAssertEqual(record?.dwellSeconds, 15, accuracy: 0.0001)
-        XCTAssertTrue(record?.isHidden == true)
+        let loadedRecord = await store.record(for: 2)
+        let record = try! XCTUnwrap(loadedRecord)
+        XCTAssertEqual(record.maxScrollPercent, 0.9, accuracy: 0.0001)
+        XCTAssertEqual(record.dwellSeconds, 15, accuracy: 0.0001)
+        XCTAssertTrue(record.isHidden)
     }
 
     func testTaxonomyStoreRoundTrip() async {
@@ -71,8 +74,10 @@ final class StoreTests: XCTestCase {
     func testTaxonomyStoreReportsFrozenState() async {
         let root = temporaryRoot()
         let store = CategoryTaxonomyStore(rootURL: root)
-        XCTAssertFalse(store.isFrozen)
+        let initiallyFrozen = await store.isFrozen
+        XCTAssertFalse(initiallyFrozen)
         await store.save(CategoryTaxonomy(categories: [], isFrozen: true))
-        XCTAssertTrue(store.isFrozen)
+        let frozenAfterSave = await store.isFrozen
+        XCTAssertTrue(frozenAfterSave)
     }
 }

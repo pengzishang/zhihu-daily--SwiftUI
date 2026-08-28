@@ -11,14 +11,14 @@ final class HTTPClient: HTTPClientProtocol {
     private let timeoutInterval: TimeInterval
 
     init(
-        session: URLSession = .shared,
+        session: URLSession? = nil,
         decoderFactory: @escaping DecoderFactory = { JSONDecoder() },
         timeoutInterval: TimeInterval = 15
     ) {
         self.decoderFactory = decoderFactory
         self.timeoutInterval = timeoutInterval
 
-        let configuration = session.configuration
+        let configuration = session?.configuration ?? URLSessionConfiguration.default
         configuration.timeoutIntervalForRequest = timeoutInterval
         configuration.timeoutIntervalForResource = timeoutInterval
         

@@ -6,6 +6,18 @@ actor DiskCacheStore: CacheStore {
     private let encoder = JSONEncoder()
     private let decoder = JSONDecoder()
 
+    // MARK: - 缓存清理策略
+
+    /// 磁盘缓存总量上限（与 ImageCacheService 一致）。
+    static let maxTotalBytes: Int64 = 300 * 1024 * 1024
+    /// 日报历史保留天数（用户翻旧刊需要）。
+    static let dailyTTL: TimeInterval = 30 * 24 * 3600
+    /// 文章详情保留天数（内容实时性较高）。
+    static let detailTTL: TimeInterval = 7 * 24 * 3600
+    /// 首页聚合 / 热榜保留天数。
+    static let bundleTTL: TimeInterval = 7 * 24 * 3600
+
+
     init(fileManager: FileManager = .default, rootURL: URL? = nil) {
         self.fileManager = fileManager
         let baseURL = rootURL ?? fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first!
@@ -111,6 +123,7 @@ actor DiskCacheStore: CacheStore {
         } catch {
             return
         }
+        await pruneIfNeeded()
     }
 
     private func read<Value: Codable>(from url: URL) async -> CachedValue<Value>? {
@@ -120,6 +133,60 @@ actor DiskCacheStore: CacheStore {
             return CachedValue(value: envelope.value, cachedAt: envelope.cachedAt)
         } catch {
             return nil
+        }
+    }
+
+
+    // MARK: - 缓存清理
+
+    /// 递归遍历 rootURL 下所有文件，按目录 TTL 删除过期文件，
+    /// 若总大小超过 maxTotalBytes 则按修改时间从旧到新删除，直至低于上限。
+    private func pruneIfNeeded() async {
+        let now = Date()
+        guard let enumerator = fileManager.enumerator(
+            at: rootURL,
+            includingPropertiesForKeys: [.contentModificationDateKey, .totalFileAllocatedSizeKey],
+            options: [.skipsHiddenFiles]
+        ) else { return }
+
+        var files: [(url: URL, modified: Date, size: Int64, ttl: TimeInterval)] = []
+        var totalSize: Int64 = 0
+
+        for case let url as URL in enumerator {
+            var isDirectory: ObjCBool = false
+            guard fileManager.fileExists(atPath: url.path, isDirectory: &isDirectory),
+                  !isDirectory.boolValue else { continue }
+
+            let attrs = try? url.resourceValues(forKeys: [.contentModificationDateKey, .totalFileAllocatedSizeKey])
+            guard let modified = attrs?.contentModificationDate else { continue }
+            let size = Int64(attrs?.totalFileAllocatedSize ?? 0)
+            totalSize += size
+            files.append((url, modified, size, Self.ttl(for: url)))
+        }
+
+        // 过期清理：删除超过 TTL 的文件
+        for file in files where now.timeIntervalSince(file.modified) > file.ttl {
+            try? fileManager.removeItem(at: file.url)
+            totalSize -= file.size
+        }
+
+        // 容量清理：保留最新文件，删除最旧的直到低于上限
+        guard totalSize > Self.maxTotalBytes else { return }
+        let aged = files.filter { fileManager.fileExists(atPath: $0.url.path) }
+            .sorted { $0.modified < $1.modified }
+        for file in aged where totalSize > Self.maxTotalBytes {
+            try? fileManager.removeItem(at: file.url)
+            totalSize -= file.size
+        }
+    }
+
+    /// 按文件所在目录判断 TTL。
+    private static func ttl(for url: URL) -> TimeInterval {
+        let parentName = url.deletingLastPathComponent().lastPathComponent
+        switch parentName {
+        case "daily":   return dailyTTL
+        case "detail":  return detailTTL
+        default:        return bundleTTL
         }
     }
 

@@ -262,10 +262,10 @@ enum AppEnvironment {
         let processInfo = ProcessInfo.processInfo
         if processInfo.arguments.contains("-UITestMode") {
             let defaults = UserDefaults.standard
-            defaults.removeObject(forKey: "DailyReader.readStoryIDs")
-            defaults.removeObject(forKey: "DailyReader.hiddenStories")
-            defaults.removeObject(forKey: "DailyReader.favoriteStories")
-            defaults.removeObject(forKey: "DailyReader.readStories")
+            defaults.removeObject(forKey: ReadingStateKeys.readStoryIDs)
+            defaults.removeObject(forKey: ReadingStateKeys.hiddenStories)
+            defaults.removeObject(forKey: ReadingStateKeys.favoriteStories)
+            defaults.removeObject(forKey: ReadingStateKeys.readStories)
             defaults.removeObject(forKey: HomeInformationDensity.storageKey)
 
             try? FileManager.default.removeItem(

@@ -3,55 +3,55 @@ import Foundation
 // MARK: - 内容块模型（路线 B：HTML → 原生 SwiftUI）
 
 /// 块级标识符，用于 `Identifiable` 与稳定 diff。
-struct BlockID: Hashable {
+struct BlockID: Hashable, Sendable {
     let value: Int
 }
 
 /// 图片种类，由知乎正文的 class 判定。
-enum ImageKind: String, Equatable {
+enum ImageKind: String, Equatable, Sendable {
     case content        // content-image
     case origin         // origin_image
     case conditional    // RichText-ConditionalImagePortal
 }
 
-struct ImageBlock: Equatable {
+struct ImageBlock: Equatable, Sendable {
     let url: String
     let alt: String?
     let kind: ImageKind
 }
 
-struct FigureBlock: Equatable {
+struct FigureBlock: Equatable, Sendable {
     let image: ImageBlock
     let caption: String?
 }
 
-struct AuthorMetaBlock: Equatable {
+struct AuthorMetaBlock: Equatable, Sendable {
     let avatarURL: String?
     let author: String
     let bio: String?
     let originURL: String?
 }
 
-struct LinkCardBlock: Equatable {
+struct LinkCardBlock: Equatable, Sendable {
     let title: String
     let url: String
     let description: String?
     let imageURL: String?
 }
 
-struct CodeBlock: Equatable {
+struct CodeBlock: Equatable, Sendable {
     let language: String?
     let code: String
 }
 
-struct LinkInline: Equatable {
+struct LinkInline: Equatable, Sendable {
     let url: String
     let label: [InlineNode]
     let isExternal: Bool
 }
 
 /// 行内节点（段落 / 引用 / 链接卡标题等内部使用）。
-indirect enum InlineNode: Equatable {
+indirect enum InlineNode: Equatable, Sendable {
     case text(String)
     case strong([InlineNode])
     case em([InlineNode])
@@ -62,7 +62,7 @@ indirect enum InlineNode: Equatable {
 }
 
 /// 文章正文内容块。HTML 解析后全部映射到这一组枚举。
-indirect enum ArticleBlock: Identifiable, Equatable {
+indirect enum ArticleBlock: Identifiable, Equatable, Sendable {
     case paragraph(id: BlockID, nodes: [InlineNode], isFirst: Bool)
     case heading(id: BlockID, text: String, level: Int)
     case image(id: BlockID, ImageBlock)

@@ -19,6 +19,7 @@ targets:
     dependencies:
       - package: Alamofire
       - package: Kingfisher
+      - package: SwiftSoup
     configFiles:
       Debug: Config/AIProviders.xcconfig
       Release: Config/AIProviders.xcconfig
@@ -82,4 +83,6 @@ packages:
   Kingfisher:
     url: https://github.com/onevcat/Kingfisher.git
     from: 8.0.0
-
+  SwiftSoup:
+    url: https://github.com/scinfu/SwiftSoup.git
+    from: 2.13.4

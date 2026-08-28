@@ -219,6 +219,7 @@ private struct SwipeToHideContainer<Content: View>: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var offset: CGFloat = 0
     @State private var dragging: Bool = false
+    @State private var confirmHide = false
 
     init(hide: @escaping () -> Void, @ViewBuilder content: () -> Content) {
         self.hide = hide
@@ -227,7 +228,7 @@ private struct SwipeToHideContainer<Content: View>: View {
 
     var body: some View {
         ZStack(alignment: .trailing) {
-            Button(role: .destructive, action: performHide) {
+            Button(role: .destructive, action: { confirmHide = true }) {
                 Label("不感兴趣", systemImage: "eye.slash")
                     .labelStyle(.iconOnly)
                     .font(.system(size: 18, weight: .semibold))
@@ -257,12 +258,18 @@ private struct SwipeToHideContainer<Content: View>: View {
                     guard abs(value.translation.width) > abs(value.translation.height) else { return }
                     dragging = false
                     if value.translation.width < -118 {
-                        performHide()
+                        confirmHide = true
                     } else {
                         setOffset(value.translation.width < -48 ? -92 : 0)
                     }
                 }
         )
+        .confirmationDialog("不再看这篇？", isPresented: $confirmHide, titleVisibility: .visible) {
+            Button("不感兴趣", role: .destructive) { performHide() }
+            Button("取消", role: .cancel) { }
+        } message: {
+            Text("这篇会被移入冷宫，之后可在「设置 → 冷宫」里恢复。")
+        }
     }
 
     private func performHide() {
@@ -316,5 +323,10 @@ private struct HistoryPaginationFooter: View {
         }
         .padding(.vertical, 12)
         .accessibilityIdentifier("historyPaginationFooter")
+        .onAppear {
+            if case .idle = state {
+                loadMore()
+            }
+        }
     }
 }

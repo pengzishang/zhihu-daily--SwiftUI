@@ -14,6 +14,7 @@ struct HotListView: View {
     @ObservedObject var homeViewModel: HomeViewModel
     @Environment(\.openURL) private var openURL
     private let makeAnswersViewModel: (Int) -> AnswersViewModel
+    @State private var pendingHideSummary: StorySummary?
 
     init(
         viewModel: @autoclosure @escaping () -> HotListViewModel,
@@ -94,7 +95,7 @@ struct HotListView: View {
                                 hint: "知乎热榜",
                                 url: item.target.url?.absoluteString ?? "https://www.zhihu.com/question/\(item.target.id)"
                             )
-                            homeViewModel.hideStory(summary, date: "今日热榜")
+                            pendingHideSummary = summary
                         } label: {
                             Label("不感兴趣", systemImage: "eye.slash")
                         }
@@ -106,6 +107,22 @@ struct HotListView: View {
                 .accessibilityIdentifier("hotList.container")
                 .refreshable {
                     await viewModel.refresh()
+                }
+                .confirmationDialog("不再看这条热榜？", isPresented: Binding(
+                    get: { pendingHideSummary != nil },
+                    set: { if !$0 { pendingHideSummary = nil } }
+                ), titleVisibility: .visible) {
+                    Button("不感兴趣", role: .destructive) {
+                        if let summary = pendingHideSummary {
+                            homeViewModel.hideStory(summary, date: "今日热榜")
+                        }
+                        pendingHideSummary = nil
+                    }
+                    Button("取消", role: .cancel) {
+                        pendingHideSummary = nil
+                    }
+                } message: {
+                    Text("这条会被移入冷宫，之后可在「设置 → 冷宫」里恢复。")
                 }
             }
         }

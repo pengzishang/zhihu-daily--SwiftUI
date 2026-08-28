@@ -80,6 +80,26 @@ final class MeFlowUITests: XCTestCase {
         app.navigationBars["设置"].buttons.firstMatch.tap()
         XCTAssertTrue(app.staticTexts["me.header"].waitForExistence(timeout: 5))
     }
+
+    /// 点击「兴趣画像」卡（与设置齿轮同处一个 List 首行）不应误入设置。
+    /// 根因：List 首行内的 Button 未指定 buttonStyle，SwiftUI 会让整行成为
+    /// 该按钮的点击区，从而点兴趣画像也会触发 showSettings。修复后整行
+    /// 不再被齿轮按钮吞掉点击。
+    func testT1_ME_01B_TappingInterestProfileDoesNotEnterSettings() {
+        let app = launchApp(scenario: "latest_success")
+
+        app.tabBars.buttons["我的"].tap()
+
+        // combine 容器可能被 XCUI 暴露成任意元素类型，故用类型无关查询。
+        let interestCard = app.descendants(matching: .any)["me.interestProfileCard"]
+        XCTAssertTrue(interestCard.waitForExistence(timeout: 5))
+
+        interestCard.tap()
+
+        // 兴趣画像是纯展示卡，点击后不应推入设置页。
+        XCTAssertFalse(app.navigationBars["设置"].waitForExistence(timeout: 1.5))
+        XCTAssertTrue(app.staticTexts["me.header"].exists)
+    }
     
     func testT1_ME_02_CapsuleSliderSwitching() {
         let app = launchApp(scenario: "latest_success")
@@ -93,15 +113,22 @@ final class MeFlowUITests: XCTestCase {
         let archive = app.otherElements["me.readingArchive"]
         XCTAssertTrue(archive.waitForExistence(timeout: 5))
         XCTAssertTrue(archive.label.contains("收藏 1 篇"))
+        XCTAssertFalse(app.navigationBars["设置"].exists)
 
         // Tap "已读" switcher
         let readSegmentButton = app.buttons["me.segment.read"]
         XCTAssertTrue(readSegmentButton.exists)
         readSegmentButton.tap()
         
+        XCTAssertFalse(app.navigationBars["设置"].exists)
+
         // Read list should exist
         XCTAssertTrue(app.collectionViews["me.read.list"].waitForExistence(timeout: 5))
         attachScreenshot(named: "me-read-list-selected", app: app)
+
+        app.buttons["me.segment.favorites"].tap()
+        XCTAssertFalse(app.navigationBars["设置"].exists)
+        XCTAssertTrue(app.collectionViews["me.favorites.list"].waitForExistence(timeout: 5))
     }
     
     func testT1_ME_03_FavoritesListSearch() {

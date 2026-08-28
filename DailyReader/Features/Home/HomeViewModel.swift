@@ -36,20 +36,16 @@ final class HomeViewModel: ObservableObject {
 
     private static let maximumAutomaticHistoryBatchCount = 12
     private static let historyPrefetchRemainingStoryCount = 8
+    private static let backupSchemaVersion = 1
 
     private let repository: HomeRepositoryProtocol
     private let articleRepository: ArticleRepositoryProtocol?
     private let readingStateBackup: any ReadingStateBackingUp
     private let keychainErrorHandler: @Sendable (Error) -> Void
-    private var loadedStoryIDs = Set<Int>()
     private var immersiveImageRequestIDs = Set<Int>()
     private var resolvedImmersiveImageIDs = Set<Int>()
     private var hasAttemptedInitialLoad = false
     private var loadingHistoryCursor: String?
-    private let readStoryIDsKey = "DailyReader.readStoryIDs"
-    private let hiddenStoriesKey = "DailyReader.hiddenStories"
-    private let favoriteStoriesKey = "DailyReader.favoriteStories"
-    private let readStoriesKey = "DailyReader.readStories"
 
     init(
         repository: HomeRepositoryProtocol,
@@ -66,157 +62,15 @@ final class HomeViewModel: ObservableObject {
         self.readingStateBackup = readingStateBackup
         self.keychainErrorHandler = keychainErrorHandler
 
-        let readInitialBackup: (String) -> Data? = { account in
-            do {
-                return try readingStateBackup.read(account: account)
-            } catch {
-                keychainErrorHandler(error)
-                return nil
-            }
-        }
-        let saveInitialBackup: (Data, String) -> Void = { data, account in
-            do {
-                try readingStateBackup.save(data, account: account)
-            } catch {
-                keychainErrorHandler(error)
-            }
-        }
-        let deleteInitialBackup: (String) -> Void = { account in
-            do {
-                try readingStateBackup.delete(account: account)
-            } catch {
-                keychainErrorHandler(error)
-            }
-        }
-
-        let readStoryIDsKey = "DailyReader.readStoryIDs"
-        let hiddenStoriesKey = "DailyReader.hiddenStories"
-        let favoriteStoriesKey = "DailyReader.favoriteStories"
-        let readStoriesKey = "DailyReader.readStories"
-        let defaults = UserDefaults.standard
-        let readIDs = defaults.array(forKey: readStoryIDsKey) as? [Int]
-        let hiddenData = defaults.data(forKey: hiddenStoriesKey)
-        let favoriteData = defaults.data(forKey: favoriteStoriesKey)
-        let readData = defaults.data(forKey: readStoriesKey)
-        
-        let isUserDefaultsEmpty = (readIDs == nil || readIDs!.isEmpty) &&
-                                  (hiddenData == nil) &&
-                                  (favoriteData == nil) &&
-                                  (readData == nil)
-                                  
-        if isUserDefaultsEmpty {
-            var restoredReadIDs: [Int]? = nil
-            var restoredHidden: [HiddenStory]? = nil
-            var restoredFavorite: [FavoriteStory]? = nil
-            var restoredRead: [ReadStory]? = nil
-            
-            if let data = readInitialBackup(readStoryIDsKey) {
-                if ProcessInfo.processInfo.environment["MOCK_KEYCHAIN_STATUS"] == "corrupted" {
-                    deleteInitialBackup(readStoryIDsKey)
-                } else {
-                    do {
-                        let list = try JSONDecoder().decode([Int].self, from: data)
-                        restoredReadIDs = list
-                        defaults.set(list, forKey: readStoryIDsKey)
-                    } catch {
-                        deleteInitialBackup(readStoryIDsKey)
-                        defaults.removeObject(forKey: readStoryIDsKey)
-                    }
-                }
-            }
-            
-            if let data = readInitialBackup(hiddenStoriesKey) {
-                if ProcessInfo.processInfo.environment["MOCK_KEYCHAIN_STATUS"] == "corrupted" {
-                    deleteInitialBackup(hiddenStoriesKey)
-                } else {
-                    do {
-                        let list = try JSONDecoder().decode([HiddenStory].self, from: data)
-                        restoredHidden = list
-                        defaults.set(data, forKey: hiddenStoriesKey)
-                    } catch {
-                        deleteInitialBackup(hiddenStoriesKey)
-                        defaults.removeObject(forKey: hiddenStoriesKey)
-                    }
-                }
-            }
-            
-            if let data = readInitialBackup(favoriteStoriesKey) {
-                if ProcessInfo.processInfo.environment["MOCK_KEYCHAIN_STATUS"] == "corrupted" {
-                    deleteInitialBackup(favoriteStoriesKey)
-                } else {
-                    do {
-                        let list = try JSONDecoder().decode([FavoriteStory].self, from: data)
-                        restoredFavorite = list
-                        defaults.set(data, forKey: favoriteStoriesKey)
-                    } catch {
-                        deleteInitialBackup(favoriteStoriesKey)
-                        defaults.removeObject(forKey: favoriteStoriesKey)
-                    }
-                }
-            }
-            
-            if let data = readInitialBackup(readStoriesKey) {
-                if ProcessInfo.processInfo.environment["MOCK_KEYCHAIN_STATUS"] == "corrupted" {
-                    deleteInitialBackup(readStoriesKey)
-                } else {
-                    do {
-                        let list = try JSONDecoder().decode([ReadStory].self, from: data)
-                        restoredRead = list
-                        defaults.set(data, forKey: readStoriesKey)
-                    } catch {
-                        deleteInitialBackup(readStoriesKey)
-                        defaults.removeObject(forKey: readStoriesKey)
-                    }
-                }
-            }
-            
-            self.readStoryIDs = Set(restoredReadIDs ?? [])
-            self.hiddenStories = restoredHidden ?? []
-            self.favoriteStories = restoredFavorite ?? []
-            self.readStories = restoredRead ?? []
-        } else {
-            self.readStoryIDs = Set(readIDs ?? [])
-            
-            if let data = hiddenData,
-               let list = try? JSONDecoder().decode([HiddenStory].self, from: data) {
-                self.hiddenStories = list
-            } else {
-                self.hiddenStories = []
-            }
-            
-            if let data = favoriteData,
-               let list = try? JSONDecoder().decode([FavoriteStory].self, from: data) {
-                self.favoriteStories = list
-            } else {
-                self.favoriteStories = []
-            }
-            
-            if let data = readData,
-               let list = try? JSONDecoder().decode([ReadStory].self, from: data) {
-                self.readStories = list
-            } else {
-                self.readStories = []
-            }
-            
-            // Check if Keychain is empty, and if so, perform reverse backup (T2-KC-04)
-            let kcReadData = readInitialBackup(readStoryIDsKey)
-            if kcReadData == nil {
-                if !self.readStoryIDs.isEmpty {
-                    if let data = try? JSONEncoder().encode(Array(self.readStoryIDs)) {
-                        saveInitialBackup(data, readStoryIDsKey)
-                    }
-                }
-                if let data = hiddenData {
-                    saveInitialBackup(data, hiddenStoriesKey)
-                }
-                if let data = favoriteData {
-                    saveInitialBackup(data, favoriteStoriesKey)
-                }
-                if let data = readData {
-                    saveInitialBackup(data, readStoriesKey)
-                }
-            }
-        }
+        let snapshot = ReadingStateLoader.load(
+            defaults: .standard,
+            backup: readingStateBackup,
+            keychainErrorHandler: keychainErrorHandler
+        )
+        self.readStoryIDs = snapshot.readStoryIDs
+        self.hiddenStories = snapshot.hiddenStories
+        self.favoriteStories = snapshot.favoriteStories
+        self.readStories = snapshot.readStories
     }
 
     private func readBackup(for account: String) -> Data? {
@@ -417,20 +271,12 @@ final class HomeViewModel: ObservableObject {
     // MARK: - Status updates & Persistence
     func markStoryRead(_ storyID: Int) {
         guard readStoryIDs.insert(storyID).inserted else { return }
-        let array = Array(readStoryIDs)
-        UserDefaults.standard.set(array, forKey: readStoryIDsKey)
-        if let data = try? JSONEncoder().encode(array) {
-            saveBackup(data, for: readStoryIDsKey)
-        }
+        saveReadStoryIDs()
     }
 
     func markStoryRead(_ story: StorySummary, date: String) {
         readStoryIDs.insert(story.id)
-        let array = Array(readStoryIDs)
-        UserDefaults.standard.set(array, forKey: readStoryIDsKey)
-        if let data = try? JSONEncoder().encode(array) {
-            saveBackup(data, for: readStoryIDsKey)
-        }
+        saveReadStoryIDs()
         if let index = readStories.firstIndex(where: { $0.id == story.id }) {
             let old = readStories.remove(at: index)
             readStories.append(ReadStory(date: old.date, story: old.story, readAt: Date()))
@@ -452,6 +298,14 @@ final class HomeViewModel: ObservableObject {
 
     func restoreStory(_ storyID: Int) {
         hiddenStories.removeAll(where: { $0.id == storyID })
+        saveHiddenStories()
+    }
+
+    /// 一键将冷宫中的全部文章恢复回首页 / 收藏 / 已读。
+    /// 用于此前误将大量文章标记为「不感兴趣」后批量救回。
+    func restoreAllHidden() {
+        guard !hiddenStories.isEmpty else { return }
+        hiddenStories.removeAll()
         saveHiddenStories()
     }
 
@@ -482,33 +336,103 @@ final class HomeViewModel: ObservableObject {
             readStories.removeAll(where: { $0.id == story.id })
             readStories.append(ReadStory(date: date, story: story, readAt: Date()))
         }
-        let array = Array(readStoryIDs)
-        UserDefaults.standard.set(array, forKey: readStoryIDsKey)
-        if let data = try? JSONEncoder().encode(array) {
-            saveBackup(data, for: readStoryIDsKey)
-        }
+        saveReadStoryIDs()
         saveReadStories()
     }
 
     private func saveHiddenStories() {
         if let data = try? JSONEncoder().encode(hiddenStories) {
-            UserDefaults.standard.set(data, forKey: hiddenStoriesKey)
-            saveBackup(data, for: hiddenStoriesKey)
+            UserDefaults.standard.set(data, forKey: ReadingStateKeys.hiddenStories)
+            saveBackup(data, for: ReadingStateKeys.hiddenStories)
         }
     }
 
     private func saveFavoriteStories() {
         if let data = try? JSONEncoder().encode(favoriteStories) {
-            UserDefaults.standard.set(data, forKey: favoriteStoriesKey)
-            saveBackup(data, for: favoriteStoriesKey)
+            UserDefaults.standard.set(data, forKey: ReadingStateKeys.favoriteStories)
+            saveBackup(data, for: ReadingStateKeys.favoriteStories)
         }
     }
 
     private func saveReadStories() {
         if let data = try? JSONEncoder().encode(readStories) {
-            UserDefaults.standard.set(data, forKey: readStoriesKey)
-            saveBackup(data, for: readStoriesKey)
+            UserDefaults.standard.set(data, forKey: ReadingStateKeys.readStories)
+            saveBackup(data, for: ReadingStateKeys.readStories)
         }
+    }
+
+    /// 持久化已读 ID 集合：同步写入 UserDefaults 与 Keychain 冗余备份。
+    /// 供 markStoryRead / toggleRead / importState 复用，集中维护 Double Write 逻辑。
+    private func saveReadStoryIDs() {
+        let array = Array(readStoryIDs)
+        UserDefaults.standard.set(array, forKey: ReadingStateKeys.readStoryIDs)
+        if let data = try? JSONEncoder().encode(array) {
+            saveBackup(data, for: ReadingStateKeys.readStoryIDs)
+        }
+    }
+
+    // MARK: - 阅读状态备份 / 恢复
+
+    /// 导出当前阅读状态为 JSON 数据。
+    /// - Returns: 编码后的备份 JSON（pretty printed + 键排序）。
+    /// - Throws: 编码失败（理论上不应发生，因所有字段均 Codable）。
+    func exportState() throws -> Data {
+        let backup = ReadingStateBackup(
+            schemaVersion: Self.backupSchemaVersion,
+            appVersion: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0",
+            exportDate: Date(),
+            readStoryIDs: Array(readStoryIDs),
+            hiddenStories: hiddenStories,
+            favoriteStories: favoriteStories,
+            readStories: readStories
+        )
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+        return try encoder.encode(backup)
+    }
+
+    /// 从备份 JSON 数据恢复阅读状态。
+    /// 采用「并集」语义合并：已读 ID 取并集，冷宫 / 收藏 / 已读明细按各自 id 去重合并（现有优先，幂等）。
+    /// 重装后导入（现有状态为空）等同于整体恢复；已有部分状态再导入也能安全合并。
+    /// - Parameter data: 备份文件数据。
+    /// - Throws: 解码失败或 schema 版本不支持时抛出清晰错误。
+    func importState(_ data: Data) throws {
+        let decoder = JSONDecoder()
+        let backup: ReadingStateBackup
+        do {
+            backup = try decoder.decode(ReadingStateBackup.self, from: data)
+        } catch {
+            throw ReadingStateImportError.invalidFile(underlying: error)
+        }
+
+        guard backup.schemaVersion <= Self.backupSchemaVersion else {
+            throw ReadingStateImportError.unsupportedSchema(version: backup.schemaVersion)
+        }
+
+        // 已读 ID 取并集
+        readStoryIDs.formUnion(backup.readStoryIDs)
+        // 冷宫 / 收藏 / 已读明细按 id 去重合并（现有优先）
+        mergeStories(into: &hiddenStories, with: backup.hiddenStories)
+        mergeStories(into: &favoriteStories, with: backup.favoriteStories)
+        mergeStories(into: &readStories, with: backup.readStories)
+
+        // 统一持久化（UserDefaults + Keychain 一并更新）
+        saveReadStoryIDs()
+        saveHiddenStories()
+        saveFavoriteStories()
+        saveReadStories()
+    }
+
+    /// 按 id 去重合并故事数组：现有项优先，导入项仅补充缺失 id，保证幂等。
+    private func mergeStories<T>(into current: inout [T], with incoming: [T]) where T: Identifiable & Equatable, T.ID == Int {
+        var seen = Set<Int>()
+        var merged: [T] = []
+        for item in current + incoming {
+            guard !seen.contains(item.id) else { continue }
+            seen.insert(item.id)
+            merged.append(item)
+        }
+        current = merged
     }
 
     var thresholdStoryID: Int? {
@@ -554,8 +478,45 @@ final class HomeViewModel: ObservableObject {
         topStories = value.value.topStories
         sections = value.value.sections
         historyCursor = value.value.historyCursor
-        loadedStoryIDs = Set(sections.flatMap(\.stories).map(\.id))
         phase = sections.isEmpty && topStories.isEmpty ? .empty : .loaded(value.source)
         historyLoadState = .idle
+    }
+}
+
+// MARK: - 阅读状态备份结构
+
+/// 阅读状态备份：将「已读 / 收藏 / 冷宫」三类状态打包成可导出 JSON。
+/// 所有字段均为 Codable，与 HomeViewModel 中既有的四个持久化状态一一对应。
+struct ReadingStateBackup: Codable {
+    /// 备份结构版本号，便于后续兼容升级（当前为 1）。
+    let schemaVersion: Int
+    /// 导出时的 App 版本（取自 CFBundleShortVersionString）。
+    let appVersion: String
+    /// 导出时间。
+    let exportDate: Date
+    /// 已读故事 ID 列表（与 readStoryIDs 对应）。
+    let readStoryIDs: [Int]
+    /// 冷宫（不感兴趣）列表。
+    let hiddenStories: [HiddenStory]
+    /// 收藏列表。
+    let favoriteStories: [FavoriteStory]
+    /// 已读明细列表。
+    let readStories: [ReadStory]
+}
+
+/// 导入备份时的错误类型，提供可读的中文错误信息供上层 alert 展示。
+enum ReadingStateImportError: LocalizedError {
+    /// 文件无法解析（损坏 / 格式不符 / schema 不匹配）。
+    case invalidFile(underlying: Error)
+    /// 备份 schema 版本高于当前 App 可识别范围。
+    case unsupportedSchema(version: Int)
+
+    var errorDescription: String? {
+        switch self {
+        case .invalidFile(let underlying):
+            return "备份文件无法解析（可能已损坏或格式不符）：\(underlying.localizedDescription)"
+        case .unsupportedSchema(let version):
+            return "不支持的备份版本（schemaVersion=\(version)），请升级 App 后重试。"
+        }
     }
 }

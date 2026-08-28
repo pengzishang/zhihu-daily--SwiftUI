@@ -59,6 +59,14 @@ struct HTMLWebView: UIViewRepresentable {
         Coordinator(parent: self)
     }
 
+    static func dismantleUIView(_ uiView: WKWebView, coordinator: Coordinator) {
+        // 移除 WKScriptMessageHandler，避免 WKWebView ↔ Coordinator 循环持有泄漏。
+        let controller = uiView.configuration.userContentController
+        for name in ["imageClicked", "aiSelection", "articleTextPrepared", "contentHeightChanged"] {
+            controller.removeScriptMessageHandler(forName: name)
+        }
+    }
+
     private var wrappedHTML: String {
         let css = cssLinks.map { "<link rel=\"stylesheet\" href=\"\($0)\">" }.joined(separator: "\n")
         return """
