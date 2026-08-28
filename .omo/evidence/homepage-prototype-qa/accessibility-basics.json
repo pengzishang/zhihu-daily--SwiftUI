@@ -1,0 +1,41 @@
+{
+  "lang": "zh-CN",
+  "viewport": "width=device-width, initial-scale=1, viewport-fit=cover",
+  "navLabel": "选择首页方案",
+  "readerSurfaceLabel": "首页方案预览",
+  "aiSearchLabel": "AI 搜索",
+  "buttons": [
+    {
+      "text": "切换夜间墨纸",
+      "type": "button",
+      "ariaPressed": "false",
+      "disabled": false
+    },
+    {
+      "text": "A · 今日目录",
+      "type": "button",
+      "ariaPressed": "true",
+      "disabled": false
+    },
+    {
+      "text": "B · 头版 + 全览",
+      "type": "button",
+      "ariaPressed": "false",
+      "disabled": false
+    },
+    {
+      "text": "C · 主题分版",
+      "type": "button",
+      "ariaPressed": "false",
+      "disabled": false
+    },
+    {
+      "text": "知",
+      "type": "button",
+      "ariaPressed": null,
+      "disabled": true
+    }
+  ],
+  "h1Count": 1,
+  "unlabeledButtons": 0
+}

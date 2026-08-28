@@ -1,0 +1,25 @@
+{
+  "surface": "static web prototype in local Google Chrome via Playwright screenshots",
+  "inspectionMethod": "Direct visual inspection of generated PNG screenshots after automated browser capture",
+  "findings": [
+    {
+      "scenarioId": "S-visual-375-night-frontpage",
+      "criterionRef": "visual-fidelity-cjk-contrast",
+      "screenshot": "375-night-frontpage.png",
+      "verdict": "FAIL",
+      "actual": "The B/frontpage hero headline and hero supporting text render dark against a dark night-mode gradient, making the main hero content difficult to read.",
+      "sourceCause": "outputs/首页三套方案-互动设计稿.html lines 225-227 set hero text to var(--color-paper-elevated), which becomes dark in [data-theme=\"night\"] in outputs/首页三套方案-tokens.css lines 41-50."
+    },
+    {
+      "scenarioId": "S-visual-cjk-linebreaks",
+      "criterionRef": "visual-fidelity-cjk-precision",
+      "screenshots": [
+        "320-day-directory.png",
+        "768-day-frontpage.png"
+      ],
+      "verdict": "FAIL",
+      "actual": "The global H1 breaks the Chinese phrase into short chunks at both 320px and 768px, and the B hero headline breaks into unnecessarily short lines at 768px despite available horizontal space.",
+      "sourceCause": "outputs/首页三套方案-互动设计稿.html lines 48-56 constrain h1 to max-width: 14ch with large display type; line 226 constrains the hero h3 to max-width: 15ch."
+    }
+  ]
+}

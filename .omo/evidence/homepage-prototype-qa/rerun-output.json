@@ -1,0 +1,21 @@
+{
+  "verdict": "FAIL",
+  "evidenceDir": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa",
+  "counts": {
+    "surfaceEvidence": 27,
+    "adversarialCases": 2,
+    "artifacts": 54
+  },
+  "failures": [
+    {
+      "scenarioId": "S-accessibility-basics",
+      "criterionRef": "accessibility-basics",
+      "surface": "static web prototype DOM in local Chromium",
+      "exactInvocation": "file URL file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html; viewport=320x900 final state after rapid toggle; inspect lang/meta/labels/button types/aria-pressed/H1 via Playwright evaluate",
+      "verdict": "FAIL",
+      "artifactRefs": [
+        "accessibility-basics"
+      ]
+    }
+  ]
+}

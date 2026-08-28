@@ -1,0 +1,243 @@
+{
+  "invocation": "file URL file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html; viewport=375x900; clear localStorage; Tab through buttons; Enter on #theme-toggle; Enter on B button; Space on C button",
+  "focusTrace": [
+    {
+      "index": 0,
+      "text": "切换夜间墨纸",
+      "dataView": null,
+      "id": "theme-toggle",
+      "matchesFocusVisible": true,
+      "outline": "oklch(0.47 0.12 260) solid 3px"
+    },
+    {
+      "index": 1,
+      "text": "A · 今日目录",
+      "dataView": "directory",
+      "id": null,
+      "matchesFocusVisible": true,
+      "outline": "oklch(0.47 0.12 260) solid 3px"
+    },
+    {
+      "index": 2,
+      "text": "B · 头版 + 全览",
+      "dataView": "frontpage",
+      "id": null,
+      "matchesFocusVisible": true,
+      "outline": "oklch(0.47 0.12 260) solid 3px"
+    },
+    {
+      "index": 3,
+      "text": "C · 主题分版",
+      "dataView": "sections",
+      "id": null,
+      "matchesFocusVisible": true,
+      "outline": "oklch(0.47 0.12 260) solid 3px"
+    },
+    {
+      "index": -1,
+      "text": "DailyReader · 首页信息结构探索\n      同一份日报，三种扫读节奏\n      面向碎片时间读者：不改变内容排序，只比较“先看什么、如何扫完今天”。所有标题均为版式示例，不代表真实热度或推荐结论。\n    \n    切换夜间墨纸\n  \n\n  \n    A · 今日目录\n    B · 头版 + 全览\n    C · 主题分版\n  \n\n  \n    \n      日报知\n      \n        \n          今日八月二十日周四 · 8 篇\n          \n        \n\n        \n          先看三个值得打开的方向\n          \n            01示例标题：用两行以内说明今天最值得进入的内容\n            02示例标题：在有限时间内掌握一件正在发生的事\n            03示例标题：留给想继续深读的第二个入口\n          \n          今日目录标题优先\n          \n            04示例标题：把信息密度留给真正需要被扫描的文字科技\n            05示例标题：已读状态不改变条目位置与节奏社会\n            06示例标题：不展示摘要与图片，也能明确区分层级文化\n            07示例标题：标题允许两行，避免不必要的语义截断观点\n            08示例标题：整页不依赖热度数字或虚构的阅读数据生活\n          \n        \n\n        \n          \n            今日头版 · 版式示例\n            把一个编辑判断放在最先看到的位置\n            低高度头版，不用虚构照片或热度数据。\n          \n          今日目录立刻进入全览\n          \n            01示例标题：用两行以内说明今天最值得进入的内容科技\n            02示例标题：在有限时间内掌握一件正在发生的事社会\n            03示例标题：留给想继续深读的第二个入口文化\n            04示例标题：把信息密度留给真正需要被扫描的文字科技\n            05示例标题：已读状态不改变条目位置与节奏社会\n            06示例标题：不展示摘要与图片，也能明确区分层级文化\n            07示例标题：标题允许两行，避免不必要的语义截断观点\n            08示例标题：整页不依赖热度数字或虚构的阅读数据生活\n          \n        \n\n        \n          今日版面按主题先扫\n          \n            科技示例标题：一个正在改变日常的技术议题示例标题：第二条同主题线索\n            社会示例标题：一个值得快速了解的公共话题示例标题：同版面的另一则观察\n            文化示例标题：适合稍后慢读的内容示例标题：一条可进入的书影音线索\n          \n          完整目录分类只是辅助\n          \n            01示例标题：用两行以内说明今天最值得进入的内容科技\n            02示例标题：在有限时间内掌握一件正在发生的事社会\n            03示例标题：留给想继续深读的第二个入口文化\n            04示例标题：把信息密度留给真正需要被扫描的文字科技\n            05示例标题：已读状态不改变条目位置与节奏社会\n            06示例标题：不展示摘要与图片，也能明确区分层级文化\n            07示例标题：标题允许两行，避免不必要的语义截断观点\n            08示例标题：整页不依赖热度数字或虚构的阅读数据生活\n          \n        \n      \n    \n\n    \n      A · 今日目录推荐。把信息空间几乎全部给标题和顺序，最接近“十秒内知道今天有什么”。首屏的编辑判断受限于三条“先看”目录自身完成主要浏览任务最适合保留为默认首页方向\n      B · 头版 + 全览为当天留一个克制的头版锚点，再迅速让位给目录。编辑感最完整一篇内容优先级更高比 A 多一点情绪与停留\n      C · 主题分版先让读者按主题扫读，再回到完整目录避免遗漏。发现路径更强依赖稳定的分类质量适合作为兴趣功能成熟后的方向\n    \n  \n\n  \n    const body = document.body;\n    const themeButton = document.querySelector('#theme-toggle');\n    const viewButtons = [...document.querySelectorAll('[data-view]')];\n    const layouts = [...document.querySelectorAll('[data-layout]')];\n    const notes = [...document.querySelectorAll('[data-note]')];\n\n    function setTheme(theme) {\n      const isNight = theme === 'night';\n      body.dataset.theme = isNight ? 'night' : 'day';\n      themeButton.setAttribute('aria-pressed', String(isNight));\n      themeButton.textContent = isNight ? '切换暖纸日间' : '切换夜间墨纸';\n      localStorage.setItem('dailyreader-prototype-theme', body.dataset.theme);\n    }\n\n    function setLayout(layout) {\n      const selectedLayout = viewButtons.some((button) => button.dataset.view === layout) ? layout : 'directory';\n      viewButtons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.view === selectedLayout)));\n      layouts.forEach((section) => section.classList.toggle('is-active', section.dataset.layout === selectedLayout));\n      notes.forEach((note) => { note.hidden = note.dataset.note !== selectedLayout; });\n      localStorage.setItem('dailyreader-prototype-layout', selectedLayout);\n    }\n\n    themeButton.addEventListener('click', () => setTheme(body.dataset.theme === 'night' ? 'day' : 'night'));\n    viewButtons.forEach((button) => button.addEventListener('click', () => setLayout(button.dataset.view)));\n\n    setTheme(localStorage.getItem('dailyreader-prototype-theme') || 'day');\n    setLayout(localStorage.getItem('dailyreader-prototype-layout') || 'directory');",
+      "dataView": null,
+      "id": null,
+      "matchesFocusVisible": false,
+      "outline": "oklch(0.242 0.02 75) none 3px"
+    }
+  ],
+  "themeAfterKeyboard": {
+    "expectedLayout": "directory",
+    "expectedTheme": "night",
+    "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html",
+    "title": "DailyReader · 首页三套设计稿",
+    "lang": "zh-CN",
+    "viewportMeta": "width=device-width, initial-scale=1, viewport-fit=cover",
+    "bodyTheme": "night",
+    "themeButton": {
+      "text": "切换暖纸日间",
+      "ariaPressed": "true"
+    },
+    "activeLayoutCount": 1,
+    "visibleLayouts": [
+      "directory"
+    ],
+    "activeButtons": [
+      "directory"
+    ],
+    "activeNotes": [
+      "directory"
+    ],
+    "inactiveNotesVisible": [],
+    "documentScrollWidth": 375,
+    "bodyScrollWidth": 375,
+    "innerWidth": 375,
+    "clientWidth": 375,
+    "horizontalOverflow": false,
+    "overflowingElements": [],
+    "allButtons": [
+      {
+        "text": "切换暖纸日间",
+        "type": "button",
+        "ariaPressed": "true",
+        "dataView": null
+      },
+      {
+        "text": "A · 今日目录",
+        "type": "button",
+        "ariaPressed": "true",
+        "dataView": "directory"
+      },
+      {
+        "text": "B · 头版 + 全览",
+        "type": "button",
+        "ariaPressed": "false",
+        "dataView": "frontpage"
+      },
+      {
+        "text": "C · 主题分版",
+        "type": "button",
+        "ariaPressed": "false",
+        "dataView": "sections"
+      },
+      {
+        "text": "知",
+        "type": "button",
+        "ariaPressed": null,
+        "dataView": null
+      }
+    ],
+    "focusOutline": "solid",
+    "hasH1": true,
+    "labelledMainSurface": "首页方案预览",
+    "labelledNav": "选择首页方案"
+  },
+  "frontpageAfterKeyboard": {
+    "expectedLayout": "frontpage",
+    "expectedTheme": "night",
+    "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html",
+    "title": "DailyReader · 首页三套设计稿",
+    "lang": "zh-CN",
+    "viewportMeta": "width=device-width, initial-scale=1, viewport-fit=cover",
+    "bodyTheme": "night",
+    "themeButton": {
+      "text": "切换暖纸日间",
+      "ariaPressed": "true"
+    },
+    "activeLayoutCount": 1,
+    "visibleLayouts": [
+      "frontpage"
+    ],
+    "activeButtons": [
+      "frontpage"
+    ],
+    "activeNotes": [
+      "frontpage"
+    ],
+    "inactiveNotesVisible": [],
+    "documentScrollWidth": 375,
+    "bodyScrollWidth": 375,
+    "innerWidth": 375,
+    "clientWidth": 375,
+    "horizontalOverflow": false,
+    "overflowingElements": [],
+    "allButtons": [
+      {
+        "text": "切换暖纸日间",
+        "type": "button",
+        "ariaPressed": "true",
+        "dataView": null
+      },
+      {
+        "text": "A · 今日目录",
+        "type": "button",
+        "ariaPressed": "false",
+        "dataView": "directory"
+      },
+      {
+        "text": "B · 头版 + 全览",
+        "type": "button",
+        "ariaPressed": "true",
+        "dataView": "frontpage"
+      },
+      {
+        "text": "C · 主题分版",
+        "type": "button",
+        "ariaPressed": "false",
+        "dataView": "sections"
+      },
+      {
+        "text": "知",
+        "type": "button",
+        "ariaPressed": null,
+        "dataView": null
+      }
+    ],
+    "focusOutline": "none",
+    "hasH1": true,
+    "labelledMainSurface": "首页方案预览",
+    "labelledNav": "选择首页方案"
+  },
+  "sectionsAfterKeyboard": {
+    "expectedLayout": "sections",
+    "expectedTheme": "night",
+    "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html",
+    "title": "DailyReader · 首页三套设计稿",
+    "lang": "zh-CN",
+    "viewportMeta": "width=device-width, initial-scale=1, viewport-fit=cover",
+    "bodyTheme": "night",
+    "themeButton": {
+      "text": "切换暖纸日间",
+      "ariaPressed": "true"
+    },
+    "activeLayoutCount": 1,
+    "visibleLayouts": [
+      "sections"
+    ],
+    "activeButtons": [
+      "sections"
+    ],
+    "activeNotes": [
+      "sections"
+    ],
+    "inactiveNotesVisible": [],
+    "documentScrollWidth": 375,
+    "bodyScrollWidth": 375,
+    "innerWidth": 375,
+    "clientWidth": 375,
+    "horizontalOverflow": false,
+    "overflowingElements": [],
+    "allButtons": [
+      {
+        "text": "切换暖纸日间",
+        "type": "button",
+        "ariaPressed": "true",
+        "dataView": null
+      },
+      {
+        "text": "A · 今日目录",
+        "type": "button",
+        "ariaPressed": "false",
+        "dataView": "directory"
+      },
+      {
+        "text": "B · 头版 + 全览",
+        "type": "button",
+        "ariaPressed": "false",
+        "dataView": "frontpage"
+      },
+      {
+        "text": "C · 主题分版",
+        "type": "button",
+        "ariaPressed": "true",
+        "dataView": "sections"
+      },
+      {
+        "text": "知",
+        "type": "button",
+        "ariaPressed": null,
+        "dataView": null
+      }
+    ],
+    "focusOutline": "none",
+    "hasH1": true,
+    "labelledMainSurface": "首页方案预览",
+    "labelledNav": "选择首页方案"
+  }
+}

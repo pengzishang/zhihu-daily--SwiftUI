@@ -1,0 +1,656 @@
+{
+  "surfaceEvidence": [
+    {
+      "scenarioId": "S-320-day-directory",
+      "criterionRef": "layout-theme-responsive-state-no-horizontal-scroll",
+      "surface": "static web prototype in local Chromium",
+      "exactInvocation": "file URL file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html; viewport=320x950; click #theme-toggle until body[data-theme=\"day\"]; click button[data-view=\"directory\"]; screenshot /Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/320-day-directory.png; inspect DOM via Playwright evaluate",
+      "verdict": "PASS",
+      "artifactRefs": [
+        "shot-320-day-directory",
+        "320-day-directory-state"
+      ]
+    },
+    {
+      "scenarioId": "S-320-day-frontpage",
+      "criterionRef": "layout-theme-responsive-state-no-horizontal-scroll",
+      "surface": "static web prototype in local Chromium",
+      "exactInvocation": "file URL file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html; viewport=320x950; click #theme-toggle until body[data-theme=\"day\"]; click button[data-view=\"frontpage\"]; screenshot /Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/320-day-frontpage.png; inspect DOM via Playwright evaluate",
+      "verdict": "PASS",
+      "artifactRefs": [
+        "shot-320-day-frontpage",
+        "320-day-frontpage-state"
+      ]
+    },
+    {
+      "scenarioId": "S-320-day-sections",
+      "criterionRef": "layout-theme-responsive-state-no-horizontal-scroll",
+      "surface": "static web prototype in local Chromium",
+      "exactInvocation": "file URL file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html; viewport=320x950; click #theme-toggle until body[data-theme=\"day\"]; click button[data-view=\"sections\"]; screenshot /Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/320-day-sections.png; inspect DOM via Playwright evaluate",
+      "verdict": "PASS",
+      "artifactRefs": [
+        "shot-320-day-sections",
+        "320-day-sections-state"
+      ]
+    },
+    {
+      "scenarioId": "S-320-night-directory",
+      "criterionRef": "layout-theme-responsive-state-no-horizontal-scroll",
+      "surface": "static web prototype in local Chromium",
+      "exactInvocation": "file URL file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html; viewport=320x950; click #theme-toggle until body[data-theme=\"night\"]; click button[data-view=\"directory\"]; screenshot /Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/320-night-directory.png; inspect DOM via Playwright evaluate",
+      "verdict": "PASS",
+      "artifactRefs": [
+        "shot-320-night-directory",
+        "320-night-directory-state"
+      ]
+    },
+    {
+      "scenarioId": "S-320-night-frontpage",
+      "criterionRef": "layout-theme-responsive-state-no-horizontal-scroll",
+      "surface": "static web prototype in local Chromium",
+      "exactInvocation": "file URL file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html; viewport=320x950; click #theme-toggle until body[data-theme=\"night\"]; click button[data-view=\"frontpage\"]; screenshot /Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/320-night-frontpage.png; inspect DOM via Playwright evaluate",
+      "verdict": "PASS",
+      "artifactRefs": [
+        "shot-320-night-frontpage",
+        "320-night-frontpage-state"
+      ]
+    },
+    {
+      "scenarioId": "S-320-night-sections",
+      "criterionRef": "layout-theme-responsive-state-no-horizontal-scroll",
+      "surface": "static web prototype in local Chromium",
+      "exactInvocation": "file URL file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html; viewport=320x950; click #theme-toggle until body[data-theme=\"night\"]; click button[data-view=\"sections\"]; screenshot /Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/320-night-sections.png; inspect DOM via Playwright evaluate",
+      "verdict": "PASS",
+      "artifactRefs": [
+        "shot-320-night-sections",
+        "320-night-sections-state"
+      ]
+    },
+    {
+      "scenarioId": "S-375-day-directory",
+      "criterionRef": "layout-theme-responsive-state-no-horizontal-scroll",
+      "surface": "static web prototype in local Chromium",
+      "exactInvocation": "file URL file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html; viewport=375x950; click #theme-toggle until body[data-theme=\"day\"]; click button[data-view=\"directory\"]; screenshot /Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/375-day-directory.png; inspect DOM via Playwright evaluate",
+      "verdict": "PASS",
+      "artifactRefs": [
+        "shot-375-day-directory",
+        "375-day-directory-state"
+      ]
+    },
+    {
+      "scenarioId": "S-375-day-frontpage",
+      "criterionRef": "layout-theme-responsive-state-no-horizontal-scroll",
+      "surface": "static web prototype in local Chromium",
+      "exactInvocation": "file URL file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html; viewport=375x950; click #theme-toggle until body[data-theme=\"day\"]; click button[data-view=\"frontpage\"]; screenshot /Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/375-day-frontpage.png; inspect DOM via Playwright evaluate",
+      "verdict": "PASS",
+      "artifactRefs": [
+        "shot-375-day-frontpage",
+        "375-day-frontpage-state"
+      ]
+    },
+    {
+      "scenarioId": "S-375-day-sections",
+      "criterionRef": "layout-theme-responsive-state-no-horizontal-scroll",
+      "surface": "static web prototype in local Chromium",
+      "exactInvocation": "file URL file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html; viewport=375x950; click #theme-toggle until body[data-theme=\"day\"]; click button[data-view=\"sections\"]; screenshot /Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/375-day-sections.png; inspect DOM via Playwright evaluate",
+      "verdict": "PASS",
+      "artifactRefs": [
+        "shot-375-day-sections",
+        "375-day-sections-state"
+      ]
+    },
+    {
+      "scenarioId": "S-375-night-directory",
+      "criterionRef": "layout-theme-responsive-state-no-horizontal-scroll",
+      "surface": "static web prototype in local Chromium",
+      "exactInvocation": "file URL file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html; viewport=375x950; click #theme-toggle until body[data-theme=\"night\"]; click button[data-view=\"directory\"]; screenshot /Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/375-night-directory.png; inspect DOM via Playwright evaluate",
+      "verdict": "PASS",
+      "artifactRefs": [
+        "shot-375-night-directory",
+        "375-night-directory-state"
+      ]
+    },
+    {
+      "scenarioId": "S-375-night-frontpage",
+      "criterionRef": "layout-theme-responsive-state-no-horizontal-scroll",
+      "surface": "static web prototype in local Chromium",
+      "exactInvocation": "file URL file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html; viewport=375x950; click #theme-toggle until body[data-theme=\"night\"]; click button[data-view=\"frontpage\"]; screenshot /Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/375-night-frontpage.png; inspect DOM via Playwright evaluate",
+      "verdict": "PASS",
+      "artifactRefs": [
+        "shot-375-night-frontpage",
+        "375-night-frontpage-state"
+      ]
+    },
+    {
+      "scenarioId": "S-375-night-sections",
+      "criterionRef": "layout-theme-responsive-state-no-horizontal-scroll",
+      "surface": "static web prototype in local Chromium",
+      "exactInvocation": "file URL file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html; viewport=375x950; click #theme-toggle until body[data-theme=\"night\"]; click button[data-view=\"sections\"]; screenshot /Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/375-night-sections.png; inspect DOM via Playwright evaluate",
+      "verdict": "PASS",
+      "artifactRefs": [
+        "shot-375-night-sections",
+        "375-night-sections-state"
+      ]
+    },
+    {
+      "scenarioId": "S-414-day-directory",
+      "criterionRef": "layout-theme-responsive-state-no-horizontal-scroll",
+      "surface": "static web prototype in local Chromium",
+      "exactInvocation": "file URL file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html; viewport=414x950; click #theme-toggle until body[data-theme=\"day\"]; click button[data-view=\"directory\"]; screenshot /Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/414-day-directory.png; inspect DOM via Playwright evaluate",
+      "verdict": "PASS",
+      "artifactRefs": [
+        "shot-414-day-directory",
+        "414-day-directory-state"
+      ]
+    },
+    {
+      "scenarioId": "S-414-day-frontpage",
+      "criterionRef": "layout-theme-responsive-state-no-horizontal-scroll",
+      "surface": "static web prototype in local Chromium",
+      "exactInvocation": "file URL file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html; viewport=414x950; click #theme-toggle until body[data-theme=\"day\"]; click button[data-view=\"frontpage\"]; screenshot /Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/414-day-frontpage.png; inspect DOM via Playwright evaluate",
+      "verdict": "PASS",
+      "artifactRefs": [
+        "shot-414-day-frontpage",
+        "414-day-frontpage-state"
+      ]
+    },
+    {
+      "scenarioId": "S-414-day-sections",
+      "criterionRef": "layout-theme-responsive-state-no-horizontal-scroll",
+      "surface": "static web prototype in local Chromium",
+      "exactInvocation": "file URL file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html; viewport=414x950; click #theme-toggle until body[data-theme=\"day\"]; click button[data-view=\"sections\"]; screenshot /Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/414-day-sections.png; inspect DOM via Playwright evaluate",
+      "verdict": "PASS",
+      "artifactRefs": [
+        "shot-414-day-sections",
+        "414-day-sections-state"
+      ]
+    },
+    {
+      "scenarioId": "S-414-night-directory",
+      "criterionRef": "layout-theme-responsive-state-no-horizontal-scroll",
+      "surface": "static web prototype in local Chromium",
+      "exactInvocation": "file URL file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html; viewport=414x950; click #theme-toggle until body[data-theme=\"night\"]; click button[data-view=\"directory\"]; screenshot /Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/414-night-directory.png; inspect DOM via Playwright evaluate",
+      "verdict": "PASS",
+      "artifactRefs": [
+        "shot-414-night-directory",
+        "414-night-directory-state"
+      ]
+    },
+    {
+      "scenarioId": "S-414-night-frontpage",
+      "criterionRef": "layout-theme-responsive-state-no-horizontal-scroll",
+      "surface": "static web prototype in local Chromium",
+      "exactInvocation": "file URL file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html; viewport=414x950; click #theme-toggle until body[data-theme=\"night\"]; click button[data-view=\"frontpage\"]; screenshot /Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/414-night-frontpage.png; inspect DOM via Playwright evaluate",
+      "verdict": "PASS",
+      "artifactRefs": [
+        "shot-414-night-frontpage",
+        "414-night-frontpage-state"
+      ]
+    },
+    {
+      "scenarioId": "S-414-night-sections",
+      "criterionRef": "layout-theme-responsive-state-no-horizontal-scroll",
+      "surface": "static web prototype in local Chromium",
+      "exactInvocation": "file URL file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html; viewport=414x950; click #theme-toggle until body[data-theme=\"night\"]; click button[data-view=\"sections\"]; screenshot /Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/414-night-sections.png; inspect DOM via Playwright evaluate",
+      "verdict": "PASS",
+      "artifactRefs": [
+        "shot-414-night-sections",
+        "414-night-sections-state"
+      ]
+    },
+    {
+      "scenarioId": "S-768-day-directory",
+      "criterionRef": "layout-theme-responsive-state-no-horizontal-scroll",
+      "surface": "static web prototype in local Chromium",
+      "exactInvocation": "file URL file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html; viewport=768x950; click #theme-toggle until body[data-theme=\"day\"]; click button[data-view=\"directory\"]; screenshot /Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/768-day-directory.png; inspect DOM via Playwright evaluate",
+      "verdict": "PASS",
+      "artifactRefs": [
+        "shot-768-day-directory",
+        "768-day-directory-state"
+      ]
+    },
+    {
+      "scenarioId": "S-768-day-frontpage",
+      "criterionRef": "layout-theme-responsive-state-no-horizontal-scroll",
+      "surface": "static web prototype in local Chromium",
+      "exactInvocation": "file URL file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html; viewport=768x950; click #theme-toggle until body[data-theme=\"day\"]; click button[data-view=\"frontpage\"]; screenshot /Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/768-day-frontpage.png; inspect DOM via Playwright evaluate",
+      "verdict": "PASS",
+      "artifactRefs": [
+        "shot-768-day-frontpage",
+        "768-day-frontpage-state"
+      ]
+    },
+    {
+      "scenarioId": "S-768-day-sections",
+      "criterionRef": "layout-theme-responsive-state-no-horizontal-scroll",
+      "surface": "static web prototype in local Chromium",
+      "exactInvocation": "file URL file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html; viewport=768x950; click #theme-toggle until body[data-theme=\"day\"]; click button[data-view=\"sections\"]; screenshot /Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/768-day-sections.png; inspect DOM via Playwright evaluate",
+      "verdict": "PASS",
+      "artifactRefs": [
+        "shot-768-day-sections",
+        "768-day-sections-state"
+      ]
+    },
+    {
+      "scenarioId": "S-768-night-directory",
+      "criterionRef": "layout-theme-responsive-state-no-horizontal-scroll",
+      "surface": "static web prototype in local Chromium",
+      "exactInvocation": "file URL file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html; viewport=768x950; click #theme-toggle until body[data-theme=\"night\"]; click button[data-view=\"directory\"]; screenshot /Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/768-night-directory.png; inspect DOM via Playwright evaluate",
+      "verdict": "PASS",
+      "artifactRefs": [
+        "shot-768-night-directory",
+        "768-night-directory-state"
+      ]
+    },
+    {
+      "scenarioId": "S-768-night-frontpage",
+      "criterionRef": "layout-theme-responsive-state-no-horizontal-scroll",
+      "surface": "static web prototype in local Chromium",
+      "exactInvocation": "file URL file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html; viewport=768x950; click #theme-toggle until body[data-theme=\"night\"]; click button[data-view=\"frontpage\"]; screenshot /Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/768-night-frontpage.png; inspect DOM via Playwright evaluate",
+      "verdict": "PASS",
+      "artifactRefs": [
+        "shot-768-night-frontpage",
+        "768-night-frontpage-state"
+      ]
+    },
+    {
+      "scenarioId": "S-768-night-sections",
+      "criterionRef": "layout-theme-responsive-state-no-horizontal-scroll",
+      "surface": "static web prototype in local Chromium",
+      "exactInvocation": "file URL file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html; viewport=768x950; click #theme-toggle until body[data-theme=\"night\"]; click button[data-view=\"sections\"]; screenshot /Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/768-night-sections.png; inspect DOM via Playwright evaluate",
+      "verdict": "PASS",
+      "artifactRefs": [
+        "shot-768-night-sections",
+        "768-night-sections-state"
+      ]
+    },
+    {
+      "scenarioId": "S-keyboard-375",
+      "criterionRef": "keyboard-focus-behavior",
+      "surface": "static web prototype in local Chromium",
+      "exactInvocation": "file URL file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html; viewport=375x900; clear localStorage; Tab through buttons; Enter on #theme-toggle; Enter on B button; Space on C button",
+      "verdict": "PASS",
+      "artifactRefs": [
+        "keyboard-focus-and-activation"
+      ]
+    },
+    {
+      "scenarioId": "S-accessibility-basics",
+      "criterionRef": "accessibility-basics",
+      "surface": "static web prototype DOM in local Chromium",
+      "exactInvocation": "file URL file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html; viewport=320x900 final state after rapid toggle; inspect lang/meta/labels/button types/aria-pressed/H1 via Playwright evaluate",
+      "verdict": "PASS",
+      "artifactRefs": [
+        "accessibility-basics"
+      ]
+    },
+    {
+      "scenarioId": "S-runtime-local-only",
+      "criterionRef": "no-page-errors-no-network-dependency",
+      "surface": "static web prototype in local Chromium",
+      "exactInvocation": "Playwright Chromium page.goto(\"file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html\", waitUntil=load); listeners for console/pageerror/request/requestfailed during all tested states",
+      "verdict": "PASS",
+      "artifactRefs": [
+        "runtime-browser-log"
+      ]
+    },
+    {
+      "scenarioId": "S-list-counts-375",
+      "criterionRef": "each-layout-shows-8-listed-items",
+      "surface": "static web prototype DOM in local Chrome",
+      "exactInvocation": "Playwright-launched local Google Chrome; file:// outputs/首页三套方案-互动设计稿.html; viewport=375x900; click A/B/C; count ol li per active layout",
+      "verdict": "PASS",
+      "artifactRefs": [
+        "list-counts"
+      ]
+    }
+  ],
+  "adversarialCases": [
+    {
+      "scenarioId": "A-invalid-localstorage",
+      "criterionRef": "state-restoration-defensive-defaults",
+      "adversarialClass": "tampered persisted layout/theme values",
+      "expectedBehavior": "Invalid saved layout/theme should fall back to one valid default layout, one active button, one note, and day or night theme.",
+      "verdict": "PASS",
+      "artifactRefs": [
+        "invalid-localstorage-state"
+      ]
+    },
+    {
+      "scenarioId": "A-rapid-toggle-320",
+      "criterionRef": "state-consistency-under-repeated-input",
+      "adversarialClass": "rapid repeated theme and layout activation on narrow viewport",
+      "expectedBehavior": "Controls remain deterministic: exactly one layout, one active button, one note, expected final theme, and no horizontal overflow.",
+      "verdict": "PASS",
+      "artifactRefs": [
+        "rapid-toggle-state"
+      ]
+    }
+  ],
+  "artifactRefs": [
+    {
+      "id": "shot-320-day-directory",
+      "kind": "png",
+      "description": "Full-page browser screenshot at 320px, day theme, directory layout",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/320-day-directory.png"
+    },
+    {
+      "id": "320-day-directory-state",
+      "kind": "json",
+      "description": "DOM state and overflow checks for 320-day-directory",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/320-day-directory.state.json"
+    },
+    {
+      "id": "shot-320-day-frontpage",
+      "kind": "png",
+      "description": "Full-page browser screenshot at 320px, day theme, frontpage layout",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/320-day-frontpage.png"
+    },
+    {
+      "id": "320-day-frontpage-state",
+      "kind": "json",
+      "description": "DOM state and overflow checks for 320-day-frontpage",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/320-day-frontpage.state.json"
+    },
+    {
+      "id": "shot-320-day-sections",
+      "kind": "png",
+      "description": "Full-page browser screenshot at 320px, day theme, sections layout",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/320-day-sections.png"
+    },
+    {
+      "id": "320-day-sections-state",
+      "kind": "json",
+      "description": "DOM state and overflow checks for 320-day-sections",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/320-day-sections.state.json"
+    },
+    {
+      "id": "shot-320-night-directory",
+      "kind": "png",
+      "description": "Full-page browser screenshot at 320px, night theme, directory layout",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/320-night-directory.png"
+    },
+    {
+      "id": "320-night-directory-state",
+      "kind": "json",
+      "description": "DOM state and overflow checks for 320-night-directory",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/320-night-directory.state.json"
+    },
+    {
+      "id": "shot-320-night-frontpage",
+      "kind": "png",
+      "description": "Full-page browser screenshot at 320px, night theme, frontpage layout",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/320-night-frontpage.png"
+    },
+    {
+      "id": "320-night-frontpage-state",
+      "kind": "json",
+      "description": "DOM state and overflow checks for 320-night-frontpage",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/320-night-frontpage.state.json"
+    },
+    {
+      "id": "shot-320-night-sections",
+      "kind": "png",
+      "description": "Full-page browser screenshot at 320px, night theme, sections layout",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/320-night-sections.png"
+    },
+    {
+      "id": "320-night-sections-state",
+      "kind": "json",
+      "description": "DOM state and overflow checks for 320-night-sections",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/320-night-sections.state.json"
+    },
+    {
+      "id": "shot-375-day-directory",
+      "kind": "png",
+      "description": "Full-page browser screenshot at 375px, day theme, directory layout",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/375-day-directory.png"
+    },
+    {
+      "id": "375-day-directory-state",
+      "kind": "json",
+      "description": "DOM state and overflow checks for 375-day-directory",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/375-day-directory.state.json"
+    },
+    {
+      "id": "shot-375-day-frontpage",
+      "kind": "png",
+      "description": "Full-page browser screenshot at 375px, day theme, frontpage layout",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/375-day-frontpage.png"
+    },
+    {
+      "id": "375-day-frontpage-state",
+      "kind": "json",
+      "description": "DOM state and overflow checks for 375-day-frontpage",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/375-day-frontpage.state.json"
+    },
+    {
+      "id": "shot-375-day-sections",
+      "kind": "png",
+      "description": "Full-page browser screenshot at 375px, day theme, sections layout",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/375-day-sections.png"
+    },
+    {
+      "id": "375-day-sections-state",
+      "kind": "json",
+      "description": "DOM state and overflow checks for 375-day-sections",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/375-day-sections.state.json"
+    },
+    {
+      "id": "shot-375-night-directory",
+      "kind": "png",
+      "description": "Full-page browser screenshot at 375px, night theme, directory layout",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/375-night-directory.png"
+    },
+    {
+      "id": "375-night-directory-state",
+      "kind": "json",
+      "description": "DOM state and overflow checks for 375-night-directory",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/375-night-directory.state.json"
+    },
+    {
+      "id": "shot-375-night-frontpage",
+      "kind": "png",
+      "description": "Full-page browser screenshot at 375px, night theme, frontpage layout",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/375-night-frontpage.png"
+    },
+    {
+      "id": "375-night-frontpage-state",
+      "kind": "json",
+      "description": "DOM state and overflow checks for 375-night-frontpage",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/375-night-frontpage.state.json"
+    },
+    {
+      "id": "shot-375-night-sections",
+      "kind": "png",
+      "description": "Full-page browser screenshot at 375px, night theme, sections layout",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/375-night-sections.png"
+    },
+    {
+      "id": "375-night-sections-state",
+      "kind": "json",
+      "description": "DOM state and overflow checks for 375-night-sections",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/375-night-sections.state.json"
+    },
+    {
+      "id": "shot-414-day-directory",
+      "kind": "png",
+      "description": "Full-page browser screenshot at 414px, day theme, directory layout",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/414-day-directory.png"
+    },
+    {
+      "id": "414-day-directory-state",
+      "kind": "json",
+      "description": "DOM state and overflow checks for 414-day-directory",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/414-day-directory.state.json"
+    },
+    {
+      "id": "shot-414-day-frontpage",
+      "kind": "png",
+      "description": "Full-page browser screenshot at 414px, day theme, frontpage layout",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/414-day-frontpage.png"
+    },
+    {
+      "id": "414-day-frontpage-state",
+      "kind": "json",
+      "description": "DOM state and overflow checks for 414-day-frontpage",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/414-day-frontpage.state.json"
+    },
+    {
+      "id": "shot-414-day-sections",
+      "kind": "png",
+      "description": "Full-page browser screenshot at 414px, day theme, sections layout",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/414-day-sections.png"
+    },
+    {
+      "id": "414-day-sections-state",
+      "kind": "json",
+      "description": "DOM state and overflow checks for 414-day-sections",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/414-day-sections.state.json"
+    },
+    {
+      "id": "shot-414-night-directory",
+      "kind": "png",
+      "description": "Full-page browser screenshot at 414px, night theme, directory layout",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/414-night-directory.png"
+    },
+    {
+      "id": "414-night-directory-state",
+      "kind": "json",
+      "description": "DOM state and overflow checks for 414-night-directory",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/414-night-directory.state.json"
+    },
+    {
+      "id": "shot-414-night-frontpage",
+      "kind": "png",
+      "description": "Full-page browser screenshot at 414px, night theme, frontpage layout",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/414-night-frontpage.png"
+    },
+    {
+      "id": "414-night-frontpage-state",
+      "kind": "json",
+      "description": "DOM state and overflow checks for 414-night-frontpage",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/414-night-frontpage.state.json"
+    },
+    {
+      "id": "shot-414-night-sections",
+      "kind": "png",
+      "description": "Full-page browser screenshot at 414px, night theme, sections layout",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/414-night-sections.png"
+    },
+    {
+      "id": "414-night-sections-state",
+      "kind": "json",
+      "description": "DOM state and overflow checks for 414-night-sections",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/414-night-sections.state.json"
+    },
+    {
+      "id": "shot-768-day-directory",
+      "kind": "png",
+      "description": "Full-page browser screenshot at 768px, day theme, directory layout",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/768-day-directory.png"
+    },
+    {
+      "id": "768-day-directory-state",
+      "kind": "json",
+      "description": "DOM state and overflow checks for 768-day-directory",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/768-day-directory.state.json"
+    },
+    {
+      "id": "shot-768-day-frontpage",
+      "kind": "png",
+      "description": "Full-page browser screenshot at 768px, day theme, frontpage layout",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/768-day-frontpage.png"
+    },
+    {
+      "id": "768-day-frontpage-state",
+      "kind": "json",
+      "description": "DOM state and overflow checks for 768-day-frontpage",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/768-day-frontpage.state.json"
+    },
+    {
+      "id": "shot-768-day-sections",
+      "kind": "png",
+      "description": "Full-page browser screenshot at 768px, day theme, sections layout",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/768-day-sections.png"
+    },
+    {
+      "id": "768-day-sections-state",
+      "kind": "json",
+      "description": "DOM state and overflow checks for 768-day-sections",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/768-day-sections.state.json"
+    },
+    {
+      "id": "shot-768-night-directory",
+      "kind": "png",
+      "description": "Full-page browser screenshot at 768px, night theme, directory layout",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/768-night-directory.png"
+    },
+    {
+      "id": "768-night-directory-state",
+      "kind": "json",
+      "description": "DOM state and overflow checks for 768-night-directory",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/768-night-directory.state.json"
+    },
+    {
+      "id": "shot-768-night-frontpage",
+      "kind": "png",
+      "description": "Full-page browser screenshot at 768px, night theme, frontpage layout",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/768-night-frontpage.png"
+    },
+    {
+      "id": "768-night-frontpage-state",
+      "kind": "json",
+      "description": "DOM state and overflow checks for 768-night-frontpage",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/768-night-frontpage.state.json"
+    },
+    {
+      "id": "shot-768-night-sections",
+      "kind": "png",
+      "description": "Full-page browser screenshot at 768px, night theme, sections layout",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/768-night-sections.png"
+    },
+    {
+      "id": "768-night-sections-state",
+      "kind": "json",
+      "description": "DOM state and overflow checks for 768-night-sections",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/768-night-sections.state.json"
+    },
+    {
+      "id": "keyboard-focus-and-activation",
+      "kind": "json",
+      "description": "Keyboard focus order, focus-visible evidence, and Enter/Space activation state trace",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/keyboard-focus-and-activation.json"
+    },
+    {
+      "id": "invalid-localstorage-state",
+      "kind": "json",
+      "description": "Adversarial invalid localStorage layout/theme state after reload",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/invalid-localstorage-state.json"
+    },
+    {
+      "id": "rapid-toggle-state",
+      "kind": "json",
+      "description": "Adversarial rapid click sequence on theme and layout controls at 320px",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/rapid-toggle-state.json"
+    },
+    {
+      "id": "accessibility-basics",
+      "kind": "json",
+      "description": "Accessibility basics inspection for labels, language, viewport, buttons, and heading",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/accessibility-basics.json"
+    },
+    {
+      "id": "runtime-browser-log",
+      "kind": "json",
+      "description": "Browser runtime log, source mtimes, console/page errors, failed requests, and network request list",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/runtime-browser-log.json"
+    },
+    {
+      "id": "list-counts",
+      "kind": "json",
+      "description": "A/B/C ordered-list item counts from local Chrome after clicking each layout",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/list-counts.json"
+    }
+  ]
+}

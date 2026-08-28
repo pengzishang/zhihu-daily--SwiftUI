@@ -1,0 +1,21 @@
+{
+  "verdict": "FAIL",
+  "evidenceDir": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa",
+  "counts": {
+    "surfaceEvidence": 27,
+    "adversarialCases": 2,
+    "artifacts": 54
+  },
+  "failures": [
+    {
+      "scenarioId": "A-invalid-localstorage",
+      "criterionRef": "state-restoration-defensive-defaults",
+      "adversarialClass": "tampered persisted layout/theme values",
+      "expectedBehavior": "Invalid saved layout/theme should fall back to one valid default layout, one active button, one note, and day or night theme.",
+      "verdict": "FAIL",
+      "artifactRefs": [
+        "invalid-localstorage-state"
+      ]
+    }
+  ]
+}

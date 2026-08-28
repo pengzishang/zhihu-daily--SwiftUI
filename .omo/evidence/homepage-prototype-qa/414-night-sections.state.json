@@ -1,0 +1,66 @@
+{
+  "expectedLayout": "sections",
+  "expectedTheme": "night",
+  "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html",
+  "title": "DailyReader · 首页三套设计稿",
+  "lang": "zh-CN",
+  "viewportMeta": "width=device-width, initial-scale=1, viewport-fit=cover",
+  "bodyTheme": "night",
+  "themeButton": {
+    "text": "切换暖纸日间",
+    "ariaPressed": "true"
+  },
+  "activeLayoutCount": 1,
+  "visibleLayouts": [
+    "sections"
+  ],
+  "activeButtons": [
+    "sections"
+  ],
+  "activeNotes": [
+    "sections"
+  ],
+  "inactiveNotesVisible": [],
+  "documentScrollWidth": 414,
+  "bodyScrollWidth": 414,
+  "innerWidth": 414,
+  "clientWidth": 414,
+  "horizontalOverflow": false,
+  "overflowingElements": [],
+  "allButtons": [
+    {
+      "text": "切换暖纸日间",
+      "type": "button",
+      "ariaPressed": "true",
+      "dataView": null
+    },
+    {
+      "text": "A · 今日目录",
+      "type": "button",
+      "ariaPressed": "false",
+      "dataView": "directory"
+    },
+    {
+      "text": "B · 头版 + 全览",
+      "type": "button",
+      "ariaPressed": "false",
+      "dataView": "frontpage"
+    },
+    {
+      "text": "C · 主题分版",
+      "type": "button",
+      "ariaPressed": "true",
+      "dataView": "sections"
+    },
+    {
+      "text": "知",
+      "type": "button",
+      "ariaPressed": null,
+      "dataView": null
+    }
+  ],
+  "focusOutline": "none",
+  "hasH1": true,
+  "labelledMainSurface": "首页方案预览",
+  "labelledNav": "选择首页方案"
+}

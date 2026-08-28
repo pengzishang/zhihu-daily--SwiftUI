@@ -1,0 +1,10 @@
+{
+  "verdict": "PASS",
+  "evidenceDir": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa",
+  "counts": {
+    "surfaceEvidence": 27,
+    "adversarialCases": 2,
+    "artifacts": 54
+  },
+  "failures": []
+}

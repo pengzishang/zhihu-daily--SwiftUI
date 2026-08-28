@@ -1,0 +1,281 @@
+{
+  "invocation": "node .omo/evidence/homepage-prototype-qa/run_homepage_prototype_qa.mjs from /Users/pengzishang/Current Project/知乎日报-SwiftUI",
+  "playwright": "chromium",
+  "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html",
+  "sourceStats": [
+    {
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/outputs/首页三套方案-互动设计稿.html",
+      "bytes": 20834,
+      "mtime": "2026-08-20T15:51:16.662Z"
+    },
+    {
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/outputs/首页三套方案-tokens.css",
+      "bytes": 3484,
+      "mtime": "2026-08-20T15:45:34.539Z"
+    }
+  ],
+  "consoleEvents": [],
+  "pageErrors": [],
+  "failedRequests": [],
+  "networkRequests": [
+    {
+      "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html",
+      "resourceType": "document",
+      "method": "GET"
+    },
+    {
+      "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-tokens.css",
+      "resourceType": "stylesheet",
+      "method": "GET"
+    },
+    {
+      "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html",
+      "resourceType": "document",
+      "method": "GET"
+    },
+    {
+      "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-tokens.css",
+      "resourceType": "stylesheet",
+      "method": "GET"
+    },
+    {
+      "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html",
+      "resourceType": "document",
+      "method": "GET"
+    },
+    {
+      "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-tokens.css",
+      "resourceType": "stylesheet",
+      "method": "GET"
+    },
+    {
+      "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html",
+      "resourceType": "document",
+      "method": "GET"
+    },
+    {
+      "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-tokens.css",
+      "resourceType": "stylesheet",
+      "method": "GET"
+    },
+    {
+      "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html",
+      "resourceType": "document",
+      "method": "GET"
+    },
+    {
+      "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-tokens.css",
+      "resourceType": "stylesheet",
+      "method": "GET"
+    },
+    {
+      "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html",
+      "resourceType": "document",
+      "method": "GET"
+    },
+    {
+      "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-tokens.css",
+      "resourceType": "stylesheet",
+      "method": "GET"
+    },
+    {
+      "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html",
+      "resourceType": "document",
+      "method": "GET"
+    },
+    {
+      "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-tokens.css",
+      "resourceType": "stylesheet",
+      "method": "GET"
+    },
+    {
+      "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html",
+      "resourceType": "document",
+      "method": "GET"
+    },
+    {
+      "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-tokens.css",
+      "resourceType": "stylesheet",
+      "method": "GET"
+    },
+    {
+      "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html",
+      "resourceType": "document",
+      "method": "GET"
+    },
+    {
+      "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-tokens.css",
+      "resourceType": "stylesheet",
+      "method": "GET"
+    },
+    {
+      "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html",
+      "resourceType": "document",
+      "method": "GET"
+    },
+    {
+      "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-tokens.css",
+      "resourceType": "stylesheet",
+      "method": "GET"
+    },
+    {
+      "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html",
+      "resourceType": "document",
+      "method": "GET"
+    },
+    {
+      "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-tokens.css",
+      "resourceType": "stylesheet",
+      "method": "GET"
+    },
+    {
+      "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html",
+      "resourceType": "document",
+      "method": "GET"
+    },
+    {
+      "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-tokens.css",
+      "resourceType": "stylesheet",
+      "method": "GET"
+    },
+    {
+      "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html",
+      "resourceType": "document",
+      "method": "GET"
+    },
+    {
+      "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-tokens.css",
+      "resourceType": "stylesheet",
+      "method": "GET"
+    },
+    {
+      "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html",
+      "resourceType": "document",
+      "method": "GET"
+    },
+    {
+      "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-tokens.css",
+      "resourceType": "stylesheet",
+      "method": "GET"
+    },
+    {
+      "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html",
+      "resourceType": "document",
+      "method": "GET"
+    },
+    {
+      "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-tokens.css",
+      "resourceType": "stylesheet",
+      "method": "GET"
+    },
+    {
+      "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-%E4%BA%92%E5%8A%A8%E8%AE%BE%E8%AE%A1%E7%A8%BF.html",
+      "resourceType": "document",
+      "method": "GET"
+    },
+    {
+      "url": "file:///Users/pengzishang/Current%20Project/%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5-SwiftUI/outputs/%E9%A6%96%E9%A1%B5%E4%B8%89%E5%A5%97%E6%96%B9%E6%A1%88-tokens.css",
+      "resourceType": "stylesheet",
+      "method": "GET"
+    }
+  ],
+  "nonFileRequests": [],
+  "screenshots": [
+    {
+      "id": "320-day-directory",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/320-day-directory.png"
+    },
+    {
+      "id": "320-day-frontpage",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/320-day-frontpage.png"
+    },
+    {
+      "id": "320-day-sections",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/320-day-sections.png"
+    },
+    {
+      "id": "320-night-directory",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/320-night-directory.png"
+    },
+    {
+      "id": "320-night-frontpage",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/320-night-frontpage.png"
+    },
+    {
+      "id": "320-night-sections",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/320-night-sections.png"
+    },
+    {
+      "id": "375-day-directory",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/375-day-directory.png"
+    },
+    {
+      "id": "375-day-frontpage",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/375-day-frontpage.png"
+    },
+    {
+      "id": "375-day-sections",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/375-day-sections.png"
+    },
+    {
+      "id": "375-night-directory",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/375-night-directory.png"
+    },
+    {
+      "id": "375-night-frontpage",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/375-night-frontpage.png"
+    },
+    {
+      "id": "375-night-sections",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/375-night-sections.png"
+    },
+    {
+      "id": "414-day-directory",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/414-day-directory.png"
+    },
+    {
+      "id": "414-day-frontpage",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/414-day-frontpage.png"
+    },
+    {
+      "id": "414-day-sections",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/414-day-sections.png"
+    },
+    {
+      "id": "414-night-directory",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/414-night-directory.png"
+    },
+    {
+      "id": "414-night-frontpage",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/414-night-frontpage.png"
+    },
+    {
+      "id": "414-night-sections",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/414-night-sections.png"
+    },
+    {
+      "id": "768-day-directory",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/768-day-directory.png"
+    },
+    {
+      "id": "768-day-frontpage",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/768-day-frontpage.png"
+    },
+    {
+      "id": "768-day-sections",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/768-day-sections.png"
+    },
+    {
+      "id": "768-night-directory",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/768-night-directory.png"
+    },
+    {
+      "id": "768-night-frontpage",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/768-night-frontpage.png"
+    },
+    {
+      "id": "768-night-sections",
+      "path": "/Users/pengzishang/Current Project/知乎日报-SwiftUI/.omo/evidence/homepage-prototype-qa/768-night-sections.png"
+    }
+  ]
+}

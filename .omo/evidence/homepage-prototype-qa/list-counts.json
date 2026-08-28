@@ -1,0 +1,27 @@
+{
+  "invocation": "Playwright-launched local Google Chrome; file:// outputs/首页三套方案-互动设计稿.html; viewport=375x900; click A/B/C; count ol li per active layout",
+  "counts": {
+    "directory": {
+      "orderedListItems": 8,
+      "totalListItemsIncludingTopicBullets": 8,
+      "activeLayout": [
+        "directory"
+      ]
+    },
+    "frontpage": {
+      "orderedListItems": 8,
+      "totalListItemsIncludingTopicBullets": 8,
+      "activeLayout": [
+        "frontpage"
+      ]
+    },
+    "sections": {
+      "orderedListItems": 8,
+      "totalListItemsIncludingTopicBullets": 14,
+      "activeLayout": [
+        "sections"
+      ]
+    }
+  },
+  "verdict": "PASS"
+}
