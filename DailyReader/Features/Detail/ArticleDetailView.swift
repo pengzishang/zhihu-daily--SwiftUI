@@ -113,18 +113,7 @@ struct ArticleDetailView: View {
                             // 3. Body loading/loaded/failed phases
                             switch viewModel.phase {
                             case .idle, .loading:
-                                HStack {
-                                    Spacer()
-                                    VStack(spacing: 12) {
-                                        ProgressView()
-                                            .tint(DS.inkSecondary)
-                                        Text("正在加载内容...")
-                                            .font(.footnote)
-                                            .foregroundStyle(DS.inkSecondary)
-                                    }
-                                    .padding(.vertical, 40)
-                                    Spacer()
-                                }
+                                ArticleDetailLoadingView()
                             case .failed(let message):
                                 ErrorStateView(message: message) {
                                     Task { await viewModel.reload() }
