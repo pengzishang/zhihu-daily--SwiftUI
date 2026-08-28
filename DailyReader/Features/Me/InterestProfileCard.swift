@@ -35,6 +35,7 @@ struct InterestProfileCard: View {
         )
         .accessibilityElement(children: .combine)
         .accessibilityLabel("兴趣画像")
+        .accessibilityIdentifier("me.interestProfileCard")
     }
 
     private var bars: some View {

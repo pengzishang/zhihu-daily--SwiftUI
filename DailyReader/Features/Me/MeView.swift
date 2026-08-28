@@ -147,6 +147,10 @@ struct MeView: View {
                                 .strokeBorder(DS.hairline, lineWidth: 0.7)
                         )
                 }
+                // 必须显式 borderless：该 Button 位于 List 首行（topSectionSection）内，
+                // 默认 buttonStyle 会让整行成为齿轮点击区——点「兴趣画像」等同行元素
+                // 都会误触发 showSettings 进设置。borderless 把点击区收回到齿轮自身。
+                .buttonStyle(.borderless)
                 .accessibilityLabel("设置")
                 .accessibilityHint("打开阅读设置")
                 .accessibilityIdentifier("me.settingsButton")
